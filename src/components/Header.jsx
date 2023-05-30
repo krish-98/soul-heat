@@ -75,14 +75,14 @@ const Header = () => {
           />
         </Link>
 
-        <ul className="flex gap-10 text-white font-medium uppercase tracking-wider">
-          <li className="cursor-pointer">
+        <ul className="flex gap-10 text-white font-medium uppercase tracking-wide">
+          <li className="cursor-pointer ">
             <Link to="/">Home</Link>
           </li>
-          <li className="cursor-pointer">
+          <li className="cursor-pointer ">
             <Link to="/About">About</Link>
           </li>
-          <li className="cursor-pointer">
+          <li className="cursor-pointer ">
             <Link to="/contact">Contact</Link>
           </li>
 

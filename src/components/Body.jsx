@@ -15,15 +15,15 @@ const Body = () => {
   async function fetchData() {
     try {
       const res = await fetch(SWIGGY_API)
-      const json = await res.json()
-      console.log(json)
+      const jsonData = await res.json()
+      console.log(jsonData)
       setAllRestaurants(
-        json?.data?.cards[2]?.data?.data?.cards ||
-          json?.data?.cards[0]?.data?.data?.cards
+        jsonData?.data?.cards[2]?.data?.data?.cards ||
+          jsonData?.data?.cards[0]?.data?.data?.cards
       )
       setFilteredRestaurants(
-        json?.data?.cards[2]?.data?.data?.cards ||
-          json?.data?.cards[0]?.data?.data?.cards
+        jsonData?.data?.cards[2]?.data?.data?.cards ||
+          jsonData?.data?.cards[0]?.data?.data?.cards
       )
     } catch (error) {
       console.log(error)

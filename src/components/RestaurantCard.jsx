@@ -1,5 +1,6 @@
 import { CLOUDINARY_IMAGE_ID } from "../constants"
 import { Link } from "react-router-dom"
+import { AiFillStar } from "react-icons/ai"
 
 const RestaurantCard = ({
   name,
@@ -24,13 +25,15 @@ const RestaurantCard = ({
           ? cuisines?.slice(0, 8).join(", ") + " & more"
           : cuisines?.join(", ")}
       </h3>
-      <span
-        className={`text-xs text-white px-2 py-1 ${
+
+      <div
+        className={`flex items-center gap-1 text-xs text-white px-2 py-1 ${
           Number(avgRating) < 4 ? "bg-[#db7c38]" : "bg-[#48c479]"
         } ${avgRating === "--" && "bg-[#FFD95A] text-[#4C3D3D]"}`}
       >
-        ⭐ {avgRating === "--" ? "No Ratings" : avgRating}
-      </span>
+        <AiFillStar className="w-3 h-6" />
+        <span>{avgRating === "--" ? "No Ratings" : avgRating}</span>
+      </div>
     </Link>
   )
 }

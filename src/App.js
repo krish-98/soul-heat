@@ -1,13 +1,16 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
+import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom"
+
 import Header from "./components/Header"
 import Body from "./components/Body"
-
-import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom"
-import ErrorPage from "./components/ErrorPage"
 import About from "./components/About"
 import Contact from "./components/Contact"
 import RestaurantMenu from "./components/RestaurantMenu"
+import ErrorPage from "./components/ErrorPage"
+
+import { Provider } from "react-redux"
+import store from "./app/store"
 
 const AppLayout = () => {
   return (
@@ -46,4 +49,8 @@ const appRouter = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById("root"))
 
-root.render(<RouterProvider router={appRouter} />)
+root.render(
+  <Provider store={store}>
+    <RouterProvider router={appRouter} />
+  </Provider>
+)

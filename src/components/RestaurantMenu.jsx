@@ -5,12 +5,15 @@ import { CLOUDINARY_IMAGE_ID } from "../constants"
 import RestaurantDetails from "./RestaurantDetails"
 import { MdKeyboardArrowUp } from "react-icons/md"
 import Shimmer from "./Shimmer"
+import { useDispatch } from "react-redux"
+import { addToCart } from "../features/cartSlice"
 
 // import { LuSquareDot, LuCircleDot } from "react-icons/lib"
 
 const RestaurantMenu = () => {
   const [restaurantMenu, setRestaurantMenu] = useState([])
   const { resId } = useParams()
+  const dispatch = useDispatch()
   const restaurantMenuLists =
     restaurantMenu?.[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1]?.card
       ?.card?.itemCards ||
@@ -31,6 +34,10 @@ const RestaurantMenu = () => {
     const jsonData = await res.json()
     console.log(jsonData?.data?.cards)
     setRestaurantMenu(jsonData?.data?.cards)
+  }
+
+  const addItem = (item) => {
+    dispatch(addToCart(item))
   }
 
   return (
@@ -78,7 +85,10 @@ const RestaurantMenu = () => {
                     alt=""
                   />
 
-                  <button className="absolute -bottom-3 bg-white text-[#60b246] border w-[80%] left-3 py-1 rounded-lg text-sm font-bold md:text-base md:left-4 hover:bg-gray-50 transition-all duration-300">
+                  <button
+                    onClick={() => addItem(list?.card?.info)}
+                    className="absolute -bottom-3 bg-white text-[#60b246] border w-[80%] left-3 py-1 rounded-lg text-sm font-bold md:text-base md:left-4 hover:bg-gray-50 transition-all duration-300"
+                  >
                     ADD
                   </button>
                 </div>

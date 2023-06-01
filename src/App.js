@@ -6,8 +6,9 @@ import Header from "./components/Header"
 import Body from "./components/Body"
 import About from "./components/About"
 import Contact from "./components/Contact"
-import RestaurantMenu from "./components/RestaurantMenu"
+import Restaurant from "./components/Restaurant"
 import ErrorPage from "./components/ErrorPage"
+import Cart from "./components/Cart"
 
 import { Provider } from "react-redux"
 import store from "./app/store"
@@ -41,7 +42,11 @@ const appRouter = createBrowserRouter([
       },
       {
         path: "restaurant/:resId",
-        element: <RestaurantMenu />,
+        element: <Restaurant />,
+      },
+      {
+        path: "cart",
+        element: <Cart />,
       },
     ],
   },

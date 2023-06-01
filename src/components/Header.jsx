@@ -2,7 +2,7 @@ import { useState } from "react"
 import logo2 from "../assets/logo2.png"
 import { FaHamburger } from "react-icons/fa"
 import { ImCross } from "react-icons/im"
-import { RiShoppingCart2Fill } from "react-icons/ri"
+import { TfiShoppingCart, TfiShoppingCartFull } from "react-icons/tfi"
 import { Link } from "react-router-dom"
 
 const Header = () => {
@@ -16,20 +16,27 @@ const Header = () => {
     <>
       {/* Mobile Navbar */}
       <header className="relative bg-[#f26434] lg:hidden">
-        <Link to="/">
-          <img className="h-20 object-contain " src={logo2} alt="logo" />
-        </Link>
-        <div className="absolute top-3 right-4">
+        <div className="flex item-center px-3">
+          <Link to="/cart" className="hover:bg-[#f9bca8] self-center">
+            <TfiShoppingCart className="w-8 h-10 fill-white cursor-pointer" />
+          </Link>
+
+          <Link to="/">
+            <img className="h-20 object-contain" src={logo2} alt="logo" />
+          </Link>
+        </div>
+
+        <div className="absolute top-5 right-4">
           {!toggle ? (
             <FaHamburger
               onClick={handleToggler}
-              className="w-8 h-12 fill-white"
+              className="w-8 h-10 fill-white"
             />
           ) : (
             <>
               <ImCross
                 onClick={handleToggler}
-                className="w-8 h-12 fill-white"
+                className="w-8 h-10 fill-white"
               />
             </>
           )}
@@ -55,12 +62,6 @@ const Header = () => {
             >
               <Link to="/contact">Contact</Link>
             </li>
-            <li
-              onClick={handleToggler}
-              className="hover:bg-[#f9bca8] w-full text-center py-2"
-            >
-              Cart
-            </li>
           </ul>
         )}
       </header>
@@ -75,7 +76,7 @@ const Header = () => {
           />
         </Link>
 
-        <ul className="flex gap-10 text-white font-medium uppercase tracking-wide">
+        <ul className="flex gap-10 items-center text-white font-medium uppercase tracking-wide">
           <li className="cursor-pointer ">
             <Link to="/">Home</Link>
           </li>
@@ -86,7 +87,10 @@ const Header = () => {
             <Link to="/contact">Contact</Link>
           </li>
 
-          <RiShoppingCart2Fill className="w-6 h-6 fill-white cursor-pointer" />
+          <Link to="/cart">
+            <TfiShoppingCart className="w-8 h-10 fill-white cursor-pointer" />
+            {/* <TfiShoppingCartFull className="w-6 h-6 fill-white cursor-pointer" /> */}
+          </Link>
         </ul>
       </header>
     </>

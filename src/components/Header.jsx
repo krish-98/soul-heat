@@ -4,9 +4,11 @@ import { FaHamburger } from "react-icons/fa"
 import { ImCross } from "react-icons/im"
 import { TfiShoppingCart, TfiShoppingCartFull } from "react-icons/tfi"
 import { Link } from "react-router-dom"
+import { useSelector } from "react-redux"
 
 const Header = () => {
   const [toggle, setToggle] = useState(false)
+  const { totalItems } = useSelector((store) => store.cart)
 
   const handleToggler = () => {
     setToggle(!toggle)
@@ -16,30 +18,35 @@ const Header = () => {
     <>
       {/* Mobile Navbar */}
       <header className="relative bg-[#f26434] lg:hidden">
-        <div className="flex item-center px-3">
-          <Link to="/cart" className="hover:bg-[#f9bca8] self-center">
-            <TfiShoppingCart className="w-8 h-10 fill-white cursor-pointer" />
-          </Link>
-
-          <Link to="/">
-            <img className="h-20 object-contain" src={logo2} alt="logo" />
-          </Link>
-        </div>
-
-        <div className="absolute top-5 right-4">
+        <div className="absolute top-5 left-4">
           {!toggle ? (
             <FaHamburger
               onClick={handleToggler}
-              className="w-8 h-10 fill-white"
+              className="w-[30px] h-10 fill-white"
             />
           ) : (
             <>
               <ImCross
                 onClick={handleToggler}
-                className="w-8 h-10 fill-white"
+                className="w-[30px] h-10 fill-white"
               />
             </>
           )}
+        </div>
+
+        <div className="flex item-center justify-between px-3">
+          <Link to="/">
+            <img className="h-20 object-contain" src={logo2} alt="logo" />
+          </Link>
+
+          <Link to="/cart" className="hover:bg-[#f9bca8] self-center relative">
+            <TfiShoppingCart className="w-8 h-10 fill-white cursor-pointer" />
+            <div className="absolute -right-2 bottom-6 bg-white w-6 h-6 rounded-full">
+              <p className="text-center text-[#f26434] font-bold">
+                {totalItems}
+              </p>
+            </div>
+          </Link>
         </div>
 
         {toggle && (
@@ -87,9 +94,14 @@ const Header = () => {
             <Link to="/contact">Contact</Link>
           </li>
 
-          <Link to="/cart">
+          <Link to="/cart" className="relative">
             <TfiShoppingCart className="w-8 h-10 fill-white cursor-pointer" />
             {/* <TfiShoppingCartFull className="w-6 h-6 fill-white cursor-pointer" /> */}
+            <div className="absolute -right-2 bottom-6 bg-white w-6 h-6 rounded-full">
+              <p className="text-center text-[#f26434] font-bold">
+                {totalItems}
+              </p>
+            </div>
           </Link>
         </ul>
       </header>

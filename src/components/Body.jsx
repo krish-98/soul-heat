@@ -47,7 +47,7 @@ const Body = () => {
   }
 
   return (
-    <main className="mt-4 px-2">
+    <main className="pt-6 px-4">
       <form
         className="flex justify-center max-w-[600px] mx-auto"
         onSubmit={handleForm}
@@ -68,6 +68,7 @@ const Body = () => {
           Search
         </button>
       </form>
+
       {allRestaurants?.length === 0 ? (
         <Shimmer />
       ) : (

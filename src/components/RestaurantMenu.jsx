@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux"
 import { CLOUDINARY_IMAGE_ID } from "../constants"
-import { addToCart } from "../features/cartSlice"
+import { addToCart, calculateCartTotal } from "../features/cartSlice"
 
 import { MdKeyboardArrowUp } from "react-icons/md"
 // import { LuSquareDot, LuCircleDot } from "react-icons/lib"
@@ -10,6 +10,7 @@ const RestaurantMenu = ({ restaurantMenuLists }) => {
 
   const addItem = (item) => {
     dispatch(addToCart(item))
+    dispatch(calculateCartTotal())
   }
 
   return (

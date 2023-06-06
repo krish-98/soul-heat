@@ -20,6 +20,7 @@ export const cartSlice = createSlice({
         state.cartItems.push({ ...action.payload, quantity: 1 })
       }
     },
+
     calculateCartTotal: (state) => {
       const { item, amount } = state.cartItems.reduce(
         (acc, currentItem) => {
@@ -37,9 +38,15 @@ export const cartSlice = createSlice({
       state.totalItems = item
       state.totalAmount = amount
     },
+
+    clearCart: (state) => {
+      state.cartItems = []
+      state.totalItems = 0
+      state.totalAmount = 0
+    },
   },
 })
 
-export const { addToCart, calculateCartTotal } = cartSlice.actions
+export const { addToCart, calculateCartTotal, clearCart } = cartSlice.actions
 
 export default cartSlice.reducer

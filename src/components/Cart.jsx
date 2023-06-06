@@ -1,17 +1,30 @@
 import { useDispatch, useSelector } from "react-redux"
 import { CLOUDINARY_IMAGE_ID } from "../constants"
 import { RiEBike2Fill } from "react-icons/ri"
+import { GrClearOption } from "react-icons/gr"
+import { clearCart } from "../features/cartSlice"
 
 const Cart = () => {
+  const dispatch = useDispatch()
   const { cartItems, totalItems, totalAmount } = useSelector(
     (store) => store.cart
   )
 
   return (
     <div className="p-6 max-w-[900px] mx-auto md:px-10 lg:px-0">
-      <h1 className="text-center font-bold text-2xl pb-8">
-        CART ({totalItems})
-      </h1>
+      <div className="pb-8 relative">
+        <h1 className="text-center font-bold text-2xl">CART ({totalItems})</h1>
+
+        {cartItems?.length > 0 && (
+          <div
+            onClick={() => dispatch(clearCart())}
+            className="absolute top-0 right-0 flex items-center gap-1 bg-[#f9bca8] px-3 py-1 rounded-xl"
+          >
+            <p className="font-medium">Clear</p>
+            <GrClearOption className="w-5 h-5 stroke-white" />
+          </div>
+        )}
+      </div>
 
       {!cartItems?.length ? (
         <h1 className="text-xl font-semibold text-center">
@@ -19,6 +32,7 @@ const Cart = () => {
         </h1>
       ) : (
         <div className="lg:flex justify-between lg:gap-16">
+          {/* Cart Items Section */}
           <div className="flex flex-col gap-8 pb-8 lg:w-[70%]">
             {cartItems.length > 0 &&
               cartItems.map((item) => (
@@ -45,6 +59,7 @@ const Cart = () => {
               ))}
           </div>
 
+          {/* Calculation Section */}
           <div className="lg:w-[30%]">
             <div className="py-6 border-t border-b space-y-1">
               <h3 className="flex justify-between items-center font-medium">

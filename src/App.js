@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import ReactDOM from "react-dom/client"
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom"
 
@@ -10,10 +10,28 @@ import Restaurant from "./components/Restaurant"
 import ErrorPage from "./components/ErrorPage"
 import Cart from "./components/Cart"
 
-import { Provider } from "react-redux"
+import { Provider, useDispatch } from "react-redux"
 import store from "./app/store"
+import { onAuthStateChanged } from "firebase/auth"
+import { auth } from "./firebase"
+import { authenticateUser, logout } from "./features/authSlice"
 
 const AppLayout = () => {
+  const dispatch = useDispatch()
+  console.log("App")
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(authenticateUser(user))
+      }
+    })
+
+    return () => {
+      unsubscribe()
+    }
+  }, [dispatch])
+
   return (
     <>
       <Header />

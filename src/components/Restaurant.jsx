@@ -6,6 +6,7 @@ import Shimmer from "./Shimmer"
 import RestaurantMenu from "./RestaurantMenu"
 
 const Restaurant = () => {
+  console.log("Restaurant")
   const [restaurantMenu, setRestaurantMenu] = useState([])
   const { resId } = useParams()
 
@@ -31,9 +32,9 @@ const Restaurant = () => {
     setRestaurantMenu(jsonData?.data?.cards)
   }
 
-  console.log(restaurantMenu)
+  // console.log(restaurantMenu)
   return (
-    <div className="mt-8 flex flex-col items-center px-6 max-w-[968px] mx-auto">
+    <div className="mt-8 flex flex-col items-center px-6 max-w-[968px] mx-auto relative">
       {restaurantMenu.length > 0 ? (
         <>
           <RestaurantDetails

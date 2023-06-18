@@ -2,9 +2,11 @@ import { useDispatch, useSelector } from "react-redux"
 import { CLOUDINARY_IMAGE_ID } from "../constants"
 import { RiEBike2Fill } from "react-icons/ri"
 import { GrClearOption } from "react-icons/gr"
+import { MdOutlineCleaningServices } from "react-icons/md"
 import { clearCart } from "../features/cartSlice"
 
 const Cart = () => {
+  console.log("Cart")
   const dispatch = useDispatch()
   const { cartItems, totalItems, totalAmount } = useSelector(
     (store) => store.cart
@@ -12,16 +14,16 @@ const Cart = () => {
 
   return (
     <div className="p-6 max-w-[900px] mx-auto md:px-10 lg:px-0">
-      <div className="pb-8 relative">
+      <div className="pb-10 relative">
         <h1 className="text-center font-bold text-2xl">CART ({totalItems})</h1>
 
         {cartItems?.length > 0 && (
           <div
             onClick={() => dispatch(clearCart())}
-            className="absolute top-0 right-0 flex items-center gap-1 bg-[#f9bca8] px-3 py-1 rounded-xl"
+            className="absolute top-1 right-0 flex items-center gap-1 text-white bg-[#FB923C] px-2 py-1 rounded-xl"
           >
-            <p className="font-medium">Clear</p>
-            <GrClearOption className="w-5 h-5 stroke-white" />
+            <p className="font-medium tracking-wide">Clear</p>
+            <MdOutlineCleaningServices className="w-5 h-5" />
           </div>
         )}
       </div>

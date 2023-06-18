@@ -6,6 +6,7 @@ import { MdKeyboardArrowUp } from "react-icons/md"
 // import { LuSquareDot, LuCircleDot } from "react-icons/lib"
 
 const RestaurantMenu = ({ restaurantMenuLists }) => {
+  console.log("RestaurantMenu")
   const dispatch = useDispatch()
 
   const addItem = (item) => {

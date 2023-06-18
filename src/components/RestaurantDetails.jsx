@@ -1,22 +1,16 @@
 import { AiFillStar } from "react-icons/ai"
+import { Link } from "react-router-dom"
 import { CLOUDINARY_IMAGE_ID } from "../constants"
+import { IoCartOutline } from "react-icons/io5"
+
+import { useSelector } from "react-redux"
 
 const RestaurantDetails = ({ restaurantDetails }) => {
+  console.log("RestaurantDetails")
+  const { totalItems } = useSelector((store) => store.cart)
+
   return (
-    <div
-      // style={
-      //   restaurantDetails?.cloudinaryImageId && {
-      //     backgroundImage: `url(${
-      //       CLOUDINARY_IMAGE_ID + restaurantDetails?.cloudinaryImageId
-      //     })`,
-      //     backgroundRepeat: "no-repeat",
-      //     width: "100%",
-      //     // color: "#fff",
-      //     backgroundPosition: "center",
-      //   }
-      // }
-      className="flex items-center justify-between w-full border-b border-b-gray-200 pb-5"
-    >
+    <div className="flex items-center justify-between w-full border-b border-b-gray-200 pb-5">
       <div className="space-y-1">
         <h1 className="text-3xl font-bold tracking-wide">
           {restaurantDetails?.name}
@@ -43,6 +37,19 @@ const RestaurantDetails = ({ restaurantDetails }) => {
           {restaurantDetails?.totalRatingsString}
         </p>
       </div>
+      {totalItems > 0 && (
+        <div className="fixed bottom-6 right-44 z-20 md:right-1/2">
+          <Link to="/cart" className="hover:bg-[#f9bca8] relative">
+            <IoCartOutline className="w-8 h-8 stroke-[#fb923c] cursor-pointer md:w-12 md:h-12" />
+
+            <div className="absolute -right-1 bottom-5 text-white bg-[#FB3C46] w-5 h-5 rounded-full md:bottom-8 ">
+              <p className="text-center text-text font-bold text-sm">
+                {totalItems}
+              </p>
+            </div>
+          </Link>
+        </div>
+      )}
     </div>
   )
 }

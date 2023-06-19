@@ -23,7 +23,7 @@ const RestaurantCard = ({
       <h2 className="font-bold text-lg">{name}</h2>
 
       <h3 className="text-sm font-medium">
-        {cuisines.length > 8
+        {cuisines?.length > 0
           ? cuisines?.slice(0, 8).join(", ") + " & more"
           : cuisines?.join(", ")}
       </h3>

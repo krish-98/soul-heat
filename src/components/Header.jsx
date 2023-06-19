@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import logo3 from "../assets/logo3.png"
 import { CgMenuHotdog, CgClose } from "react-icons/cg"
+import { MdOutlineRestaurantMenu } from "react-icons/md"
 import { IoCartOutline } from "react-icons/io5"
 import { HiOutlineUserCircle } from "react-icons/hi"
 import { useDispatch, useSelector } from "react-redux"
@@ -10,7 +11,7 @@ import Modal from "./Modal"
 import NoProfile from "../assets/no-profile.png "
 import { logout } from "../features/authSlice"
 import { signOut } from "firebase/auth"
-import { auth } from "../firebase"
+import { auth } from "../configs/firebase.config"
 
 const Header = () => {
   console.log("Header")
@@ -102,7 +103,7 @@ const Header = () => {
                     }}
                     className="w-14 md:w-12 object-contain border rounded-full ring-1 ring-white ring-offset-2"
                     src={user?.providerData?.[0]?.photoURL}
-                    alt="user profile image"
+                    alt="user profile"
                   />
 
                   {showSignout && (
@@ -200,7 +201,7 @@ const Header = () => {
               <img
                 className="w-11 h-11 object-contain rounded-full"
                 src={user?.photoURL}
-                alt=""
+                alt="user profile"
               />
 
               {showSignout && (

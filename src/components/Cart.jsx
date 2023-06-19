@@ -1,9 +1,11 @@
 import { useDispatch, useSelector } from "react-redux"
-import { CLOUDINARY_IMAGE_ID } from "../constants"
+import { CLOUDINARY_IMAGE_ID } from "../configs/constants"
 import { RiEBike2Fill } from "react-icons/ri"
 import { GrClearOption } from "react-icons/gr"
 import { MdOutlineCleaningServices } from "react-icons/md"
 import { clearCart } from "../features/cartSlice"
+
+import { IoBagCheckOutline } from "react-icons/io5"
 
 const Cart = () => {
   console.log("Cart")
@@ -20,7 +22,7 @@ const Cart = () => {
         {cartItems?.length > 0 && (
           <div
             onClick={() => dispatch(clearCart())}
-            className="absolute top-1 right-0 flex items-center gap-1 text-white bg-[#FB923C] px-2 py-1 rounded-xl"
+            className="absolute top-1 right-0 flex items-center gap-1 text-white bg-[#FB923C] px-2 py-1 rounded-xl cursor-pointer"
           >
             <p className="font-medium tracking-wide">Clear</p>
             <MdOutlineCleaningServices className="w-5 h-5" />
@@ -45,7 +47,9 @@ const Cart = () => {
                   <div className="flex flex-col gap-1 max-w-[60%]">
                     <h3 className="font-medium md:text-lg">
                       {item?.name}{" "}
-                      <span className="text-[#f26434]">[{item?.quantity}]</span>
+                      <span className="text-[#f26434]">
+                        [x {item?.quantity}]
+                      </span>
                     </h3>
                     <p className="">₹ {String(item?.price).slice(0, 3)}</p>
                   </div>
@@ -60,7 +64,6 @@ const Cart = () => {
                 </div>
               ))}
           </div>
-
           {/* Calculation Section */}
           <div className="lg:w-[30%]">
             <div className="py-6 border-t border-b space-y-1">
@@ -86,6 +89,13 @@ const Cart = () => {
 
               <span>{totalAmount + 49}</span>
             </p>
+          </div>
+
+          <div className="bg-[#fb923c] my-8 py-3 rounded-2xl flex items-center justify-center gap-1 hover:bg-[#ffa13c] hover:shadow-xl transistion duration-300 cursor-pointer">
+            <button className="text-white  font-semibold tracking-wider uppercase">
+              Checkout
+            </button>
+            <IoBagCheckOutline className="w-7 h-[26px] stroke-white" />
           </div>
         </div>
       )}

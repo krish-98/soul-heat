@@ -4,7 +4,7 @@ import logo3 from "../assets/logo3.png"
 import { useEffect, useState } from "react"
 import Login from "./Login"
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"
-import { auth } from "../firebase"
+import { auth } from "../configs/firebase.config"
 import { useDispatch, useSelector } from "react-redux"
 
 const Modal = ({ showAndCloseModal }) => {
@@ -32,8 +32,8 @@ const Modal = ({ showAndCloseModal }) => {
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-white">
-      <div className="flex min-h-full bg-[#fb923c] flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+    <div className="fixed inset-0 z-50 bg-white h-screen">
+      <div className="flex h-screen bg-[#fb923c] flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div
           className="absolute ring ring-white rounded-full top-16 right-6 md:right-[4.5rem] lg:right-16 lg:top-16 cursor-pointer"
           onClick={showAndCloseModal}

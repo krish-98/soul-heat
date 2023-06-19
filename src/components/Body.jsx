@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import RestaurantCard from "./RestaurantCard"
-import { SWIGGY_API } from "../constants"
+import { SWIGGY_API } from "../configs/constants"
 import Shimmer from "./Shimmer"
 
 const Body = () => {

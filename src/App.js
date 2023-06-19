@@ -13,8 +13,8 @@ import Cart from "./components/Cart"
 import { Provider, useDispatch } from "react-redux"
 import store from "./app/store"
 import { onAuthStateChanged } from "firebase/auth"
-import { auth } from "./firebase"
-import { authenticateUser, logout } from "./features/authSlice"
+import { auth } from "./configs/firebase.config"
+import { authenticateUser } from "./features/authSlice"
 
 const AppLayout = () => {
   const dispatch = useDispatch()
@@ -30,7 +30,7 @@ const AppLayout = () => {
     return () => {
       unsubscribe()
     }
-  }, [dispatch])
+  }, [])
 
   return (
     <>

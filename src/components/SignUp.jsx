@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { FcGoogle } from "react-icons/fc"
 import { createUserWithEmailAndPassword } from "firebase/auth"
-import { auth } from "../firebase"
+import { auth } from "../configs/firebase.config"
 import { useDispatch, useSelector } from "react-redux"
 import { authenticateUser } from "../features/authSlice"
 

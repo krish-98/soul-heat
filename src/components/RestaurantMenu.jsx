@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux"
-import { CLOUDINARY_IMAGE_ID } from "../constants"
+import { CLOUDINARY_IMAGE_ID } from "../configs/constants"
 import { addToCart, calculateCartTotal } from "../features/cartSlice"
 
 import { MdKeyboardArrowUp } from "react-icons/md"

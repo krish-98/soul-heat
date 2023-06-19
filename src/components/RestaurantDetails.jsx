@@ -1,6 +1,6 @@
 import { AiFillStar } from "react-icons/ai"
 import { Link } from "react-router-dom"
-import { CLOUDINARY_IMAGE_ID } from "../constants"
+import { CLOUDINARY_IMAGE_ID } from "../configs/constants"
 import { IoCartOutline } from "react-icons/io5"
 
 import { useSelector } from "react-redux"

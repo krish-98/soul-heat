@@ -1,4 +1,4 @@
-import { CLOUDINARY_IMAGE_ID } from "../constants"
+import { CLOUDINARY_IMAGE_ID } from "../configs/constants"
 import { Link } from "react-router-dom"
 import { AiFillStar } from "react-icons/ai"
 

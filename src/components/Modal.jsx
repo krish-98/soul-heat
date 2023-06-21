@@ -6,6 +6,7 @@ import Login from "./Login"
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"
 import { auth } from "../configs/firebase.config"
 import { useDispatch, useSelector } from "react-redux"
+import { authenticateUser } from "../features/authSlice"
 
 const Modal = ({ showAndCloseModal }) => {
   const [newUser, setNewUser] = useState(true)
@@ -22,7 +23,7 @@ const Modal = ({ showAndCloseModal }) => {
   const signInWithGoogle = async () => {
     try {
       const response = await signInWithPopup(auth, googleProvider)
-
+      console.log(response)
       dispatch(authenticateUser(response?.user))
     } catch (error) {
       console.log(error)
@@ -34,8 +35,9 @@ const Modal = ({ showAndCloseModal }) => {
   return (
     <div className="fixed inset-0 z-50 bg-white h-screen">
       <div className="flex h-screen bg-[#fb923c] flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+        {/* Close icon */}
         <div
-          className="absolute ring ring-white rounded-full top-16 right-6 md:right-[4.5rem] lg:right-16 lg:top-16 cursor-pointer"
+          className="absolute ring ring-white rounded-full top-16 right-6 md:right-[4.5rem] lg:right-36 lg:top-16 cursor-pointer"
           onClick={showAndCloseModal}
         >
           <CgClose className="w-8 h-8 md:h-9 md:w-9" />

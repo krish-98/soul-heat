@@ -2,7 +2,6 @@ import { AiFillStar } from "react-icons/ai"
 import { Link } from "react-router-dom"
 import { CLOUDINARY_IMAGE_ID } from "../configs/constants"
 import { IoCartOutline } from "react-icons/io5"
-
 import { useSelector } from "react-redux"
 
 const RestaurantDetails = ({ restaurantDetails }) => {
@@ -37,8 +36,10 @@ const RestaurantDetails = ({ restaurantDetails }) => {
           {restaurantDetails?.totalRatingsString}
         </p>
       </div>
+
+      {/* Another cart icon, If the user scrolls down on the page */}
       {totalItems > 0 && (
-        <div className="fixed bottom-6 right-44 z-20 md:right-1/2">
+        <div className="fixed bottom-6 right-44 z-20 md:right-1/2 animate-pulse">
           <Link to="/cart" className="hover:bg-[#f9bca8] relative">
             <IoCartOutline className="w-8 h-8 stroke-[#fb923c] cursor-pointer md:w-12 md:h-12" />
 

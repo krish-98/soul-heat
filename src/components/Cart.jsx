@@ -89,13 +89,13 @@ const Cart = () => {
 
               <span>{totalAmount + 49}</span>
             </p>
-          </div>
 
-          <div className="bg-[#fb923c] my-8 py-3 rounded-2xl flex items-center justify-center gap-1 hover:bg-[#ffa13c] hover:shadow-xl transistion duration-300 cursor-pointer">
-            <button className="text-white  font-semibold tracking-wider uppercase">
-              Checkout
-            </button>
-            <IoBagCheckOutline className="w-7 h-[26px] stroke-white" />
+            <div className="bg-[#fb923c] mt-10 py-3 rounded-2xl flex items-center justify-center gap-1 hover:bg-[#ffa13c] hover:shadow-xl transistion duration-300 cursor-pointer">
+              <button className="text-white  font-semibold tracking-wider uppercase">
+                Checkout
+              </button>
+              <IoBagCheckOutline className="w-7 h-[26px] stroke-white" />
+            </div>
           </div>
         </div>
       )}

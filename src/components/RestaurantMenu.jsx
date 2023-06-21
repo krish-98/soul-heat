@@ -2,14 +2,15 @@ import { useDispatch } from "react-redux"
 import { CLOUDINARY_IMAGE_ID } from "../configs/constants"
 import { addToCart, calculateCartTotal } from "../features/cartSlice"
 
-import { MdKeyboardArrowUp } from "react-icons/md"
-// import { LuSquareDot, LuCircleDot } from "react-icons/lib"
-
 const RestaurantMenu = ({ restaurantMenuLists }) => {
   console.log("RestaurantMenu")
   const dispatch = useDispatch()
 
-  const addItem = (item) => {
+  const menuDishes =
+    restaurantMenuLists?.itemCards ||
+    restaurantMenuLists?.categories?.[0]?.itemCards
+
+  const addItemToCart = (item) => {
     dispatch(addToCart(item))
     dispatch(calculateCartTotal())
   }
@@ -20,11 +21,9 @@ const RestaurantMenu = ({ restaurantMenuLists }) => {
         <h2 className="font-semibold text-lg md:text-2xl">
           {restaurantMenuLists?.title}
         </h2>
-
-        {/* <MdKeyboardArrowUp className="w-6 h-6 md:w-10 md:h-10" /> */}
       </div>
 
-      {restaurantMenuLists?.itemCards?.map((list) => (
+      {menuDishes?.map((list) => (
         <div
           key={list?.card?.info?.id}
           className="flex justify-between items-center pb-7 border-b"
@@ -49,7 +48,7 @@ const RestaurantMenu = ({ restaurantMenuLists }) => {
             />
 
             <button
-              onClick={() => addItem(list?.card?.info)}
+              onClick={() => addItemToCart(list?.card?.info)}
               className="absolute -bottom-3 bg-white text-[#60b246] border w-[80%] left-3 py-1 rounded-lg text-sm font-bold md:text-base md:left-4 hover:bg-gray-50 transition-all duration-300"
             >
               ADD

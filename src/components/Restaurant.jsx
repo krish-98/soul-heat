@@ -4,10 +4,11 @@ import { useParams } from "react-router-dom"
 import RestaurantDetails from "./RestaurantDetails"
 import Shimmer from "./Shimmer"
 import RestaurantMenu from "./RestaurantMenu"
+import ShimmerTwo from "./ShimmerTwo"
 
 const Restaurant = () => {
   console.log("Restaurant")
-  const [restaurantMenu, setRestaurantMenu] = useState([])
+  const [restaurantMenu, setRestaurantMenu] = useState(null)
   const { resId } = useParams()
 
   const restaurantMenuLists =
@@ -16,11 +17,7 @@ const Restaurant = () => {
     restaurantMenu?.[3]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1]?.card
       ?.card
 
-  useEffect(() => {
-    fetchRestaurantMenu()
-  }, [])
-
-  async function fetchRestaurantMenu() {
+  const fetchRestaurantMenu = async () => {
     const res = await fetch(
       "https://corsproxy.io/?" +
         encodeURIComponent(
@@ -28,14 +25,21 @@ const Restaurant = () => {
         )
     )
     const jsonData = await res.json()
-    console.log(jsonData?.data?.cards)
+    // console.log(jsonData?.data?.cards)
     setRestaurantMenu(jsonData?.data?.cards)
   }
 
+  useEffect(() => {
+    fetchRestaurantMenu()
+  }, [])
+
   // console.log(restaurantMenu)
+  console.log(restaurantMenuLists)
   return (
     <div className="mt-8 flex flex-col items-center px-6 max-w-[968px] mx-auto relative">
-      {restaurantMenu.length > 0 ? (
+      {!restaurantMenu ? (
+        <ShimmerTwo />
+      ) : (
         <>
           <RestaurantDetails
             restaurantDetails={restaurantMenu?.[0]?.card?.card?.info}
@@ -43,8 +47,6 @@ const Restaurant = () => {
 
           <RestaurantMenu restaurantMenuLists={restaurantMenuLists} />
         </>
-      ) : (
-        <Shimmer />
       )}
     </div>
   )

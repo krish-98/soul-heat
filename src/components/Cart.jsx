@@ -22,7 +22,7 @@ const Cart = () => {
         {cartItems?.length > 0 && (
           <div
             onClick={() => dispatch(clearCart())}
-            className="absolute top-1 right-0 flex items-center gap-1 text-white bg-[#FB923C] px-2 py-1 rounded-xl cursor-pointer"
+            className="absolute top-1 right-0 flex items-center gap-1 text-white bg-[#FB923C] px-2 py-1 rounded-xl cursor-pointer transition-all duration-300 hover:bg-red-500 "
           >
             <p className="font-medium tracking-wide">Clear</p>
             <MdOutlineCleaningServices className="w-5 h-5" />
@@ -64,6 +64,7 @@ const Cart = () => {
                 </div>
               ))}
           </div>
+
           {/* Calculation Section */}
           <div className="lg:w-[30%]">
             <div className="py-6 border-t border-b space-y-1">
@@ -71,7 +72,7 @@ const Cart = () => {
                 <span>
                   Item {cartItems?.length > 1 ? "Totals" : "Total"} :{" "}
                 </span>
-                <span>{totalAmount}</span>
+                <span>₹ {totalAmount}</span>
               </h3>
 
               <div className="flex justify-between items-center font-medium">
@@ -87,7 +88,7 @@ const Cart = () => {
             <p className="pt-4 text-lg font-semibold flex justify-between items-center">
               <span>Total Amount : </span>
 
-              <span>{totalAmount + 49}</span>
+              <span>₹ {totalAmount + 49}</span>
             </p>
 
             <div className="bg-[#fb923c] mt-10 py-3 rounded-2xl flex items-center justify-center gap-1 hover:bg-[#ffa13c] hover:shadow-xl transistion duration-300 cursor-pointer">

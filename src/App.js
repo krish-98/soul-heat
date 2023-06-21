@@ -23,6 +23,7 @@ const AppLayout = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
+        console.log(user)
         dispatch(authenticateUser(user))
       }
     })

@@ -25,10 +25,9 @@ export const cartSlice = createSlice({
       const { item, amount } = state.cartItems.reduce(
         (acc, currentItem) => {
           acc.item = acc.item + currentItem.quantity
-          // const priceStr = String(currentItem.price).slice(0, 3)
 
-          // acc.amount = acc.item * Number(priceStr)
-          acc.amount = acc.item * currentItem.price
+          const priceStr = String(currentItem.price).slice(0, 3)
+          acc.amount = acc.item * Number(priceStr)
 
           return acc
         },

@@ -96,7 +96,7 @@ const Header = () => {
                   )}
                 </div>
               ) : (
-                <div className="relative">
+                <div className="relative cursor-pointer">
                   <img
                     onClick={() => {
                       setShowSignout(!showSignout)
@@ -104,6 +104,7 @@ const Header = () => {
                     className="w-14 md:w-12 object-contain border rounded-full ring-1 ring-white ring-offset-2"
                     src={user?.providerData?.[0]?.photoURL}
                     alt="user profile"
+                    referrerPolicy="no-referrer"
                   />
 
                   {showSignout && (
@@ -202,6 +203,7 @@ const Header = () => {
                 className="w-11 h-11 object-contain rounded-full"
                 src={user?.photoURL}
                 alt="user profile"
+                referrerPolicy="no-referrer"
               />
 
               {showSignout && (

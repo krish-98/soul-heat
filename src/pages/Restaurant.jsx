@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
-
-import RestaurantDetails from "./RestaurantDetails"
-import Shimmer from "./Shimmer"
-import RestaurantMenu from "./RestaurantMenu"
-import ShimmerTwo from "./ShimmerTwo"
+import ShimmerTwo from "../components/ShimmerTwo"
+import RestaurantHeader from "../components/RestaurantHeader"
+import RestaurantMenu from "../components/RestaurantMenu"
 
 const Restaurant = () => {
   console.log("Restaurant")
@@ -17,7 +15,11 @@ const Restaurant = () => {
     restaurantMenu?.[3]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1]?.card
       ?.card
 
-  const fetchRestaurantMenu = async () => {
+  useEffect(() => {
+    fetchRestaurantMenu()
+  }, [])
+
+  async function fetchRestaurantMenu() {
     const res = await fetch(
       "https://corsproxy.io/?" +
         encodeURIComponent(
@@ -29,11 +31,6 @@ const Restaurant = () => {
     setRestaurantMenu(jsonData?.data?.cards)
   }
 
-  useEffect(() => {
-    fetchRestaurantMenu()
-  }, [])
-
-  // console.log(restaurantMenu)
   console.log(restaurantMenuLists)
   return (
     <div className="mt-8 flex flex-col items-center px-6 max-w-[968px] mx-auto relative">
@@ -41,10 +38,9 @@ const Restaurant = () => {
         <ShimmerTwo />
       ) : (
         <>
-          <RestaurantDetails
-            restaurantDetails={restaurantMenu?.[0]?.card?.card?.info}
+          <RestaurantHeader
+            restaurantHeader={restaurantMenu?.[0]?.card?.card?.info}
           />
-
           <RestaurantMenu restaurantMenuLists={restaurantMenuLists} />
         </>
       )}

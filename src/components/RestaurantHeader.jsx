@@ -1,39 +1,38 @@
 import { AiFillStar } from "react-icons/ai"
 import { Link } from "react-router-dom"
-import { CLOUDINARY_IMAGE_ID } from "../configs/constants"
 import { IoCartOutline } from "react-icons/io5"
 import { useSelector } from "react-redux"
 
-const RestaurantDetails = ({ restaurantDetails }) => {
-  console.log("RestaurantDetails")
+const RestaurantHeader = ({ restaurantHeader }) => {
+  console.log("RestaurantHeader")
   const { totalItems } = useSelector((store) => store.cart)
 
   return (
     <div className="flex items-center justify-between w-full border-b border-b-gray-200 pb-5">
       <div className="space-y-1">
         <h1 className="text-3xl font-bold tracking-wide">
-          {restaurantDetails?.name}
+          {restaurantHeader?.name}
         </h1>
-        <p className="text-sm">{restaurantDetails?.cuisines?.join(", ")}</p>
-        <p className="text-sm">{restaurantDetails?.city}</p>
+        <p className="text-sm">{restaurantHeader?.cuisines?.join(", ")}</p>
+        <p className="text-sm">{restaurantHeader?.city}</p>
       </div>
 
       <div className="w-[100px] border px-1 py-2 shadow rounded-md font-semibold md:w-[80px] md:px-2">
         <span
           className={`text-base border-b pb-2 flex items-center justify-center gap-2 ${
-            Number(restaurantDetails?.avgRating) < 4
+            Number(restaurantHeader?.avgRating) < 4
               ? "text-[#db7c38]"
               : "text-[#48c479]"
           } ${
-            restaurantDetails?.avgRating === "--" &&
+            restaurantHeader?.avgRating === "--" &&
             "bg-[#FFD95A] text-[#4C3D3D]"
           }`}
         >
           <AiFillStar className="w-4 h-4" />
-          <span>{restaurantDetails?.avgRating}</span>
+          <span>{restaurantHeader?.avgRating}</span>
         </span>
         <p className="text-xs pt-2 text-center">
-          {restaurantDetails?.totalRatingsString}
+          {restaurantHeader?.totalRatingsString}
         </p>
       </div>
 
@@ -55,4 +54,4 @@ const RestaurantDetails = ({ restaurantDetails }) => {
   )
 }
 
-export default RestaurantDetails
+export default RestaurantHeader

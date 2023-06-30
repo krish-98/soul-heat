@@ -1,18 +1,26 @@
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { CLOUDINARY_IMAGE_ID } from "../configs/constants"
 import { addToCart, calculateCartTotal } from "../features/cartSlice"
+import { addDoc, collection } from "firebase/firestore"
+import { db } from "../configs/firebase.config"
 
 const RestaurantMenu = ({ restaurantMenuLists }) => {
   console.log("RestaurantMenu")
   const dispatch = useDispatch()
 
+  // const {cartItems}  = useSelector(store => store.cart)
+
   const menuDishes =
     restaurantMenuLists?.itemCards ||
     restaurantMenuLists?.categories?.[0]?.itemCards
 
-  const addItemToCart = (item) => {
+  const colRef = collection(db, "cartItems")
+
+  const addItemToCart = async (item) => {
     dispatch(addToCart(item))
+
     dispatch(calculateCartTotal())
+    await addDoc(colRef, item)
   }
 
   return (
@@ -44,7 +52,7 @@ const RestaurantMenu = ({ restaurantMenuLists }) => {
             <img
               className="w-[170px] rounded-xl"
               src={CLOUDINARY_IMAGE_ID + list?.card?.info?.imageId}
-              alt=""
+              alt={list?.card?.info?.name}
             />
 
             <button
@@ -59,4 +67,5 @@ const RestaurantMenu = ({ restaurantMenuLists }) => {
     </div>
   )
 }
+
 export default RestaurantMenu

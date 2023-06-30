@@ -4,17 +4,18 @@ import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom"
 
 import Header from "./components/Header"
 import Body from "./components/Body"
-import About from "./components/About"
-import Contact from "./components/Contact"
-import Restaurant from "./components/Restaurant"
-import ErrorPage from "./components/ErrorPage"
-import Cart from "./components/Cart"
+import About from "./pages/About"
+import Contact from "./pages/Contact"
+import Restaurant from "./pages/Restaurant"
+import ErrorPage from "./pages/ErrorPage"
+import Cart from "./pages/Cart"
 
 import { Provider, useDispatch } from "react-redux"
 import store from "./app/store"
 import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "./configs/firebase.config"
 import { authenticateUser } from "./features/authSlice"
+import Firestore from "./components/Firestore"
 
 const AppLayout = () => {
   const dispatch = useDispatch()
@@ -23,7 +24,6 @@ const AppLayout = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log(user)
         dispatch(authenticateUser(user))
       }
     })
@@ -66,6 +66,10 @@ const appRouter = createBrowserRouter([
       {
         path: "cart",
         element: <Cart />,
+      },
+      {
+        path: "firestore",
+        element: <Firestore />,
       },
     ],
   },

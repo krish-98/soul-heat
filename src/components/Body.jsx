@@ -4,12 +4,15 @@ import { SWIGGY_API } from "../configs/constants"
 import Shimmer from "./Shimmer"
 
 const Body = () => {
-  console.log("Body")
   const [filteredRestaurants, setFilteredRestaurants] = useState(null)
   const [allRestaurants, setAllRestaurants] = useState(null)
   const [searchText, setSearchText] = useState("")
 
-  const fetchData = async () => {
+  useEffect(() => {
+    fetchRestaurantsData()
+  }, [])
+
+  async function fetchRestaurantsData() {
     try {
       const res = await fetch(SWIGGY_API)
       const jsonData = await res.json()
@@ -22,13 +25,9 @@ const Body = () => {
           jsonData?.data?.cards[0]?.data?.data?.cards
       )
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
-
-  useEffect(() => {
-    fetchData()
-  }, [])
 
   const filterRestaurant = (searchText, restaurants) => {
     const filteredData = restaurants.filter((res) =>
@@ -38,7 +37,7 @@ const Body = () => {
     return filteredData
   }
 
-  const handleForm = (e) => {
+  const searchFormHandler = (e) => {
     e.preventDefault()
 
     const data = filterRestaurant(searchText, allRestaurants)
@@ -50,7 +49,7 @@ const Body = () => {
     <main className="py-8 px-4 bg-[#f5f3f3] min-h-screen">
       <form
         className="flex justify-center max-w-[600px] mx-auto"
-        onSubmit={handleForm}
+        onSubmit={searchFormHandler}
       >
         <input
           className="w-full pl-4 h-10 rounded-l-xl border-none outline-none focus:ring-[#fb923c]"

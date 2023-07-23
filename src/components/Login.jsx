@@ -28,9 +28,9 @@ const Login = ({ handleUser, googleSignIn, showAndCloseModal }) => {
       setPassword("")
       showAndCloseModal()
     } catch (error) {
-      console.log(error)
-      console.log(error.code)
-      console.log(error.message)
+      console.error(error)
+      console.error(error.code)
+      console.error(error.message)
     }
   }
 

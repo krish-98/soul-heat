@@ -4,7 +4,6 @@ import { IoCartOutline } from "react-icons/io5"
 import { useSelector } from "react-redux"
 
 const RestaurantHeader = ({ restaurantHeader }) => {
-  console.log("RestaurantHeader")
   const { totalItems } = useSelector((store) => store.cart)
 
   return (
@@ -38,17 +37,21 @@ const RestaurantHeader = ({ restaurantHeader }) => {
 
       {/* Another cart icon, If the user scrolls down on the page */}
       {totalItems > 0 && (
-        <div className="fixed bottom-6 right-44 z-20 md:right-1/2 animate-pulse">
-          <Link to="/cart" className="hover:bg-[#f9bca8] relative">
-            <IoCartOutline className="w-8 h-8 stroke-[#fb923c] cursor-pointer md:w-12 md:h-12" />
+        <Link
+          to="/cart"
+          className="fixed bottom-6 right-36 z-20 bg-red-400 flex items-center py-2 px-5 rounded-lg md:right-1/3 xl:right-1/2"
+        >
+          <span className="text-white font-semibold">Cart - </span>
+          <div className="hover:bg-[#f9bca8] relative">
+            <IoCartOutline className="w-7 h-6 stroke-white cursor-pointer" />
 
-            <div className="absolute -right-1 bottom-5 text-white bg-[#FB3C46] w-5 h-5 rounded-full md:bottom-8 ">
-              <p className="text-center text-text font-bold text-sm">
+            <div className="absolute -right-1 bottom-3 text-[#fb923c] bg-white w-4 h-4 rounded-full">
+              <p className="text-center text-text font-semibold text-xs">
                 {totalItems}
               </p>
             </div>
-          </Link>
-        </div>
+          </div>
+        </Link>
       )}
     </div>
   )

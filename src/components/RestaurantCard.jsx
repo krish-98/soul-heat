@@ -1,6 +1,7 @@
 import { CLOUDINARY_IMAGE_ID } from "../configs/constants"
-import { Link } from "react-router-dom"
+import { Link, useSearchParams } from "react-router-dom"
 import { AiFillStar } from "react-icons/ai"
+import { useEffect } from "react"
 
 const RestaurantCard = ({
   name,

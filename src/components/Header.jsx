@@ -8,13 +8,11 @@ import { HiOutlineUserCircle } from "react-icons/hi"
 import { useDispatch, useSelector } from "react-redux"
 
 import Modal from "./Modal"
-import NoProfile from "../assets/no-profile.png "
 import { logout } from "../features/authSlice"
 import { signOut } from "firebase/auth"
 import { auth } from "../configs/firebase.config"
 
 const Header = () => {
-  console.log("Header")
   const dispatch = useDispatch()
   const [toggle, setToggle] = useState(false)
   const [modal, setModal] = useState(false)
@@ -37,8 +35,7 @@ const Header = () => {
       dispatch(logout())
       setShowSignout(false)
     } catch (error) {
-      console.log(error)
-      console.log(error.message)
+      console.error(error.message)
     }
   }
 
@@ -102,7 +99,7 @@ const Header = () => {
                       setShowSignout(!showSignout)
                     }}
                     className="w-14 md:w-12 object-contain border rounded-full ring-1 ring-white ring-offset-2"
-                    src={user?.providerData?.[0]?.photoURL}
+                    src={user?.photoURL}
                     alt="user profile"
                     referrerPolicy="no-referrer"
                   />

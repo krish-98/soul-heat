@@ -23,12 +23,11 @@ const Modal = ({ showAndCloseModal }) => {
   const signInWithGoogle = async () => {
     try {
       const response = await signInWithPopup(auth, googleProvider)
-      console.log(response)
-      dispatch(authenticateUser(response?.user))
+      dispatch(authenticateUser(response?.user?.providerData?.[0]))
     } catch (error) {
-      console.log(error)
-      console.log(error.code)
-      console.log(error.message)
+      console.error(error)
+      console.error(error.code)
+      console.error(error.message)
     }
   }
 

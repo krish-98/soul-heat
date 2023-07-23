@@ -1,5 +1,4 @@
 const Shimmer = () => {
-  console.log("Shimmer")
   return (
     <div
       className="flex flex-wrap justify-center items-center mt-14 gap-10"

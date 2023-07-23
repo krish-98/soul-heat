@@ -15,16 +15,14 @@ import store from "./app/store"
 import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "./configs/firebase.config"
 import { authenticateUser } from "./features/authSlice"
-import Firestore from "./components/Firestore"
 
 const AppLayout = () => {
   const dispatch = useDispatch()
-  console.log("App")
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        dispatch(authenticateUser(user))
+        dispatch(authenticateUser(user?.providerData?.[0]))
       }
     })
 
@@ -66,10 +64,6 @@ const appRouter = createBrowserRouter([
       {
         path: "cart",
         element: <Cart />,
-      },
-      {
-        path: "firestore",
-        element: <Firestore />,
       },
     ],
   },

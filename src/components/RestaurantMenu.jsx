@@ -9,9 +9,8 @@ const RestaurantMenu = ({ restaurantMenuLists }) => {
     restaurantMenuLists?.itemCards ||
     restaurantMenuLists?.categories?.[0]?.itemCards
 
-  const addItemToCart = async (item) => {
+  const addItemToCart = (item) => {
     dispatch(addToCart(item))
-
     dispatch(calculateCartTotal())
   }
 
@@ -33,7 +32,10 @@ const RestaurantMenu = ({ restaurantMenuLists }) => {
               {list?.card?.info?.name}
             </h3>
             <p className="text-sm md:text-base">
-              ₹ {String(list?.card?.info?.price).slice(0, 3)}
+              ₹{" "}
+              {list?.card?.info?.price
+                ? String(list?.card?.info?.price).slice(0, 3)
+                : String(list?.card?.info?.defaultPrice).slice(0, 3)}
             </p>
             <p className="text-sm text-gray-400 md:text-base">
               {list?.card?.info?.description}

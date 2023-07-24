@@ -88,7 +88,12 @@ const Cart = () => {
                         [x {item?.quantity}]
                       </span>
                     </h3>
-                    <p className="">₹ {String(item?.price).slice(0, 3)}</p>
+                    <p className="">
+                      ₹{" "}
+                      {item.price
+                        ? String(item.price).slice(0, 3)
+                        : String(item.defaultPrice).slice(0, 3)}
+                    </p>
                   </div>
 
                   <div className="max-w-[35%]">

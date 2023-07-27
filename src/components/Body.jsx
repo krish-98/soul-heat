@@ -16,14 +16,25 @@ const Body = () => {
     try {
       const res = await fetch(SWIGGY_API)
       const jsonData = await res.json()
+
       setAllRestaurants(
-        jsonData?.data?.cards[2]?.data?.data?.cards ||
-          jsonData?.data?.cards[0]?.data?.data?.cards
+        jsonData?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
+          ?.restaurants
       )
       setFilteredRestaurants(
-        jsonData?.data?.cards[2]?.data?.data?.cards ||
-          jsonData?.data?.cards[0]?.data?.data?.cards
+        jsonData?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
+          ?.restaurants
       )
+
+      // Old object path
+      // setAllRestaurants(
+      //   jsonData?.data?.cards[2]?.data?.data?.cards ||
+      //     jsonData?.data?.cards[0]?.data?.data?.cards
+      // )
+      // setFilteredRestaurants(
+      //   jsonData?.data?.cards[2]?.data?.data?.cards ||
+      //     jsonData?.data?.cards[0]?.data?.data?.cards
+      // )
     } catch (error) {
       console.error(error)
     }
@@ -31,8 +42,13 @@ const Body = () => {
 
   const filterRestaurant = (searchText, restaurants) => {
     const filteredData = restaurants.filter((res) =>
-      res?.data?.name?.toLowerCase()?.includes(searchText?.toLowerCase())
+      res?.info?.name?.toLowerCase()?.includes(searchText?.toLowerCase())
     )
+
+    // Old object path
+    // const filteredData = restaurants.filter((res) =>
+    //   res?.data?.name?.toLowerCase()?.includes(searchText?.toLowerCase())
+    // )
 
     return filteredData
   }
@@ -77,9 +93,15 @@ const Body = () => {
           ) : (
             filteredRestaurants?.map((restaurant) => (
               <RestaurantCard
-                key={restaurant?.data?.id}
-                {...restaurant?.data}
+                key={restaurant?.info?.id}
+                {...restaurant?.info}
               />
+
+              // Old object path
+              // <RestaurantCard
+              //   key={restaurant?.data?.id}
+              //   {...restaurant?.data}
+              // />
             ))
           )}
         </div>

@@ -16,6 +16,10 @@ import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "./configs/firebase.config"
 import { authenticateUser } from "./features/authSlice"
 
+import { ToastContainer, toast } from "react-toastify"
+
+import "react-toastify/dist/ReactToastify.css"
+
 const AppLayout = () => {
   const dispatch = useDispatch()
 
@@ -33,6 +37,7 @@ const AppLayout = () => {
 
   return (
     <>
+      <ToastContainer />
       <Header />
       <Outlet />
     </>

@@ -12,6 +12,8 @@ import { logout } from "../features/authSlice"
 import { signOut } from "firebase/auth"
 import { auth } from "../configs/firebase.config"
 
+import OnlineStatus from "./OnlineStatus"
+
 const Header = () => {
   const dispatch = useDispatch()
   const [toggle, setToggle] = useState(false)
@@ -238,6 +240,8 @@ const Header = () => {
       </header>
 
       {modal && <Modal showAndCloseModal={showAndCloseModal} />}
+
+      <OnlineStatus />
     </>
   )
 }

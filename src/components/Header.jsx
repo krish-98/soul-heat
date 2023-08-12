@@ -19,6 +19,7 @@ const Header = () => {
   const [toggle, setToggle] = useState(false)
   const [modal, setModal] = useState(false)
   const [showSignout, setShowSignout] = useState(false)
+
   const { totalItems } = useSelector((store) => store.cart)
   const { user } = useSelector((store) => store.auth)
 

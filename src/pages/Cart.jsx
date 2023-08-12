@@ -1,5 +1,8 @@
-import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
 import { CLOUDINARY_IMAGE_ID } from "../configs/constants"
+import EmptyCart from "../assets/empty-cart.svg"
+
+// React-icons imports
 import { RiEBike2Fill } from "react-icons/ri"
 import { GrClearOption } from "react-icons/gr"
 import { MdOutlineCleaningServices } from "react-icons/md"
@@ -8,11 +11,16 @@ import { IoBagCheckOutline } from "react-icons/io5"
 import { BsArrowLeft } from "react-icons/bs"
 import { FcGoogle } from "react-icons/fc"
 
-import EmptyCart from "../assets/empty-cart.svg"
+// Firebase imports
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"
 import { auth } from "../configs/firebase.config"
+
+// Redux imports
+import { useDispatch, useSelector } from "react-redux"
 import { authenticateUser } from "../features/authSlice"
-import { useNavigate } from "react-router-dom"
+
+// Stripe imports
+import { loadStripe } from "@stripe/stripe-js"
 
 const Cart = () => {
   const dispatch = useDispatch()
@@ -20,18 +28,39 @@ const Cart = () => {
     (store) => store.cart
   )
   const { user } = useSelector((store) => store.auth)
-  const googleProvider = new GoogleAuthProvider()
   const navigate = useNavigate()
+
+  const googleProvider = new GoogleAuthProvider()
 
   const signInWithGoogle = async () => {
     try {
       const response = await signInWithPopup(auth, googleProvider)
       dispatch(authenticateUser(response?.user?.providerData?.[0]))
     } catch (error) {
-      // console.error(error)
-      // console.error(error.code)
       console.error(error.message)
     }
+  }
+
+  const handlePayment = async () => {
+    const stripePromise = await loadStripe(
+      process.env.REACT_APP_STRIPE_PUBLIC_KEY
+    )
+
+    const res = await fetch(
+      `${process.env.REACT_APP_SERVER_URL}/checkout-payment`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(cartItems),
+      }
+    )
+    console.log(res)
+    if (res.status === 500) return
+    const data = await res.json()
+    console.log(data)
+    stripePromise.redirectToCheckout({ sessionId: data })
   }
 
   return (
@@ -82,13 +111,13 @@ const Cart = () => {
                   className="flex justify-between items-center gap-4 "
                 >
                   <div className="flex flex-col gap-1 max-w-[60%]">
-                    <h3 className="font-medium md:text-lg">
+                    <h3 className="text-sm font-medium md:text-lg">
                       {item?.name}{" "}
                       <span className="text-[#f26434]">
-                        [x {item?.quantity}]
+                        [ x {item?.quantity}]
                       </span>
                     </h3>
-                    <p className="">
+                    <p className="text-sm md:text-base">
                       ₹{" "}
                       {item.price
                         ? String(item.price).slice(0, 3)
@@ -144,11 +173,10 @@ const Cart = () => {
               </button>
             ) : (
               <div
-                className={` ${
-                  !user ? "border border-orange-400" : "bg-[#fb923c]"
-                } mt-10 py-3 rounded-2xl flex items-center justify-center gap-1 hover:bg-[#ffa13c] hover:shadow-xl transistion duration-300 cursor-pointer`}
+                onClick={handlePayment}
+                className="bg-[#fb923c] mt-10 py-3 rounded-2xl flex items-center justify-center gap-1 hover:bg-[#ffa13c] hover:shadow-xl transistion duration-300 cursor-pointer focus:scale-90"
               >
-                <button className="text-white font-semibold tracking-wider uppercase">
+                <button className="text-white font-semibold tracking-wider uppercase ">
                   Checkout
                 </button>
                 <IoBagCheckOutline className="w-7 h-[26px] stroke-white" />

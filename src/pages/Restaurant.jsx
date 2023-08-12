@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useNavigate, useParams, useSearchParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import ShimmerTwo from "../components/ShimmerTwo"
 import RestaurantHeader from "../components/RestaurantHeader"
 import RestaurantMenu from "../components/RestaurantMenu"
@@ -10,13 +10,6 @@ const Restaurant = () => {
   const [restaurantMenu, setRestaurantMenu] = useState(null)
   const { resId } = useParams()
   const navigate = useNavigate()
-  // const [searchParams, setSearchParams] = useSearchParams()
-
-  const restaurantMenuLists =
-    restaurantMenu?.[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1]?.card
-      ?.card ||
-    restaurantMenu?.[3]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1]?.card
-      ?.card
 
   useEffect(() => {
     const fetchRestaurantMenu = async () => {
@@ -27,16 +20,19 @@ const Restaurant = () => {
           )
       )
       const jsonData = await res.json()
-      // console.log(jsonData?.data?.cards)
       setRestaurantMenu(jsonData?.data?.cards)
-      // setSearchParams({
-      //   restaurant:
-      //     jsonData?.data?.cards?.[0]?.card?.card?.info?.slugs?.restaurant,
-      // })
     }
 
     fetchRestaurantMenu()
   }, [])
+
+  const restaurantMenuLists =
+    restaurantMenu?.[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.[1]?.card
+      ?.card ||
+    restaurantMenu?.[3]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.[1]?.card
+      ?.card ||
+    restaurantMenu?.[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.[2]?.card
+      ?.card
 
   return (
     <div className="mt-12 flex flex-col items-center px-6 max-w-[968px] mx-auto relative">

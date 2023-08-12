@@ -1,7 +1,7 @@
 import { CLOUDINARY_IMAGE_ID } from "../configs/constants"
-import { Link, useSearchParams } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { AiFillStar } from "react-icons/ai"
-import { useEffect } from "react"
+import { MdOutlineDeliveryDining } from "react-icons/md"
 
 const RestaurantCard = ({
   name,
@@ -10,6 +10,7 @@ const RestaurantCard = ({
   cuisines,
   id,
   aggregatedDiscountInfoV3,
+  sla: { slaString },
 }) => {
   return (
     <Link
@@ -22,10 +23,9 @@ const RestaurantCard = ({
         alt={`${name} image`}
       />
       <h2 className="font-bold text-lg">{name}</h2>
-
       <h3 className="text-sm font-medium">
         {cuisines?.length > 0
-          ? cuisines?.slice(0, 8).join(", ") + " & more"
+          ? cuisines?.slice(0, 6).join(", ") + " & more"
           : cuisines?.join(", ")}
       </h3>
 
@@ -36,10 +36,20 @@ const RestaurantCard = ({
           } ${avgRating === "--" && "bg-[#FFD95A] text-[#4C3D3D]"}`}
         >
           <AiFillStar className="w-3 h-6" />
-          <span>{avgRating === "--" ? "No Ratings" : avgRating}</span>
+          <span className="font-bold">
+            {avgRating === "--" ? "No Ratings" : avgRating}
+          </span>
         </div>
 
-        {aggregatedDiscountInfoV3 && (
+        <div className="flex items-center">
+          <MdOutlineDeliveryDining className="w-6 h-7" />
+          <p className="text-xs font-semibold  px-2 py-1">
+            {slaString && slaString}
+          </p>
+          {/* <MdDeliveryDining className="inline-block w-6 h-7" /> */}
+        </div>
+
+        {aggregatedDiscountInfoV3?.header && (
           <p className="absolute top-0 right-0 bg-[#FB3C46] text-[#FBF23C] p-2 rounded-bl-md text-xs font-bold">
             {aggregatedDiscountInfoV3?.header}
           </p>

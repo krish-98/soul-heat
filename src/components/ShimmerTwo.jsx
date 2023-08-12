@@ -1,10 +1,17 @@
 const ShimmerTwo = () => {
   return (
     <div className="w-full pt-6">
-      <div className="space-y-3 pb-4 border-b">
-        <h1 className="w-64 h-14 md:w-96 bg-gray-200 animate-pulse"></h1>
-        <p className="w-24 h-4 md:w-44 bg-gray-200 animate-pulse"></p>
-        <p className="w-24 h-4 md:w-44 bg-gray-200 animate-pulse"></p>
+      <div className="flex justify-between">
+        <div className="space-y-3 pb-4 border-b">
+          <h1 className="w-64 h-14 md:w-96 bg-gray-200 animate-pulse"></h1>
+          <p className="w-24 h-4 md:w-44 bg-gray-200 animate-pulse"></p>
+          <p className="w-24 h-4 md:w-44 bg-gray-200 animate-pulse"></p>
+        </div>
+
+        <div className="w-24 h-18 bg-gray-200 animate-pulse mt-9">
+          <p className="w-20 bg-gray-200 animate-pulse"></p>
+          <p className="w-20 bg-gray-200 animate-pulse"></p>
+        </div>
       </div>
 
       <div className="mt-12">

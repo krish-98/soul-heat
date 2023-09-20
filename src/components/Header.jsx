@@ -1,18 +1,21 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import logo3 from "../assets/logo3.png"
-import { CgMenuHotdog, CgClose } from "react-icons/cg"
-import { MdOutlineRestaurantMenu } from "react-icons/md"
-import { IoCartOutline } from "react-icons/io5"
-import { HiOutlineUserCircle } from "react-icons/hi"
-import { useDispatch, useSelector } from "react-redux"
-
 import Modal from "./Modal"
+import OnlineStatus from "./OnlineStatus"
+
+import logo3 from "../assets/logo3.png"
+import { VscChromeClose } from "react-icons/vsc"
+import { IoCallOutline, IoCartOutline } from "react-icons/io5"
+import { HiOutlineUserCircle } from "react-icons/hi"
+import { PiHamburgerFill } from "react-icons/pi"
+
+import { useDispatch, useSelector } from "react-redux"
 import { logout } from "../features/authSlice"
+
 import { signOut } from "firebase/auth"
 import { auth } from "../configs/firebase.config"
-
-import OnlineStatus from "./OnlineStatus"
+import { AiFillHome, AiOutlineHome } from "react-icons/ai"
+import { FaRegBuilding } from "react-icons/fa"
 
 const Header = () => {
   const dispatch = useDispatch()
@@ -47,15 +50,16 @@ const Header = () => {
       {/* Mobile Navbar */}
       <header className="relative bg-[#fb923c] px-3 py-2 lg:hidden">
         <div className="flex item-center justify-between">
+          {/* Dropdown Togglers */}
           <div className="absolute top-8 left-4">
             {!toggle ? (
-              <CgMenuHotdog
+              <PiHamburgerFill
                 onClick={handleToggler}
                 className="w-[30px] h-8 stroke-white fill-white cursor-pointer"
               />
             ) : (
               <>
-                <CgClose
+                <VscChromeClose
                   onClick={handleToggler}
                   className="w-[30px] h-8 stroke-white fill-white cursor-pointer"
                 />
@@ -130,26 +134,41 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Dropdown Menu */}
+        {/* Dropdown Menu List */}
         {toggle && (
           <ul className="bg-[#fb923c] flex flex-col items-center gap-3 tracking-widest uppercase pb-4 text-white">
             <li
               onClick={handleToggler}
               className="hover:bg-[#f9bca8] w-full text-center py-2"
             >
-              <Link to="/">Home</Link>
+              <Link to="/" className="flex items-center justify-center gap-2">
+                <AiOutlineHome className="w-6 h-8 stroke-white fill-white cursor-pointer inline" />
+                <p>Home</p>
+              </Link>
             </li>
             <li
               onClick={handleToggler}
               className="hover:bg-[#f9bca8] w-full text-center py-2"
             >
-              <Link to="/about">About</Link>
+              <Link
+                to="/about"
+                className="flex items-center justify-center gap-2"
+              >
+                <FaRegBuilding className="w-6 h-8 stroke-white fill-white cursor-pointer inline" />
+                <p>About</p>
+              </Link>
             </li>
             <li
               onClick={handleToggler}
               className="hover:bg-[#f9bca8] w-full text-center py-2"
             >
-              <Link to="/contact">Contact</Link>
+              <Link
+                to="/contact"
+                className="flex items-center justify-center gap-2"
+              >
+                <IoCallOutline className="w-6 h-8 stroke-white fill-white cursor-pointer inline" />
+                <p>Contact</p>
+              </Link>
             </li>
           </ul>
         )}
@@ -166,7 +185,7 @@ const Header = () => {
         </Link>
 
         <ul className="flex gap-10 items-center text-white font-semibold uppercase tracking-wider">
-          <li className="cursor-pointer">
+          {/* <li className="cursor-pointer">
             <Link to="/">Home</Link>
           </li>
           <li className="cursor-pointer">
@@ -174,7 +193,33 @@ const Header = () => {
           </li>
           <li className="cursor-pointer">
             <Link to="/contact">Contact</Link>
+          </li> */}
+
+          <li onClick={handleToggler}>
+            <Link to="/" className="flex items-center justify-center gap-2">
+              <AiOutlineHome className="w-6 h-8 stroke-white fill-white cursor-pointer inline" />
+              <p>Home</p>
+            </Link>
           </li>
+          <li onClick={handleToggler}>
+            <Link
+              to="/about"
+              className="flex items-center justify-center gap-2"
+            >
+              <FaRegBuilding className="w-6 h-8 stroke-white fill-white cursor-pointer inline" />
+              <p>About</p>
+            </Link>
+          </li>
+          <li onClick={handleToggler}>
+            <Link
+              to="/contact"
+              className="flex items-center justify-center gap-2"
+            >
+              <IoCallOutline className="w-6 h-8 stroke-white fill-white cursor-pointer inline" />
+              <p>Contact</p>
+            </Link>
+          </li>
+
           {/* Cart */}
           <li className="cursor-pointer">
             <Link to="/cart" className="relative">
@@ -246,4 +291,5 @@ const Header = () => {
     </>
   )
 }
+
 export default Header

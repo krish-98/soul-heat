@@ -2,12 +2,12 @@ import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
 const OnlineStatus = () => {
-  const [isOnline, setIsOnline] = useState(navigator.onLine)
+  // const [isOnline, setIsOnline] = useState(navigator.onLine)
 
   useEffect(() => {
     const handleOnline = () => {
-      setIsOnline(true)
-      toast.success("User is online 🙂", {
+      // setIsOnline(true)
+      toast.success("You came back online 🙂", {
         position: "top-center",
         autoClose: 3000,
         hideProgressBar: true,
@@ -20,8 +20,8 @@ const OnlineStatus = () => {
     }
 
     const handleOffline = () => {
-      setIsOnline(false)
-      toast.error("User went offline 😴", {
+      // setIsOnline(false)
+      toast.error("You are offline 😴", {
         position: "top-center",
         autoClose: 3000,
         hideProgressBar: true,

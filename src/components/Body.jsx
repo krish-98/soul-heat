@@ -8,6 +8,7 @@ const Body = () => {
   const [allRestaurants, setAllRestaurants] = useState(null)
   const [searchText, setSearchText] = useState("")
 
+  // Fetch restaurant data from the Swiggy API
   useEffect(() => {
     fetchRestaurantsData()
   }, [])
@@ -16,15 +17,12 @@ const Body = () => {
     try {
       const res = await fetch(SWIGGY_API)
       const jsonData = await res.json()
+      const restaurantData =
+        jsonData?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
+          ?.restaurants
 
-      setAllRestaurants(
-        jsonData?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
-          ?.restaurants
-      )
-      setFilteredRestaurants(
-        jsonData?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
-          ?.restaurants
-      )
+      setAllRestaurants(restaurantData)
+      setFilteredRestaurants(restaurantData)
 
       // Old object path
       // setAllRestaurants(
@@ -49,7 +47,6 @@ const Body = () => {
     // const filteredData = restaurants.filter((res) =>
     //   res?.data?.name?.toLowerCase()?.includes(searchText?.toLowerCase())
     // )
-
     return filteredData
   }
 

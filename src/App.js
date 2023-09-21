@@ -30,15 +30,11 @@ const AppLayout = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, (user) => {
       if (user) {
         dispatch(authenticateUser(user?.providerData?.[0]))
       }
     })
-
-    return () => {
-      unsubscribe()
-    }
   }, [])
 
   return (

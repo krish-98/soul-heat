@@ -3,8 +3,8 @@ import { useNavigate, useParams } from "react-router-dom"
 import ShimmerTwo from "../components/ShimmerTwo"
 import RestaurantHeader from "../components/RestaurantHeader"
 import RestaurantMenu from "../components/RestaurantMenu"
-
 import { BsArrowLeft } from "react-icons/bs"
+import { RESTAURANT_ID } from "../configs/constants"
 
 const Restaurant = () => {
   const [restaurantMenu, setRestaurantMenu] = useState(null)
@@ -12,19 +12,14 @@ const Restaurant = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    const fetchRestaurantMenu = async () => {
-      const res = await fetch(
-        "https://corsproxy.io/?" +
-          encodeURIComponent(
-            `https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=13.0827&lng=80.2707&restaurantId=${resId}&submitAction=ENTER`
-          )
-      )
-      const jsonData = await res.json()
-      setRestaurantMenu(jsonData?.data?.cards)
-    }
-
     fetchRestaurantMenu()
   }, [])
+
+  async function fetchRestaurantMenu() {
+    const res = await fetch(`${RESTAURANT_ID}&restaurantId=${resId}`)
+    const jsonData = await res.json()
+    setRestaurantMenu(jsonData?.data?.cards)
+  }
 
   const restaurantMenuLists =
     restaurantMenu?.[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.[1]?.card
@@ -33,6 +28,8 @@ const Restaurant = () => {
       ?.card ||
     restaurantMenu?.[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.[2]?.card
       ?.card
+
+  // console.log(restaurantMenuLists?.carousel)
 
   return (
     <div className="mt-12 flex flex-col items-center px-6 max-w-[968px] mx-auto relative">

@@ -14,7 +14,7 @@ import { logout } from "../features/authSlice"
 
 import { signOut } from "firebase/auth"
 import { auth } from "../configs/firebase.config"
-import { AiFillHome, AiOutlineHome } from "react-icons/ai"
+import { AiOutlineHome } from "react-icons/ai"
 import { FaRegBuilding } from "react-icons/fa"
 
 const Header = () => {
@@ -36,7 +36,7 @@ const Header = () => {
 
   const signOutUser = async () => {
     try {
-      const userInfo = await signOut(auth)
+      await signOut(auth)
 
       dispatch(logout())
       setShowSignout(false)
@@ -185,22 +185,13 @@ const Header = () => {
         </Link>
 
         <ul className="flex gap-10 items-center text-white font-semibold uppercase tracking-wider">
-          {/* <li className="cursor-pointer">
-            <Link to="/">Home</Link>
-          </li>
-          <li className="cursor-pointer">
-            <Link to="/About">About</Link>
-          </li>
-          <li className="cursor-pointer">
-            <Link to="/contact">Contact</Link>
-          </li> */}
-
           <li onClick={handleToggler}>
             <Link to="/" className="flex items-center justify-center gap-2">
               <AiOutlineHome className="w-6 h-8 stroke-white fill-white cursor-pointer inline" />
               <p>Home</p>
             </Link>
           </li>
+
           <li onClick={handleToggler}>
             <Link
               to="/about"
@@ -210,6 +201,7 @@ const Header = () => {
               <p>About</p>
             </Link>
           </li>
+
           <li onClick={handleToggler}>
             <Link
               to="/contact"
@@ -233,6 +225,7 @@ const Header = () => {
             </Link>
           </li>
 
+          {/* User Profile Icon */}
           {!user && (
             <li onClick={() => setModal(true)} className="cursor-pointer">
               <HiOutlineUserCircle className="w-9 h-10 stroke-white" />
@@ -281,7 +274,6 @@ const Header = () => {
               )}
             </div>
           )}
-          {/* {modal && <Modal showAndCloseModal={showAndCloseModal} />} */}
         </ul>
       </header>
 

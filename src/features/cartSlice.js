@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
+import { toast } from "react-toastify"
 
 export const cartSlice = createSlice({
   name: "cart",
@@ -19,6 +20,17 @@ export const cartSlice = createSlice({
       } else {
         state.cartItems.push({ ...action.payload, quantity: 1 })
       }
+
+      toast.success("Added to cart", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      })
     },
 
     calculateCartTotal: (state) => {

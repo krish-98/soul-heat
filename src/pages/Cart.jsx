@@ -4,12 +4,11 @@ import EmptyCart from "../assets/empty-cart.svg"
 
 // React-icons imports
 import { RiEBike2Fill } from "react-icons/ri"
-import { GrClearOption } from "react-icons/gr"
-import { MdOutlineCleaningServices } from "react-icons/md"
 import { clearCart } from "../features/cartSlice"
 import { IoBagCheckOutline } from "react-icons/io5"
 import { BsArrowLeft } from "react-icons/bs"
 import { FcGoogle } from "react-icons/fc"
+import { FaRegTrashAlt } from "react-icons/fa"
 
 // Firebase imports
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"
@@ -41,6 +40,7 @@ const Cart = () => {
     }
   }
 
+  // Stripe Check-out
   // const handlePayment = async () => {
   //   const stripePromise = await loadStripe(
   //     process.env.REACT_APP_STRIPE_PUBLIC_KEY
@@ -73,18 +73,23 @@ const Cart = () => {
           <BsArrowLeft />
           back
         </button>
-        <h1 className="text-center font-bold text-2xl">CART ({totalItems})</h1>
+
+        {totalItems > 0 && (
+          <h1 className="text-center font-bold text-2xl">
+            CART ({totalItems})
+          </h1>
+        )}
 
         {/* Clear cart button */}
         {cartItems?.length > 0 && (
           <div
             onClick={() => dispatch(clearCart())}
             className={
-              "top-1 right-0  flex items-center gap-1 text-white bg-[#FB923C] px-2 py-1 rounded-xl cursor-pointer transition-all duration-300 hover:bg-red-500"
+              "top-1 right-0 flex items-center gap-1 text-white bg-[#FB923C] py-1 px-2 rounded-xl cursor-pointer transition-all duration-300 hover:bg-[#FB3C46]"
             }
           >
             <p className="font-medium tracking-wide">Clear</p>
-            <MdOutlineCleaningServices className="w-5 h-5" />
+            <FaRegTrashAlt className="w-4 h-4" />
           </div>
         )}
       </div>

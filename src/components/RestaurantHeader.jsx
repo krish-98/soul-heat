@@ -39,13 +39,13 @@ const RestaurantHeader = ({ restaurantHeader }) => {
       {totalItems > 0 && (
         <Link
           to="/cart"
-          className="fixed bottom-6 right-36 z-20 bg-red-400 flex items-center py-2 px-5 rounded-lg md:right-1/3 xl:right-1/2"
+          className="fixed bottom-6 right-36 z-20 bg-[#FB3C46] flex items-center py-2 px-5 rounded-lg md:right-1/3 xl:right-1/2 hover:bg-[#fb923c]"
         >
           <span className="text-white font-semibold">Cart - </span>
-          <div className="hover:bg-[#f9bca8] relative">
+          <div className="relative">
             <IoCartOutline className="w-7 h-6 stroke-white cursor-pointer" />
 
-            <div className="absolute -right-1 bottom-3 text-[#fb923c] bg-white w-4 h-4 rounded-full">
+            <div className="absolute -right-1 bottom-3 text-[#FB3C46] bg-white w-4 h-4 rounded-full">
               <p className="text-center text-text font-semibold text-xs">
                 {totalItems}
               </p>

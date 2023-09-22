@@ -11,7 +11,14 @@ const Restaurant = () => {
   const { resId } = useParams()
   const navigate = useNavigate()
 
+  // Scroll to top automatically
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    })
+
     fetchRestaurantMenu()
   }, [])
 

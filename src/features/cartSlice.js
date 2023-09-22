@@ -23,7 +23,7 @@ export const cartSlice = createSlice({
 
       toast.success("Added to cart", {
         position: "top-left",
-        autoClose: 3000,
+        autoClose: 2000,
         hideProgressBar: true,
         closeOnClick: false,
         pauseOnHover: false,

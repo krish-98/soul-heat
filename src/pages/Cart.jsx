@@ -4,7 +4,12 @@ import EmptyCart from "../assets/empty-cart.svg"
 
 // React-icons imports
 import { RiEBike2Fill } from "react-icons/ri"
-import { clearCart } from "../features/cartSlice"
+import {
+  addToCart,
+  calculateCartTotal,
+  clearCart,
+  removeFromCart,
+} from "../features/cartSlice"
 import { IoBagCheckOutline } from "react-icons/io5"
 import { BsArrowLeft } from "react-icons/bs"
 import { FcGoogle } from "react-icons/fc"
@@ -40,6 +45,18 @@ const Cart = () => {
     }
   }
 
+  const increaseQty = (item) => {
+    dispatch(addToCart(item))
+    dispatch(calculateCartTotal(item))
+  }
+
+  const decreaseQty = (item) => {
+    dispatch(removeFromCart(item))
+    dispatch(calculateCartTotal(item))
+  }
+
+  console.log(cartItems)
+
   // Stripe Check-out
   // const handlePayment = async () => {
   //   const stripePromise = await loadStripe(
@@ -64,7 +81,7 @@ const Cart = () => {
   // }
 
   return (
-    <div className="p-6 max-w-[900px] mx-auto md:px-10 lg:px-0">
+    <div className="pt-12 p-6 max-w-[900px] mx-auto md:px-10 lg:px-0">
       <div className="pb-10 relative flex items-center justify-between gap-6">
         <button
           onClick={() => navigate(-1)}
@@ -88,7 +105,9 @@ const Cart = () => {
               "top-1 right-0 flex items-center gap-1 text-white bg-[#FB923C] py-1 px-2 rounded-xl cursor-pointer transition-all duration-300 hover:bg-[#FB3C46]"
             }
           >
-            <p className="font-medium tracking-wide">Clear</p>
+            <p className="text-sm font-medium tracking-wide md:text-base">
+              Clear
+            </p>
             <FaRegTrashAlt className="w-4 h-4" />
           </div>
         )}
@@ -111,31 +130,54 @@ const Cart = () => {
           <div className="flex flex-col gap-8 pb-8 lg:w-[70%]">
             {cartItems.length > 0 &&
               cartItems.map((item) => (
-                <div
-                  key={item?.id}
-                  className="flex justify-between items-center gap-4 "
-                >
-                  <div className="flex flex-col gap-1 max-w-[60%]">
-                    <h3 className="text-sm font-medium md:text-lg">
-                      {item?.name}{" "}
-                      <span className="text-[#f26434]">
-                        [ x {item?.quantity}]
-                      </span>
-                    </h3>
-                    <p className="text-sm md:text-base">
-                      ₹{" "}
-                      {item.price
-                        ? String(item.price).slice(0, 3)
-                        : String(item.defaultPrice).slice(0, 3)}
-                    </p>
-                  </div>
-
+                <div key={item?.id} className="flex items-center gap-8">
+                  {/* Cart Item Img */}
                   <div className="max-w-[35%]">
                     <img
                       className="md:w-[200px] object-contain rounded-xl"
                       src={CLOUDINARY_IMAGE_ID + item?.imageId}
                       alt={item?.name}
                     />
+                  </div>
+
+                  {/* Cart Item Details */}
+                  <div className="flex flex-col gap-1 max-w-[60%]">
+                    <h3 className="text-sm font-medium md:text-lg">
+                      {item?.name}{" "}
+                    </h3>
+
+                    <p className="text-sm md:text-base font-bold">
+                      ₹{" "}
+                      {item.price
+                        ? String(item.price).slice(0, 3)
+                        : String(item.defaultPrice).slice(0, 3)}{" "}
+                      {/* <span className="text-[#f26434] font-normal">
+                        (
+                        {item.price
+                          ? String(item.price).slice(0, 3)
+                          : String(item.defaultPrice).slice(0, 3)}{" "}
+                        x {item?.quantity})
+                      </span> */}
+                      <span className="text-[#f26434] font-normal">
+                        ( x {item?.quantity})
+                      </span>
+                    </p>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => decreaseQty(item)}
+                        className="bg-[#fb923c] text-white font-bold p-2 py-0.5 rounded-md"
+                      >
+                        -
+                      </button>
+                      <p className="font-semibold">{item?.quantity}</p>
+                      <button
+                        onClick={() => increaseQty(item)}
+                        className="bg-[#fb923c] text-white font-bold p-2 py-0.5 rounded-md"
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}

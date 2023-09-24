@@ -55,30 +55,31 @@ const Cart = () => {
     dispatch(calculateCartTotal(item))
   }
 
-  console.log(cartItems)
-
   // Stripe Check-out
-  // const handlePayment = async () => {
-  //   const stripePromise = await loadStripe(
-  //     process.env.REACT_APP_STRIPE_PUBLIC_KEY
-  //   )
+  const handlePayment = async () => {
+    try {
+      const stripePromise = await loadStripe(
+        process.env.REACT_APP_STRIPE_PUBLIC_KEY
+      )
 
-  //   const res = await fetch(
-  //     `${process.env.REACT_APP_SERVER_URL}/checkout-payment`,
-  //     {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(cartItems),
-  //     }
-  //   )
-  //   console.log(res)
-  //   if (res.status === 500) return
-  //   const data = await res.json()
-  //   console.log(data)
-  //   stripePromise.redirectToCheckout({ sessionId: data })
-  // }
+      const res = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}/checkout-payment`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(cartItems),
+        }
+      )
+      if (res.status === 500) return
+      const data = await res.json()
+      console.log(data)
+      stripePromise.redirectToCheckout({ sessionId: data })
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <div className="pt-12 p-6 max-w-[900px] mx-auto md:px-10 lg:px-0">
@@ -220,7 +221,7 @@ const Cart = () => {
               </button>
             ) : (
               <div
-                // onClick={handlePayment}
+                onClick={handlePayment}
                 className="bg-[#fb923c] mt-10 py-3 rounded-2xl flex items-center justify-center gap-1 hover:bg-[#ffa13c] hover:shadow-xl transistion duration-300 cursor-pointer focus:scale-90"
               >
                 <button className="text-white font-semibold tracking-wider uppercase ">

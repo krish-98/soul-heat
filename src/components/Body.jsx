@@ -39,7 +39,7 @@ const Body = () => {
   }
 
   const filterRestaurant = (searchText, restaurants) => {
-    const filteredData = restaurants.filter((res) =>
+    const filteredData = restaurants?.filter((res) =>
       res?.info?.name?.toLowerCase()?.includes(searchText?.toLowerCase())
     )
 

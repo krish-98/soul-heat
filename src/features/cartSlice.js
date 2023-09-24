@@ -21,7 +21,7 @@ export const cartSlice = createSlice({
         state.cartItems.push({ ...action.payload, quantity: 1 })
       }
 
-      toast.success("Added to cart", {
+      toast.success("Added to the cart", {
         position: "top-left",
         autoClose: 2000,
         hideProgressBar: true,
@@ -42,7 +42,7 @@ export const cartSlice = createSlice({
         state.cartItems[itemIndex].quantity =
           state.cartItems[itemIndex].quantity - 1
 
-        toast.warning("Item quantity reduced from the cart", {
+        toast.warning("Quantity reduced from the cart", {
           position: "top-left",
           autoClose: 2000,
           hideProgressBar: true,
@@ -73,12 +73,13 @@ export const cartSlice = createSlice({
     calculateCartTotal: (state) => {
       const { item, amount } = state.cartItems.reduce(
         (acc, currentItem) => {
-          const priceStr = currentItem?.price
-            ? String(currentItem.price).slice(0, 3)
-            : String(currentItem.defaultPrice).slice(0, 3)
+          const priceStr =
+            currentItem?.price || currentItem?.defaultPrice
+              ? String(currentItem.price).slice(0, 3)
+              : String(currentItem.defaultPrice).slice(0, 3)
 
           acc.item = acc.item + currentItem.quantity
-          acc.amount = acc.amount + acc.item * Number(priceStr)
+          acc.amount = acc.item * Number(priceStr)
           return acc
         },
         { item: 0, amount: 0 }

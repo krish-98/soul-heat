@@ -19,6 +19,8 @@ const Body = () => {
       const jsonData = await res.json()
       const restaurantData =
         jsonData?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
+          ?.restaurants ||
+        jsonData?.data?.cards[3]?.card?.card?.gridElements?.infoWithStyle
           ?.restaurants
 
       setAllRestaurants(restaurantData)
@@ -81,7 +83,7 @@ const Body = () => {
         </button>
       </form>
 
-      {!allRestaurants ? (
+      {!allRestaurants || allRestaurants?.length === 0 ? (
         <Shimmer />
       ) : (
         <div className="flex flex-wrap justify-center items-center mt-10 gap-12">

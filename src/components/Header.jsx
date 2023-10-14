@@ -175,106 +175,114 @@ const Header = () => {
       </header>
 
       {/* Desktop Navbar */}
-      <header className="hidden lg:flex justify-between items-center bg-[#fb923c] pr-12 xl:pr-36">
-        <Link to="/">
-          <img
-            className="h-20 cursor-pointer xl:ml-28"
-            src={logo3}
-            alt="logo"
-          />
-        </Link>
+      <header className="bg-[#fb923c]">
+        <div className="hidden lg:flex items-center max-w-[1280px] mx-auto pr-12 xl:pr-10">
+          <Link to="/" className="cursor-pointer">
+            <img className="h-20" src={logo3} alt="logo" />
+          </Link>
 
-        <ul className="flex gap-10 items-center text-white font-semibold uppercase tracking-wider">
-          <li onClick={handleToggler}>
-            <Link to="/" className="flex items-center justify-center gap-2">
-              <AiOutlineHome className="w-6 h-8 stroke-white fill-white cursor-pointer inline" />
-              <p>Home</p>
-            </Link>
-          </li>
+          <ul className="flex w-full items-center justify-between text-white font-semibold uppercase tracking-wider">
+            <div className="flex items-center gap-10 ml-20 xl:ml-40">
+              <li onClick={handleToggler}>
+                <Link to="/" className="flex items-center justify-center gap-2">
+                  <AiOutlineHome className="w-6 h-8 stroke-white fill-white cursor-pointer inline" />
+                  <p>Home</p>
+                </Link>
+              </li>
 
-          <li onClick={handleToggler}>
-            <Link
-              to="/about"
-              className="flex items-center justify-center gap-2"
-            >
-              <FaRegBuilding className="w-6 h-8 stroke-white fill-white cursor-pointer inline" />
-              <p>About</p>
-            </Link>
-          </li>
-
-          <li onClick={handleToggler}>
-            <Link
-              to="/contact"
-              className="flex items-center justify-center gap-2"
-            >
-              <IoCallOutline className="w-6 h-8 stroke-white fill-white cursor-pointer inline" />
-              <p>Contact</p>
-            </Link>
-          </li>
-
-          {/* Cart */}
-          <li className="cursor-pointer">
-            <Link to="/cart" className="relative">
-              <IoCartOutline className="w-8 h-10 stroke-white cursor-pointer" />
-
-              <div className="absolute -right-2 bottom-6 bg-white w-5 h-5 rounded-full">
-                <p className="text-center text-[#fb923c] font-bold text-sm">
-                  {totalItems}
-                </p>
-              </div>
-            </Link>
-          </li>
-
-          {/* User Profile Icon */}
-          {!user && (
-            <li onClick={() => setModal(true)} className="cursor-pointer">
-              <HiOutlineUserCircle className="w-9 h-10 stroke-white" />
-            </li>
-          )}
-
-          {user && user?.photoURL && (
-            <div
-              onClick={() => setShowSignout(!showSignout)}
-              className="rounded-full ring ring-white cursor-pointer relative"
-            >
-              <img
-                className="w-11 h-11 object-contain rounded-full"
-                src={user?.photoURL}
-                alt="user profile"
-                referrerPolicy="no-referrer"
-              />
-
-              {showSignout && (
-                <button
-                  onClick={signOutUser}
-                  className="absolute top-14 -right-4 w-20 bg-white text-black z-50 p-2 tracking-wide rounded-md"
+              <li onClick={handleToggler}>
+                <Link
+                  to="/about"
+                  className="flex items-center justify-center gap-2"
                 >
-                  Logout
-                </button>
+                  <FaRegBuilding className="w-6 h-8 stroke-white fill-white cursor-pointer inline" />
+                  <p>About</p>
+                </Link>
+              </li>
+
+              <li onClick={handleToggler}>
+                <Link
+                  to="/contact"
+                  className="flex items-center justify-center gap-2"
+                >
+                  <IoCallOutline className="w-6 h-8 stroke-white fill-white cursor-pointer inline" />
+                  <p>Contact</p>
+                </Link>
+              </li>
+            </div>
+
+            <div className="flex items-center gap-10">
+              {/* Cart */}
+              <li className="cursor-pointer">
+                <Link to="/cart" className="relative">
+                  <IoCartOutline className="w-8 h-10 stroke-white cursor-pointer" />
+
+                  <div className="absolute -right-2 bottom-6 bg-white w-5 h-5 rounded-full">
+                    <p className="text-center text-[#fb923c] font-bold text-sm">
+                      {totalItems}
+                    </p>
+                  </div>
+                </Link>
+              </li>
+
+              {/* User Profile Icon */}
+              {!user && (
+                <div
+                  onClick={() => setModal(true)}
+                  className="flex items-center cursor-pointer"
+                >
+                  <li>
+                    <HiOutlineUserCircle className="w-9 h-10 stroke-white" />
+                  </li>
+                  <p className="pl-0.5">Login</p>
+                </div>
+              )}
+
+              {user && user?.photoURL && (
+                <div
+                  onClick={() => setShowSignout(!showSignout)}
+                  className="rounded-full ring ring-white cursor-pointer relative"
+                >
+                  <img
+                    className="w-11 h-11 object-contain rounded-full"
+                    src={user?.photoURL}
+                    alt="user profile"
+                    referrerPolicy="no-referrer"
+                  />
+
+                  {showSignout && (
+                    <button
+                      onClick={signOutUser}
+                      className="absolute top-14 -right-4 w-20 bg-white text-black z-50 p-2 tracking-wide rounded-md"
+                    >
+                      Logout
+                    </button>
+                  )}
+                </div>
+              )}
+
+              {user && !user?.photoURL && (
+                <div className="relative rounded-full ring ring-white cursor-pointer">
+                  <p
+                    onClick={() => setShowSignout(!showSignout)}
+                    className="lowercase p-2 w-10 h-10 truncate"
+                  >
+                    {user?.email}
+                  </p>
+
+                  {showSignout && (
+                    <button
+                      onClick={signOutUser}
+                      className="absolute top-14 -right-4 w-20 bg-white text-black z-50 p-2 tracking-wide rounded-md"
+                    >
+                      Logout
+                    </button>
+                  )}
+                </div>
               )}
             </div>
-          )}
-
-          {user && !user?.photoURL && (
-            <div className="relative rounded-full ring ring-white cursor-pointer">
-              <p
-                onClick={() => setShowSignout(!showSignout)}
-                className="lowercase p-2 w-10 h-10 truncate"
-              >
-                {user?.email}
-              </p>
-
-              {showSignout && (
-                <button
-                  onClick={signOutUser}
-                  className="absolute top-14 -right-4 w-20 bg-white text-black z-50 p-2 tracking-wide rounded-md"
-                >
-                  Logout
-                </button>
-              )}
-            </div>
-          )}
-        </ul>
+          </ul>
+        </div>
       </header>
 
       {modal && <Modal showAndCloseModal={showAndCloseModal} />}

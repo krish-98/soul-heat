@@ -8,7 +8,6 @@ const Body = () => {
   const [allRestaurants, setAllRestaurants] = useState(null)
   const [searchText, setSearchText] = useState("")
 
-  // Fetch restaurant data from the Swiggy API
   useEffect(() => {
     fetchRestaurantsData()
   }, [])
@@ -61,50 +60,52 @@ const Body = () => {
   }
 
   return (
-    <main className="py-8 px-4 bg-[#f5f3f3] min-h-screen">
-      <form
-        className="flex justify-center max-w-[600px] mx-auto"
-        onSubmit={searchFormHandler}
-      >
-        <input
-          className="w-full pl-4 h-10 rounded-l-xl border-none outline-none focus:ring-[#fb923c]"
-          type="text"
-          placeholder="Search..."
-          value={searchText}
-          onChange={(e) => {
-            setSearchText(e.target.value)
-          }}
-        />
-        <button
-          type="submit"
-          className="bg-[#fb923c] text-white py-1 px-5 rounded-r-xl hover:bg-[#f26434]transition-all duration-300 outline-[#fb923c]"
+    <main className="py-8 px-4 bg-[#f5f3f3] min-h-screen ">
+      <div className="max-w-[1280px] mx-auto">
+        <form
+          className="flex justify-center max-w-[600px] mx-auto"
+          onSubmit={searchFormHandler}
         >
-          Search
-        </button>
-      </form>
+          <input
+            className="w-full pl-4 h-10 rounded-l-xl border-none outline-none focus:ring-[#fb923c]"
+            type="text"
+            placeholder="Search..."
+            value={searchText}
+            onChange={(e) => {
+              setSearchText(e.target.value)
+            }}
+          />
+          <button
+            type="submit"
+            className="bg-[#fb923c] text-white py-1 px-5 rounded-r-xl hover:bg-[#f26434]transition-all duration-300 outline-[#fb923c]"
+          >
+            Search
+          </button>
+        </form>
 
-      {!allRestaurants || allRestaurants?.length === 0 ? (
-        <Shimmer />
-      ) : (
-        <div className="flex flex-wrap justify-center items-center mt-10 gap-12">
-          {filteredRestaurants?.length === 0 ? (
-            <h1>No Restaurant matches your Filter!</h1>
-          ) : (
-            filteredRestaurants?.map((restaurant) => (
-              <RestaurantCard
-                key={restaurant?.info?.id}
-                {...restaurant?.info}
-              />
+        {!allRestaurants || allRestaurants?.length === 0 ? (
+          <Shimmer />
+        ) : (
+          <div className="flex flex-wrap justify-center items-center mt-10 gap-12">
+            {filteredRestaurants?.length === 0 ? (
+              <h1>No Restaurant matches your Filter!</h1>
+            ) : (
+              filteredRestaurants?.map((restaurant) => (
+                <RestaurantCard
+                  key={restaurant?.info?.id}
+                  {...restaurant?.info}
+                />
 
-              // Old object path
-              // <RestaurantCard
-              //   key={restaurant?.data?.id}
-              //   {...restaurant?.data}
-              // />
-            ))
-          )}
-        </div>
-      )}
+                // Old object path
+                // <RestaurantCard
+                //   key={restaurant?.data?.id}
+                //   {...restaurant?.data}
+                // />
+              ))
+            )}
+          </div>
+        )}
+      </div>
     </main>
   )
 }

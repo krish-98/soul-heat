@@ -86,7 +86,7 @@ const Body = () => {
         {!allRestaurants || allRestaurants?.length === 0 ? (
           <Shimmer />
         ) : (
-          <div className="flex flex-wrap justify-center items-center mt-10 gap-12">
+          <div className="flex flex-wrap justify-center items-center mt-10 gap-10">
             {filteredRestaurants?.length === 0 ? (
               <h1>No Restaurant matches your Filter!</h1>
             ) : (

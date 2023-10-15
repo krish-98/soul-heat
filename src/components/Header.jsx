@@ -48,22 +48,20 @@ const Header = () => {
   return (
     <>
       {/* Mobile Navbar */}
-      <header className="relative bg-[#fb923c] px-3 py-2 lg:hidden">
+      <header className="relative bg-[#fb923c] px-3.5 py-2 lg:hidden">
         <div className="flex item-center justify-between">
           {/* Dropdown Togglers */}
-          <div className="absolute top-8 left-4">
+          <div className="flex items-center cursor-pointer">
             {!toggle ? (
               <PiHamburgerFill
                 onClick={handleToggler}
-                className="w-[30px] h-8 stroke-white fill-white cursor-pointer"
+                className="w-[30px] h-8 stroke-white fill-white"
               />
             ) : (
-              <>
-                <VscChromeClose
-                  onClick={handleToggler}
-                  className="w-[30px] h-8 stroke-white fill-white cursor-pointer"
-                />
-              </>
+              <VscChromeClose
+                onClick={handleToggler}
+                className="w-[30px] h-8 stroke-white fill-white cursor-pointer"
+              />
             )}
           </div>
 
@@ -146,6 +144,7 @@ const Header = () => {
                 <p>Home</p>
               </Link>
             </li>
+
             <li
               onClick={handleToggler}
               className="hover:bg-[#f9bca8] w-full text-center py-2"
@@ -158,6 +157,7 @@ const Header = () => {
                 <p>About</p>
               </Link>
             </li>
+
             <li
               onClick={handleToggler}
               className="hover:bg-[#f9bca8] w-full text-center py-2"
@@ -176,13 +176,13 @@ const Header = () => {
 
       {/* Desktop Navbar */}
       <header className="bg-[#fb923c]">
-        <div className="hidden lg:flex items-center max-w-[1280px] mx-auto pr-12 xl:pr-10">
+        <div className="hidden lg:flex items-center max-w-[1280px] mx-auto pr-12">
           <Link to="/" className="cursor-pointer">
-            <img className="h-20" src={logo3} alt="logo" />
+            <img className="h-20 object-cover" src={logo3} alt="logo" />
           </Link>
 
           <ul className="flex w-full items-center justify-between text-white font-semibold uppercase tracking-wider">
-            <div className="flex items-center gap-10 ml-20 xl:ml-40">
+            <div className="flex items-center gap-10 ml-20 xl:ml-44">
               <li onClick={handleToggler}>
                 <Link to="/" className="flex items-center justify-center gap-2">
                   <AiOutlineHome className="w-6 h-8 stroke-white fill-white cursor-pointer inline" />

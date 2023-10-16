@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import Modal from "./Modal"
 import OnlineStatus from "./OnlineStatus"
 
-import logo3 from "../assets/logo3.png"
+import logo from "../assets/logo.png"
 import { VscChromeClose } from "react-icons/vsc"
 import { IoCallOutline, IoCartOutline } from "react-icons/io5"
 import { HiOutlineUserCircle } from "react-icons/hi"
@@ -66,7 +66,7 @@ const Header = () => {
           </div>
 
           <Link to="/">
-            <img className="h-20 object-contain" src={logo3} alt="logo" />
+            <img className="h-20 object-contain" src={logo} alt="logo" />
           </Link>
 
           <div className="flex items-center gap-5">
@@ -82,9 +82,9 @@ const Header = () => {
 
             {/* Displaying user Profile pic */}
             {user ? (
-              user?.providerData?.[0]?.photoURL === null ? (
+              user?.photoURL === null ? (
                 <div onClick={() => setShowSignout(true)} className="relative">
-                  <p className="w-10 truncate rounded-full p-1.5 ring-1 ring-red-500 text-white">
+                  <p className="w-10 truncate rounded-full p-1.5 ring-white ring-2 text-white">
                     {user?.email}
                   </p>
 
@@ -178,7 +178,7 @@ const Header = () => {
       <header className="bg-[#fb923c]">
         <div className="hidden lg:flex items-center max-w-[1280px] mx-auto pr-12">
           <Link to="/" className="cursor-pointer">
-            <img className="h-20 object-cover" src={logo3} alt="logo" />
+            <img className="h-20 object-cover" src={logo} alt="logo" />
           </Link>
 
           <ul className="flex w-full items-center justify-between text-white font-semibold uppercase tracking-wider">

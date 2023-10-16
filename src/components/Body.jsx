@@ -24,16 +24,6 @@ const Body = () => {
 
       setAllRestaurants(restaurantData)
       setFilteredRestaurants(restaurantData)
-
-      // Old object path
-      // setAllRestaurants(
-      //   jsonData?.data?.cards[2]?.data?.data?.cards ||
-      //     jsonData?.data?.cards[0]?.data?.data?.cards
-      // )
-      // setFilteredRestaurants(
-      //   jsonData?.data?.cards[2]?.data?.data?.cards ||
-      //     jsonData?.data?.cards[0]?.data?.data?.cards
-      // )
     } catch (error) {
       console.error(error)
     }
@@ -44,10 +34,6 @@ const Body = () => {
       res?.info?.name?.toLowerCase()?.includes(searchText?.toLowerCase())
     )
 
-    // Old object path
-    // const filteredData = restaurants.filter((res) =>
-    //   res?.data?.name?.toLowerCase()?.includes(searchText?.toLowerCase())
-    // )
     return filteredData
   }
 
@@ -95,12 +81,6 @@ const Body = () => {
                   key={restaurant?.info?.id}
                   {...restaurant?.info}
                 />
-
-                // Old object path
-                // <RestaurantCard
-                //   key={restaurant?.data?.id}
-                //   {...restaurant?.data}
-                // />
               ))
             )}
           </div>

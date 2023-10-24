@@ -46,7 +46,6 @@ const RestaurantCard = ({
           <p className="text-xs font-semibold  px-2 py-1">
             {slaString && slaString}
           </p>
-          {/* <MdDeliveryDining className="inline-block w-6 h-7" /> */}
         </div>
 
         {aggregatedDiscountInfoV3?.header && (

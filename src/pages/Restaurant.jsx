@@ -11,22 +11,26 @@ const Restaurant = () => {
   const { resId } = useParams()
   const navigate = useNavigate()
 
-  // Scroll to top automatically
   useEffect(() => {
+    // Scroll to top automatically
     window.scrollTo({
       top: 0,
       left: 0,
       behavior: "smooth",
     })
 
+    const fetchRestaurantMenu = async () => {
+      try {
+        const res = await fetch(`${RESTAURANT_ID}&restaurantId=${resId}`)
+        const jsonData = await res.json()
+        setRestaurantMenu(jsonData?.data?.cards)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
     fetchRestaurantMenu()
   }, [])
-
-  async function fetchRestaurantMenu() {
-    const res = await fetch(`${RESTAURANT_ID}&restaurantId=${resId}`)
-    const jsonData = await res.json()
-    setRestaurantMenu(jsonData?.data?.cards)
-  }
 
   const restaurantMenuLists =
     restaurantMenu?.[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.[1]?.card

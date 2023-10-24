@@ -9,25 +9,25 @@ const Body = () => {
   const [searchText, setSearchText] = useState("")
 
   useEffect(() => {
+    const fetchRestaurantsData = async () => {
+      try {
+        const res = await fetch(SWIGGY_API)
+        const jsonData = await res.json()
+        const restaurantData =
+          jsonData?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
+            ?.restaurants ||
+          jsonData?.data?.cards[3]?.card?.card?.gridElements?.infoWithStyle
+            ?.restaurants
+
+        setAllRestaurants(restaurantData)
+        setFilteredRestaurants(restaurantData)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
     fetchRestaurantsData()
   }, [])
-
-  async function fetchRestaurantsData() {
-    try {
-      const res = await fetch(SWIGGY_API)
-      const jsonData = await res.json()
-      const restaurantData =
-        jsonData?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
-          ?.restaurants ||
-        jsonData?.data?.cards[3]?.card?.card?.gridElements?.infoWithStyle
-          ?.restaurants
-
-      setAllRestaurants(restaurantData)
-      setFilteredRestaurants(restaurantData)
-    } catch (error) {
-      console.error(error)
-    }
-  }
 
   const filterRestaurant = (searchText, restaurants) => {
     const filteredData = restaurants?.filter((res) =>
@@ -49,17 +49,17 @@ const Body = () => {
     <main className="py-8 px-4 bg-[#f5f3f3] min-h-screen ">
       <div className="max-w-[1280px] mx-auto">
         <form
-          className="flex justify-center max-w-[600px] mx-auto"
           onSubmit={searchFormHandler}
+          className="flex justify-center max-w-[600px] mx-auto"
         >
           <input
+            onChange={(e) => {
+              setSearchText(e.target.value)
+            }}
             className="w-full pl-4 h-10 rounded-l-xl border-none outline-none focus:ring-[#fb923c]"
             type="text"
             placeholder="Search..."
             value={searchText}
-            onChange={(e) => {
-              setSearchText(e.target.value)
-            }}
           />
           <button
             type="submit"

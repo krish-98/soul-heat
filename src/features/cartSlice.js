@@ -78,7 +78,6 @@ export const cartSlice = createSlice({
               ? String(currentItem?.price).slice(0, 3)
               : String(currentItem?.defaultPrice).slice(0, 3)
 
-          console.log(`${priceStr} and its ${typeof priceStr} `)
           acc.item = acc.item + currentItem.quantity
           acc.amount = acc.item * Number(priceStr)
           return acc

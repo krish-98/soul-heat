@@ -24,12 +24,12 @@ import { auth } from "../configs/firebase.config"
 import { loadStripe } from "@stripe/stripe-js"
 
 const Cart = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const { cartItems, totalItems, totalAmount } = useSelector(
     (store) => store.cart
   )
   const { user } = useSelector((store) => store.auth)
-  const navigate = useNavigate()
 
   const googleProvider = new GoogleAuthProvider()
 

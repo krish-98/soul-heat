@@ -1,18 +1,19 @@
-import { useState, useEffect } from "react"
-import RestaurantCard from "./RestaurantCard"
-import { SWIGGY_API } from "../configs/constants"
-import Shimmer from "./Shimmer"
+import { useState, useEffect } from 'react'
+import RestaurantCard from './RestaurantCard'
+import { SWIGGY_API } from '../configs/constants'
+import Shimmer from './Shimmer'
 
 const Body = () => {
   const [filteredRestaurants, setFilteredRestaurants] = useState(null)
   const [allRestaurants, setAllRestaurants] = useState(null)
-  const [searchText, setSearchText] = useState("")
+  const [searchText, setSearchText] = useState('')
 
   useEffect(() => {
     const fetchRestaurantsData = async () => {
       try {
         const res = await fetch(SWIGGY_API)
         const jsonData = await res.json()
+
         const restaurantData =
           jsonData?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
             ?.restaurants ||
@@ -42,7 +43,7 @@ const Body = () => {
 
     const data = filterRestaurant(searchText, allRestaurants)
     setFilteredRestaurants(data)
-    setSearchText("")
+    setSearchText('')
   }
 
   return (

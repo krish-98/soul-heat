@@ -201,11 +201,11 @@ const Cart = () => {
                 <span>₹ {totalAmount + 49}</span>
               </p>
 
-              {/* Shows signin with google button if no user is logged in */}
+              {/* Shows signin with google button, if no user is logged in */}
               {!user ? (
                 <button
                   onClick={signInWithGoogle}
-                  className="flex items-center justify-center mt-10 py-2 gap-1 w-full rounded-xl bg-gray-100 hover:bg-gray-200 transition-all duration-300 decoration-clone"
+                  className="flex items-center justify-center mt-10 py-2 gap-1 w-full rounded-xl bg-white hover:bg-[#fb923c] hover:text-white transition-all duration-300 decoration-clone"
                 >
                   <FcGoogle className="w-9 h-9" />{" "}
                   <span className="font-semibold">Sign In to Checkout</span>

@@ -1,6 +1,5 @@
-import { useDispatch } from "react-redux"
-import { CLOUDINARY_IMAGE_ID } from "../configs/constants"
-import { addToCart, calculateCartTotal } from "../features/cartSlice"
+import { useDispatch } from 'react-redux'
+import { addToCart, calculateCartTotal } from '../features/cartSlice'
 
 const RestaurantMenu = ({ restaurantMenuLists }) => {
   const dispatch = useDispatch()
@@ -36,7 +35,7 @@ const RestaurantMenu = ({ restaurantMenuLists }) => {
                 {item?.info?.name}
               </h3>
               <p className="text-sm md:text-base">
-                ₹{" "}
+                ₹{' '}
                 {item?.info?.price
                   ? String(item?.info?.price).slice(0, 3)
                   : String(item?.info?.defaultPrice).slice(0, 3)}

@@ -1,7 +1,15 @@
 import { useState, useEffect } from 'react'
-import RestaurantCard from './RestaurantCard'
 import { SWIGGY_API } from '../configs/constants'
+import RestaurantCard from './RestaurantCard'
 import Shimmer from './Shimmer'
+
+const filterRestaurant = (searchText, restaurants) => {
+  const filteredData = restaurants?.filter((res) =>
+    res?.info?.name?.toLowerCase()?.includes(searchText?.toLowerCase())
+  )
+
+  return filteredData
+}
 
 const Body = () => {
   const [filteredRestaurants, setFilteredRestaurants] = useState(null)
@@ -12,12 +20,12 @@ const Body = () => {
     const fetchRestaurantsData = async () => {
       try {
         const res = await fetch(SWIGGY_API)
-        const jsonData = await res.json()
+        const data = await res.json()
 
         const restaurantData =
-          jsonData?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
+          data?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
             ?.restaurants ||
-          jsonData?.data?.cards[3]?.card?.card?.gridElements?.infoWithStyle
+          data?.data?.cards[3]?.card?.card?.gridElements?.infoWithStyle
             ?.restaurants
 
         setAllRestaurants(restaurantData)
@@ -30,14 +38,6 @@ const Body = () => {
     fetchRestaurantsData()
   }, [])
 
-  const filterRestaurant = (searchText, restaurants) => {
-    const filteredData = restaurants?.filter((res) =>
-      res?.info?.name?.toLowerCase()?.includes(searchText?.toLowerCase())
-    )
-
-    return filteredData
-  }
-
   const searchFormHandler = (e) => {
     e.preventDefault()
 
@@ -47,7 +47,7 @@ const Body = () => {
   }
 
   return (
-    <main className="py-8 px-4 bg-[#f5f3f3] min-h-screen ">
+    <main className="py-8 px-4 bg-[#f5f3f3] min-h-screen">
       <div className="max-w-[1280px] mx-auto">
         <form
           onSubmit={searchFormHandler}

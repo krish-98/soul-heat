@@ -1,27 +1,26 @@
-import { useNavigate } from "react-router-dom"
-import { CLOUDINARY_IMAGE_ID } from "../configs/constants"
+import { useNavigate } from 'react-router-dom'
 // import EmptyCart from "../assets/empty-cart.svg"
-import EmptyCart from "../assets/pngwing.com-3.png"
+import EmptyCart from '../assets/pngwing.com-3.png'
 
-import { RiEBike2Fill } from "react-icons/ri"
-import { IoBagCheckOutline } from "react-icons/io5"
-import { BsArrowLeft } from "react-icons/bs"
-import { FcGoogle } from "react-icons/fc"
+import { RiEBike2Fill } from 'react-icons/ri'
+import { IoBagCheckOutline } from 'react-icons/io5'
+import { BsArrowLeft } from 'react-icons/bs'
+import { FcGoogle } from 'react-icons/fc'
 
-import { FaRegTrashAlt } from "react-icons/fa"
+import { FaRegTrashAlt } from 'react-icons/fa'
 import {
   addToCart,
   calculateCartTotal,
   clearCart,
   removeFromCart,
-} from "../features/cartSlice"
-import { useDispatch, useSelector } from "react-redux"
-import { authenticateUser } from "../features/authSlice"
+} from '../features/cartSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { authenticateUser } from '../features/authSlice'
 
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"
-import { auth } from "../configs/firebase.config"
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import { auth } from '../configs/firebase.config'
 
-import { loadStripe } from "@stripe/stripe-js"
+import { loadStripe } from '@stripe/stripe-js'
 
 const Cart = () => {
   const navigate = useNavigate()
@@ -61,9 +60,9 @@ const Cart = () => {
       const res = await fetch(
         `${process.env.REACT_APP_SERVER_URL}/checkout-payment`,
         {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify(cartItems),
         }
@@ -101,7 +100,7 @@ const Cart = () => {
             <div
               onClick={() => dispatch(clearCart())}
               className={
-                "top-1 right-0 flex items-center gap-1 text-white bg-[#FB923C] py-1 px-2 rounded-xl cursor-pointer transition-all duration-300 hover:bg-[#FB3C46]"
+                'top-1 right-0 flex items-center gap-1 text-white bg-[#FB923C] py-1 px-2 rounded-xl cursor-pointer transition-all duration-300 hover:bg-[#FB3C46]'
               }
             >
               <p className="text-sm font-medium tracking-wide md:text-base">
@@ -142,14 +141,14 @@ const Cart = () => {
                     {/* Cart Item Details */}
                     <div className="flex flex-col gap-1 max-w-[60%]">
                       <h3 className="text-sm font-medium md:text-lg">
-                        {item?.name}{" "}
+                        {item?.name}{' '}
                       </h3>
 
                       <p className="text-sm md:text-base font-bold">
-                        ₹{" "}
+                        ₹{' '}
                         {item.price
                           ? String(item.price).slice(0, 3)
-                          : String(item.defaultPrice).slice(0, 3)}{" "}
+                          : String(item.defaultPrice).slice(0, 3)}{' '}
                         <span className="text-[#f26434] font-normal">
                           ( x {item?.quantity})
                         </span>
@@ -180,7 +179,7 @@ const Cart = () => {
               <div className="py-6 border-t border-b space-y-1">
                 <h3 className="flex justify-between items-center font-medium">
                   <span>
-                    Item {cartItems?.length > 1 ? "Totals" : "Total"} :{" "}
+                    Item {cartItems?.length > 1 ? 'Totals' : 'Total'} :{' '}
                   </span>
                   <span>₹ {totalAmount}</span>
                 </h3>
@@ -188,7 +187,7 @@ const Cart = () => {
                 <div className="flex justify-between items-center font-medium">
                   <span>
                     <span>Delivery Charges </span>
-                    <RiEBike2Fill className="fill-red-600 inline" /> :{" "}
+                    <RiEBike2Fill className="fill-red-600 inline" /> :{' '}
                   </span>
 
                   <span>₹ 49</span>
@@ -207,7 +206,7 @@ const Cart = () => {
                   onClick={signInWithGoogle}
                   className="flex items-center justify-center mt-10 py-2 gap-1 w-full rounded-xl bg-white hover:bg-[#fb923c] hover:text-white transition-all duration-300 decoration-clone"
                 >
-                  <FcGoogle className="w-9 h-9" />{" "}
+                  <FcGoogle className="w-9 h-9" />{' '}
                   <span className="font-semibold">Sign In to Checkout</span>
                 </button>
               ) : (

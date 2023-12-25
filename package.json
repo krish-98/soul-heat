@@ -1,13 +1,13 @@
 {
   "name": "soul-heat",
   "version": "1.0.0",
-  "description": "Food Delivery app",
+  "description": "Food Ordering app",
   "scripts": {
     "start": "parcel index.html",
     "build": "parcel build index.html",
     "test": "jest"
   },
-  "author": "Murali Krishnan",
+  "author": "Murali Krishnan M",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.21.8",
@@ -18,7 +18,7 @@
     "parcel": "^2.8.3",
     "postcss": "^8.4.23",
     "process": "^0.11.10",
-    "tailwindcss": "^3.3.2"
+    "tailwindcss": "^3.4.0"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",

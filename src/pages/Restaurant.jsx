@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react"
-import { useNavigate, useParams } from "react-router-dom"
-import ShimmerTwo from "../components/ShimmerTwo"
-import RestaurantHeader from "../components/RestaurantHeader"
-import RestaurantMenu from "../components/RestaurantMenu"
-import { BsArrowLeft } from "react-icons/bs"
-import { RESTAURANT_ID } from "../configs/constants"
+import { useState, useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import ShimmerTwo from '../components/ShimmerTwo'
+import RestaurantHeader from '../components/RestaurantHeader'
+import RestaurantMenu from '../components/RestaurantMenu'
+import { BsArrowLeft } from 'react-icons/bs'
+import { RESTAURANT_MENU } from '../configs/constants'
 
 const Restaurant = () => {
   const [restaurantMenu, setRestaurantMenu] = useState(null)
@@ -12,16 +12,32 @@ const Restaurant = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    // Scroll to top automatically
     window.scrollTo({
       top: 0,
       left: 0,
-      behavior: "smooth",
+      behavior: 'smooth',
     })
+
+    const queryParams = {
+      'page-type': 'REGULAR_MENU',
+      'complete-menu': 'true',
+      lat: '9.919788660259254',
+      lng: '78.1504649296403',
+      restaurantId: resId,
+      catalog_qa: 'undefined',
+      submitAction: 'ENTER',
+    }
+
+    const queryString = Object.keys(queryParams)
+      .map(
+        (key) =>
+          `${encodeURIComponent(key)}=${encodeURIComponent(queryParams[key])}`
+      )
+      .join('&')
 
     const fetchRestaurantMenu = async () => {
       try {
-        const res = await fetch(`${RESTAURANT_ID}&restaurantId=${resId}`)
+        const res = await fetch(`${RESTAURANT_MENU}?${queryString}`)
         const jsonData = await res.json()
         setRestaurantMenu(jsonData?.data?.cards)
       } catch (error) {

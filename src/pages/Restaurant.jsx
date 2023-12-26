@@ -4,7 +4,6 @@ import ShimmerTwo from '../components/ShimmerTwo'
 import RestaurantHeader from '../components/RestaurantHeader'
 import RestaurantMenu from '../components/RestaurantMenu'
 import { BsArrowLeft } from 'react-icons/bs'
-import { RESTAURANT_MENU } from '../configs/constants'
 
 const Restaurant = () => {
   const [restaurantMenu, setRestaurantMenu] = useState(null)
@@ -37,7 +36,7 @@ const Restaurant = () => {
 
     const fetchRestaurantMenu = async () => {
       try {
-        const res = await fetch(`${RESTAURANT_MENU}?${queryString}`)
+        const res = await fetch(`${process.env.RESTAURANT_MENU}?${queryString}`)
         const jsonData = await res.json()
         setRestaurantMenu(jsonData?.data?.cards)
       } catch (error) {

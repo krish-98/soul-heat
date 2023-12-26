@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { SWIGGY_API } from '../configs/constants'
 import RestaurantCard from './RestaurantCard'
 import Shimmer from './Shimmer'
 
@@ -19,7 +18,7 @@ const Body = () => {
   useEffect(() => {
     const fetchRestaurantsData = async () => {
       try {
-        const res = await fetch(SWIGGY_API)
+        const res = await fetch(process.env.SWIGGY_API)
         const data = await res.json()
 
         const restaurantData =

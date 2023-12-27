@@ -1,13 +1,11 @@
 import { useNavigate } from 'react-router-dom'
-// import EmptyCart from "../assets/empty-cart.svg"
 import EmptyCart from '../assets/pngwing.com-3.png'
-
 import { RiEBike2Fill } from 'react-icons/ri'
 import { IoBagCheckOutline } from 'react-icons/io5'
 import { BsArrowLeft } from 'react-icons/bs'
 import { FcGoogle } from 'react-icons/fc'
-
 import { FaRegTrashAlt } from 'react-icons/fa'
+
 import {
   addToCart,
   calculateCartTotal,
@@ -57,16 +55,13 @@ const Cart = () => {
       const stripePromise = await loadStripe(
         process.env.REACT_APP_STRIPE_PUBLIC_KEY
       )
-      const res = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}/checkout-payment`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(cartItems),
-        }
-      )
+      const res = await fetch(process.env.CHECKOUT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(cartItems),
+      })
       if (res.status === 500) return
       const data = await res.json()
       console.log(data)
@@ -133,7 +128,10 @@ const Cart = () => {
                     <div className="max-w-[35%]">
                       <img
                         className="md:w-[200px] object-contain rounded-xl"
-                        src={CLOUDINARY_IMAGE_ID + item?.imageId}
+                        src={
+                          'https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/' +
+                          item?.imageId
+                        }
                         alt={item?.name}
                       />
                     </div>

@@ -17,26 +17,9 @@ const Restaurant = () => {
       behavior: 'smooth',
     })
 
-    const queryParams = {
-      'page-type': 'REGULAR_MENU',
-      'complete-menu': 'true',
-      lat: '9.919788660259254',
-      lng: '78.1504649296403',
-      restaurantId: resId,
-      catalog_qa: 'undefined',
-      submitAction: 'ENTER',
-    }
-
-    const queryString = Object.keys(queryParams)
-      .map(
-        (key) =>
-          `${encodeURIComponent(key)}=${encodeURIComponent(queryParams[key])}`
-      )
-      .join('&')
-
     const fetchRestaurantMenu = async () => {
       try {
-        const res = await fetch(`${process.env.RESTAURANT_MENU}?${queryString}`)
+        const res = await fetch(`${process.env.RESTAURANT_MENU}/${resId}`)
         const jsonData = await res.json()
         setRestaurantMenu(jsonData?.data?.cards)
       } catch (error) {

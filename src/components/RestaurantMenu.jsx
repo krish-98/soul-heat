@@ -48,7 +48,10 @@ const RestaurantMenu = ({ restaurantMenuLists }) => {
             <div className="max-w-[30%] relative">
               <img
                 className="w-[170px] rounded-xl"
-                src={CLOUDINARY_IMAGE_ID + item?.info?.imageId}
+                src={
+                  'https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/' +
+                  item?.info?.imageId
+                }
                 alt={item?.info?.name}
               />
 

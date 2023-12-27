@@ -18,17 +18,22 @@ const Body = () => {
   useEffect(() => {
     const fetchRestaurantsData = async () => {
       try {
-        const res = await fetch(process.env.SWIGGY_API)
+        const res = await fetch(process.env.RESTAURANTS)
         const data = await res.json()
 
+        // console.log(data?.data?.cards[0])
+        console.log(data?.data?.cards)
         const restaurantData =
-          data?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
-            ?.restaurants ||
+          data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
+            ?.restaurants
+        data?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
+          ?.restaurants ||
           data?.data?.cards[3]?.card?.card?.gridElements?.infoWithStyle
             ?.restaurants
 
         setAllRestaurants(restaurantData)
         setFilteredRestaurants(restaurantData)
+        console.log(allRestaurants)
       } catch (error) {
         console.error(error)
       }

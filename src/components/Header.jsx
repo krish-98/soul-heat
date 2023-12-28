@@ -1,21 +1,21 @@
-import { useState } from "react"
-import { Link } from "react-router-dom"
-import Modal from "./Modal"
-import OnlineStatus from "./OnlineStatus"
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import Modal from './Modal'
+import OnlineStatus from './OnlineStatus'
 
-import logo from "../assets/logo.png"
-import { VscChromeClose } from "react-icons/vsc"
-import { IoCallOutline, IoCartOutline } from "react-icons/io5"
-import { HiOutlineUserCircle } from "react-icons/hi"
-import { PiHamburgerFill } from "react-icons/pi"
+import logo from '../assets/logo.png'
+import { VscChromeClose } from 'react-icons/vsc'
+import { IoCallOutline, IoCartOutline } from 'react-icons/io5'
+import { HiOutlineUserCircle } from 'react-icons/hi'
+import { PiHamburgerFill } from 'react-icons/pi'
 
-import { useDispatch, useSelector } from "react-redux"
-import { logout } from "../features/authSlice"
+import { useDispatch, useSelector } from 'react-redux'
+import { logout } from '../features/authSlice'
 
-import { signOut } from "firebase/auth"
-import { auth } from "../configs/firebase.config"
-import { AiOutlineHome } from "react-icons/ai"
-import { FaRegBuilding } from "react-icons/fa"
+import { signOut } from 'firebase/auth'
+import { auth } from '../configs/firebase.config'
+import { AiOutlineHome } from 'react-icons/ai'
+import { FaRegBuilding } from 'react-icons/fa'
 
 const Header = () => {
   const dispatch = useDispatch()
@@ -120,7 +120,7 @@ const Header = () => {
                 </div>
               )
             ) : (
-              ""
+              ''
             )}
 
             {!user && (

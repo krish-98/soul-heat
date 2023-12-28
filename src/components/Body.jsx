@@ -21,8 +21,7 @@ const Body = () => {
         const res = await fetch(process.env.RESTAURANTS)
         const data = await res.json()
 
-        // console.log(data?.data?.cards[0])
-        console.log(data?.data?.cards)
+        // console.log(data?.data?.cards)
         const restaurantData =
           data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
             ?.restaurants
@@ -33,7 +32,6 @@ const Body = () => {
 
         setAllRestaurants(restaurantData)
         setFilteredRestaurants(restaurantData)
-        console.log(allRestaurants)
       } catch (error) {
         console.error(error)
       }

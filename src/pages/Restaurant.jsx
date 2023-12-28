@@ -21,6 +21,7 @@ const Restaurant = () => {
       try {
         const res = await fetch(`${process.env.RESTAURANT_MENU}/${resId}`)
         const jsonData = await res.json()
+
         setRestaurantMenu(jsonData?.data?.cards)
       } catch (error) {
         console.error(error)
@@ -37,8 +38,6 @@ const Restaurant = () => {
       ?.card ||
     restaurantMenu?.[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.[2]?.card
       ?.card
-
-  // console.log(restaurantMenuLists?.carousel)
 
   return (
     <div className="mt-12 flex flex-col items-center px-6 max-w-[968px] mx-auto relative">

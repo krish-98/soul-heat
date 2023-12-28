@@ -127,7 +127,7 @@ const Cart = () => {
                     {/* Cart Item Img */}
                     <div className="max-w-[35%]">
                       <img
-                        className="md:w-[200px] object-contain rounded-xl"
+                        className="w-[170px] h-[78px] md:h-[125px] object-cover rounded-xl"
                         src={
                           'https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/' +
                           item?.imageId

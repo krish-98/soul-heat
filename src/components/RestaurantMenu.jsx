@@ -4,7 +4,7 @@ import { addToCart, calculateCartTotal } from '../features/cartSlice'
 const RestaurantMenu = ({ restaurantMenuLists }) => {
   const dispatch = useDispatch()
 
-  const menuDishes =
+  const dishes =
     restaurantMenuLists?.itemCards ||
     restaurantMenuLists?.categories?.[0]?.itemCards ||
     restaurantMenuLists?.carousel
@@ -22,12 +22,12 @@ const RestaurantMenu = ({ restaurantMenuLists }) => {
         </h2>
       </div>
 
-      {menuDishes?.map((list) => {
-        const item = list?.card || list?.dish
+      {dishes?.map((dish) => {
+        const item = dish?.card || dish?.dish
 
         return (
           <div
-            key={item?.info?.id || list?.dish?.info?.id}
+            key={item?.info?.id || dish?.dish?.info?.id}
             className="flex justify-between items-center pb-7 border-b"
           >
             <div className="flex flex-col gap-1 max-w-[65%] md:gap-2">
@@ -47,7 +47,7 @@ const RestaurantMenu = ({ restaurantMenuLists }) => {
 
             <div className="max-w-[30%] relative">
               <img
-                className="w-[170px] rounded-xl"
+                className="w-[170px] h-[78px] md:h-[125px] object-cover rounded-xl"
                 src={
                   'https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/' +
                   item?.info?.imageId

@@ -19,9 +19,9 @@ const RestaurantCard = ({
       <img
         className="w-[280px] h-[185px] object-cover rounded-b-3xl group-hover:scale-105 transition-all duration-500 delay-100 pt-1"
         src={`https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/${cloudinaryImageId}`}
-        alt={`${name} image`}
+        alt={name}
       />
-      <h2 className="font-bold text-lg truncate">{name}</h2>
+      <h2 className="font-bold text-lg w-64 truncate">{name}</h2>
       <h3 className="text-sm font-medium w-64 truncate">
         {cuisines?.length > 0
           ? cuisines?.slice(0, 6).join(', ') + ' & more'

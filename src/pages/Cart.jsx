@@ -51,28 +51,23 @@ const Cart = () => {
     dispatch(calculateCartTotal(item))
   }
 
-  // Stripe Check-out
   const handlePayment = async () => {
     try {
       setPaymentLoader(true)
-
       const stripePromise = await loadStripe(
         process.env.REACT_APP_STRIPE_PUBLIC_KEY
       )
 
       const res = await fetch(process.env.CHECKOUT, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(cartItems),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cartItems: cartItems }),
       })
 
       if (res.status === 500) return
 
-      const data = await res.json()
-      console.log(data)
-      stripePromise.redirectToCheckout({ sessionId: data })
+      const session = await res.json()
+      stripePromise.redirectToCheckout({ sessionId: session.id })
     } catch (error) {
       console.log(error)
     }
@@ -195,14 +190,14 @@ const Cart = () => {
                     <RiEBike2Fill className="fill-red-600 inline" /> :{' '}
                   </span>
 
-                  <span>₹ 49</span>
+                  <span className="line-through">₹ 49</span>
                 </div>
               </div>
 
               <p className="pt-4 text-lg font-semibold flex justify-between items-center">
                 <span>Total Amount : </span>
 
-                <span>₹ {totalAmount + 49}</span>
+                <span>₹ {totalAmount}</span>
               </p>
 
               {/* Show checkout button or Show signin with google button, if the user is not signed in */}
@@ -218,7 +213,7 @@ const Cart = () => {
                 <button
                   onClick={handlePayment}
                   disabled={paymentLoader}
-                  className={`bg-[#fb923c] mt-10 py-3 px-6 rounded-2xl flex items-center justify-center gap-1 hover:bg-[#ffa13c] hover:shadow-xl transistion duration-300 cursor-pointer focus:scale-90 ${
+                  className={`bg-[#fb923c] w-full mt-10 py-3 px-6 rounded-2xl flex items-center justify-center gap-1 hover:bg-[#ffa13c] hover:shadow-xl transistion duration-300 cursor-pointer focus:scale-90 ${
                     paymentLoader &&
                     'disabled:opacity-75 hover:cursor-not-allowed'
                   }`}

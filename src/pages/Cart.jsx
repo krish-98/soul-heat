@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import EmptyCart from '../assets/pngwing.com-3.png'
 import { RiEBike2Fill } from 'react-icons/ri'
@@ -21,6 +22,7 @@ import { auth } from '../configs/firebase.config'
 import { loadStripe } from '@stripe/stripe-js'
 
 const Cart = () => {
+  const [paymentLoader, setPaymentLoader] = useState(false)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { cartItems, totalItems, totalAmount } = useSelector(
@@ -52,9 +54,12 @@ const Cart = () => {
   // Stripe Check-out
   const handlePayment = async () => {
     try {
+      setPaymentLoader(true)
+
       const stripePromise = await loadStripe(
         process.env.REACT_APP_STRIPE_PUBLIC_KEY
       )
+
       const res = await fetch(process.env.CHECKOUT, {
         method: 'POST',
         headers: {
@@ -62,7 +67,9 @@ const Cart = () => {
         },
         body: JSON.stringify(cartItems),
       })
+
       if (res.status === 500) return
+
       const data = await res.json()
       console.log(data)
       stripePromise.redirectToCheckout({ sessionId: data })
@@ -198,7 +205,7 @@ const Cart = () => {
                 <span>₹ {totalAmount + 49}</span>
               </p>
 
-              {/* Shows signin with google button, if no user is logged in */}
+              {/* Show checkout button or Show signin with google button, if the user is not signed in */}
               {!user ? (
                 <button
                   onClick={signInWithGoogle}
@@ -208,15 +215,21 @@ const Cart = () => {
                   <span className="font-semibold">Sign In to Checkout</span>
                 </button>
               ) : (
-                <div
+                <button
                   onClick={handlePayment}
-                  className="bg-[#fb923c] mt-10 py-3 rounded-2xl flex items-center justify-center gap-1 hover:bg-[#ffa13c] hover:shadow-xl transistion duration-300 cursor-pointer focus:scale-90"
+                  disabled={paymentLoader}
+                  className={`bg-[#fb923c] mt-10 py-3 px-6 rounded-2xl flex items-center justify-center gap-1 hover:bg-[#ffa13c] hover:shadow-xl transistion duration-300 cursor-pointer focus:scale-90 ${
+                    paymentLoader &&
+                    'disabled:opacity-75 hover:cursor-not-allowed'
+                  }`}
                 >
-                  <button className="text-white font-semibold tracking-wider uppercase">
-                    Checkout
-                  </button>
-                  <IoBagCheckOutline className="w-7 h-[26px] stroke-white" />
-                </div>
+                  <p className="text-white font-semibold tracking-wider uppercase">
+                    {paymentLoader ? 'Processing...' : 'Checkout'}
+                  </p>
+                  {!paymentLoader && (
+                    <IoBagCheckOutline className="w-7 h-[26px] stroke-white" />
+                  )}
+                </button>
               )}
             </div>
           </div>

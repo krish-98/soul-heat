@@ -9,6 +9,24 @@ const RestaurantMenu = ({ restaurantMenuLists }) => {
     restaurantMenuLists?.categories?.[0]?.itemCards ||
     restaurantMenuLists?.carousel
 
+  // const addItemToCart = async (item) => {
+  //   console.log(item)
+  //   try {
+  //     const res = await fetch(process.env.CARTITEMS, {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify(item),
+  //     })
+  //     const cartItems = await res.json()
+
+  //     console.log(cartItems)
+  //     dispatch(addToCart(cartItems))
+  //     dispatch(calculateCartTotal())
+  //   } catch (error) {
+  //     console.error(error)
+  //   }
+  // }
+
   const addItemToCart = (item) => {
     dispatch(addToCart(item))
     dispatch(calculateCartTotal())

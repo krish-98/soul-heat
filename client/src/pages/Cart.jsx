@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import EmptyCart from '../assets/pngwing.com-3.png'
 import { RiEBike2Fill } from 'react-icons/ri'
@@ -6,19 +6,17 @@ import { IoBagCheckOutline } from 'react-icons/io5'
 import { BsArrowLeft } from 'react-icons/bs'
 import { FcGoogle } from 'react-icons/fc'
 import { FaRegTrashAlt } from 'react-icons/fa'
-
 import {
   addToCart,
   calculateCartTotal,
   clearCart,
+  getCart,
   removeFromCart,
 } from '../features/cartSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { authenticateUser } from '../features/authSlice'
-
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { auth } from '../configs/firebase.config'
-
 import { loadStripe } from '@stripe/stripe-js'
 
 const Cart = () => {
@@ -29,6 +27,17 @@ const Cart = () => {
     (store) => store.cart
   )
   const { user } = useSelector((store) => store.auth)
+
+  useEffect(() => {
+    const getAllCartItems = async () => {
+      const res = await fetch('/api/cart/all-items')
+      const data = await res.json()
+
+      dispatch(getCart(data))
+    }
+
+    getAllCartItems()
+  }, [totalItems])
 
   const googleProvider = new GoogleAuthProvider()
 
@@ -41,24 +50,71 @@ const Cart = () => {
     }
   }
 
-  const increaseQty = (item) => {
-    dispatch(addToCart(item))
-    dispatch(calculateCartTotal(item))
+  const increaseQty = async (item) => {
+    try {
+      const cartItem = {
+        id: item?.id,
+        name: item?.name,
+        category: item?.category,
+        description: item?.description,
+        imageId: item?.imageId,
+        price: item?.price || item.defaultPrice,
+        quantity: 1,
+      }
+
+      const res = await fetch('/api/cart/cart-items', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(cartItem),
+      })
+      const data = await res.json()
+
+      // dispatch(addToCart(item))
+
+      dispatch(calculateCartTotal())
+    } catch (error) {
+      console.log(error)
+    }
   }
 
-  const decreaseQty = (item) => {
-    dispatch(removeFromCart(item))
-    dispatch(calculateCartTotal(item))
+  const decreaseQty = async (item) => {
+    try {
+      const cartItem = {
+        id: item?.id,
+        name: item?.name,
+        category: item?.category,
+        description: item?.description,
+        imageId: item?.imageId,
+        price: item?.price || item.defaultPrice,
+        quantity: 1,
+      }
+
+      const res = await fetch('http://localhost:3000/api/cart/remove-cart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(cartItem),
+      })
+      const data = await res.json()
+
+      // dispatch(removeFromCart(item))
+      dispatch(calculateCartTotal(item))
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const handlePayment = async () => {
     try {
       setPaymentLoader(true)
       const stripePromise = await loadStripe(
-        process.env.REACT_APP_STRIPE_PUBLIC_KEY
+        import.meta.env.VITE_STRIPE_PUBLIC_KEY
       )
 
-      const res = await fetch(process.env.CHECKOUT, {
+      const res = await fetch('/api/cart/checkout-payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ cartItems: cartItems }),
@@ -125,7 +181,7 @@ const Cart = () => {
             <div className="flex flex-col gap-8 pb-8 lg:w-[70%]">
               {cartItems.length > 0 &&
                 cartItems.map((item) => (
-                  <div key={item?.id} className="flex items-center gap-8">
+                  <div key={item?._id} className="flex items-center gap-8">
                     {/* Cart Item Img */}
                     <div className="max-w-[35%]">
                       <img

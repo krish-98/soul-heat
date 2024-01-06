@@ -11,22 +11,21 @@ const filterRestaurant = (searchText, restaurants) => {
 }
 
 const Body = () => {
-  const [filteredRestaurants, setFilteredRestaurants] = useState(null)
   const [allRestaurants, setAllRestaurants] = useState(null)
+  const [filteredRestaurants, setFilteredRestaurants] = useState(null)
   const [searchText, setSearchText] = useState('')
 
   useEffect(() => {
     const fetchRestaurantsData = async () => {
       try {
-        const res = await fetch(process.env.RESTAURANTS)
+        const res = await fetch('/api/restaurant')
         const data = await res.json()
 
-        // console.log(data?.data?.cards)
         const restaurantData =
           data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
-            ?.restaurants
-        data?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
-          ?.restaurants ||
+            ?.restaurants ||
+          data?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
+            ?.restaurants ||
           data?.data?.cards[3]?.card?.card?.gridElements?.infoWithStyle
             ?.restaurants
 

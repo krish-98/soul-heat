@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import ShimmerTwo from '../components/ShimmerTwo'
 import RestaurantHeader from '../components/RestaurantHeader'
-import RestaurantMenu from '../components/RestaurantMenu'
+import RestaurantDishes from '../components/RestaurantDishes'
 import { BsArrowLeft } from 'react-icons/bs'
 
 const Restaurant = () => {
@@ -19,9 +19,10 @@ const Restaurant = () => {
 
     const fetchRestaurantMenu = async () => {
       try {
-        const res = await fetch(`${process.env.RESTAURANT_MENU}/${resId}`)
+        const res = await fetch(`/api/restaurant/${resId}`)
         const jsonData = await res.json()
 
+        console.log(jsonData)
         setRestaurantMenu(jsonData?.data?.cards)
       } catch (error) {
         console.error(error)
@@ -55,7 +56,7 @@ const Restaurant = () => {
           <RestaurantHeader
             restaurantHeader={restaurantMenu?.[0]?.card?.card?.info}
           />
-          <RestaurantMenu restaurantMenuLists={restaurantMenuLists} />
+          <RestaurantDishes restaurantMenuLists={restaurantMenuLists} />
         </>
       )}
     </div>

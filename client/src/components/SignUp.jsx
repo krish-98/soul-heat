@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react"
-import { FcGoogle } from "react-icons/fc"
-import { createUserWithEmailAndPassword } from "firebase/auth"
-import { auth } from "../configs/firebase.config"
-import { useDispatch, useSelector } from "react-redux"
-import { authenticateUser } from "../features/authSlice"
+import { useEffect, useState } from 'react'
+import { FcGoogle } from 'react-icons/fc'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '../configs/firebase.config'
+import { useDispatch, useSelector } from 'react-redux'
+import { authenticateUser } from '../features/authSlice'
 
 const SignUp = ({ handleUser, googleSignIn, showAndCloseModal }) => {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   const dispatch = useDispatch()
 
@@ -15,7 +15,7 @@ const SignUp = ({ handleUser, googleSignIn, showAndCloseModal }) => {
     e.preventDefault()
 
     if (!email || !password) {
-      alert("Kindly fill the form with real information to move further")
+      alert('Kindly fill the form with real information to move further')
       return
     }
 
@@ -27,8 +27,8 @@ const SignUp = ({ handleUser, googleSignIn, showAndCloseModal }) => {
       )
       dispatch(authenticateUser(userInfo?.user))
 
-      setEmail("")
-      setPassword("")
+      setEmail('')
+      setPassword('')
       showAndCloseModal()
     } catch (error) {
       console.error(error)
@@ -110,7 +110,7 @@ const SignUp = ({ handleUser, googleSignIn, showAndCloseModal }) => {
       </div>
 
       <p className="mt-8 text-center text-sm text-white">
-        Already have an account?{" "}
+        Already have an account?{' '}
         <button
           onClick={handleUser}
           className="font-semibold text-black leading-6 transition duration-500 hover:underline"

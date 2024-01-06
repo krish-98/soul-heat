@@ -1,35 +1,45 @@
-import { useDispatch } from 'react-redux'
-import { addToCart, calculateCartTotal } from '../features/cartSlice'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { addToCart, calculateCartTotal, getCart } from '../features/cartSlice'
+import toast from 'react-hot-toast'
 
-const RestaurantMenu = ({ restaurantMenuLists }) => {
+const RestaurantDishes = ({ restaurantMenuLists }) => {
   const dispatch = useDispatch()
+  const { cartItems } = useSelector((state) => state.cart)
 
   const dishes =
     restaurantMenuLists?.itemCards ||
     restaurantMenuLists?.categories?.[0]?.itemCards ||
     restaurantMenuLists?.carousel
 
-  // const addItemToCart = async (item) => {
-  //   console.log(item)
-  //   try {
-  //     const res = await fetch(process.env.CARTITEMS, {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify(item),
-  //     })
-  //     const cartItems = await res.json()
+  const addItemToCart = async (item) => {
+    try {
+      const cartItem = {
+        id: item?.id,
+        name: item?.name,
+        category: item?.category,
+        description: item?.description,
+        imageId: item?.imageId,
+        price: item?.price || item.defaultPrice,
+        quantity: 1,
+      }
 
-  //     console.log(cartItems)
-  //     dispatch(addToCart(cartItems))
-  //     dispatch(calculateCartTotal())
-  //   } catch (error) {
-  //     console.error(error)
-  //   }
-  // }
+      const res = await fetch('/api/cart/cart-items', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(cartItem),
+      })
+      const data = await res.json()
 
-  const addItemToCart = (item) => {
-    dispatch(addToCart(item))
-    dispatch(calculateCartTotal())
+      toast.success('Added to the cart', {
+        position: 'top-center',
+      })
+      dispatch(addToCart(data))
+
+      dispatch(calculateCartTotal())
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -87,4 +97,4 @@ const RestaurantMenu = ({ restaurantMenuLists }) => {
   )
 }
 
-export default RestaurantMenu
+export default RestaurantDishes

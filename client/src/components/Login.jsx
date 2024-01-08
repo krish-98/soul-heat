@@ -1,22 +1,23 @@
-import { signInWithEmailAndPassword } from "firebase/auth"
-import { useState } from "react"
-import { FcGoogle } from "react-icons/fc"
-import { auth } from "../configs/firebase.config"
-import { authenticateUser } from "../features/authSlice"
-import { useDispatch, useSelector } from "react-redux"
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { useState } from 'react'
+import { FcGoogle } from 'react-icons/fc'
+import { auth } from '../configs/firebase.config'
+import { authenticateUser } from '../features/authSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
-const Login = ({ handleUser, googleSignIn, showAndCloseModal }) => {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+const Login = ({ handleUser, googleSignIn }) => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   const dispatch = useDispatch()
+  const { modal } = useSelector((store) => store.modal)
   // const { user } = useSelector((store) => store.auth)
 
   const loggingExistingUser = async (e) => {
     e.preventDefault()
 
     if (!email || !password) {
-      alert("Kindly fill the form with real information to move further")
+      alert('Kindly fill the form with real information to move further')
       return
     }
 
@@ -24,9 +25,10 @@ const Login = ({ handleUser, googleSignIn, showAndCloseModal }) => {
       const userInfo = await signInWithEmailAndPassword(auth, email, password)
       dispatch(authenticateUser(userInfo?.user))
 
-      setEmail("")
-      setPassword("")
-      showAndCloseModal()
+      setEmail('')
+      setPassword('')
+
+      dispatch(toggleModal(!modal))
     } catch (error) {
       console.error(error)
       console.error(error.code)
@@ -107,7 +109,7 @@ const Login = ({ handleUser, googleSignIn, showAndCloseModal }) => {
       </div>
 
       <p className="mt-8 text-center text-sm text-white">
-        Don't have an account?{" "}
+        Don't have an account?{' '}
         <button
           onClick={handleUser}
           className="font-semibold text-black leading-6 transition duration-500 hover:underline"

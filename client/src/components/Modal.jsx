@@ -8,18 +8,24 @@ import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { auth } from '../configs/firebase.config'
 import { useDispatch, useSelector } from 'react-redux'
 import { authenticateUser } from '../features/authSlice'
+import { toggleModal } from '../features/modalSlice'
 
-const Modal = ({ showAndCloseModal }) => {
+const Modal = () => {
   const [newUser, setNewUser] = useState(true)
   const dispatch = useDispatch()
   const { user } = useSelector((store) => store.auth)
+  const { modal } = useSelector((store) => store.modal)
   const googleProvider = new GoogleAuthProvider()
 
   useEffect(() => {
     if (user) {
-      showAndCloseModal()
+      dispatch(toggleModal(!modal))
     }
   }, [user])
+
+  const showAndHideModal = () => {
+    dispatch(toggleModal(!modal))
+  }
 
   const signInWithGoogle = async () => {
     try {
@@ -37,10 +43,10 @@ const Modal = ({ showAndCloseModal }) => {
       <div className="flex h-screen bg-[#fb923c] flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div
           className="absolute top-12 right-6 md:right-[4.5rem] cursor-pointer lg:right-32 lg:top-10 xl:right-60"
-          onClick={showAndCloseModal}
+          onClick={showAndHideModal}
         >
           <AiOutlineCloseCircle
-            onClick={showAndCloseModal}
+            onClick={showAndHideModal}
             className="fill-white w-8 h-8 md:h-9 md:w-9"
           />
         </div>
@@ -52,13 +58,11 @@ const Modal = ({ showAndCloseModal }) => {
           <SignUp
             handleUser={() => setNewUser(false)}
             googleSignIn={signInWithGoogle}
-            showAndCloseModal={showAndCloseModal}
           />
         ) : (
           <Login
             handleUser={() => setNewUser(true)}
             googleSignIn={signInWithGoogle}
-            showAndCloseModal={showAndCloseModal}
           />
         )}
       </div>

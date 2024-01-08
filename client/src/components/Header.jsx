@@ -15,22 +15,22 @@ import { FaRegBuilding } from 'react-icons/fa'
 import { signOut } from 'firebase/auth'
 import { auth } from '../configs/firebase.config'
 import { logout } from '../features/authSlice'
+import { toggleModal } from '../features/modalSlice'
 
 const Header = () => {
   const dispatch = useDispatch()
   const [toggle, setToggle] = useState(false)
-  const [modal, setModal] = useState(false)
   const [showSignout, setShowSignout] = useState(false)
-
   const { totalItems } = useSelector((store) => store.cart)
   const { user } = useSelector((store) => store.auth)
+  const { modal } = useSelector((store) => store.modal)
 
   const handleToggler = () => {
     setToggle(!toggle)
   }
 
-  const showAndCloseModal = () => {
-    setModal(!modal)
+  const showAndHideModal = () => {
+    dispatch(toggleModal(!modal))
   }
 
   const signOutUser = async () => {
@@ -124,7 +124,7 @@ const Header = () => {
 
             {!user && (
               <HiOutlineUserCircle
-                onClick={() => setModal(true)}
+                onClick={showAndHideModal}
                 className="w-8 h-9 stroke-white cursor-pointer"
               />
             )}
@@ -227,7 +227,7 @@ const Header = () => {
               {/* User Profile Icon */}
               {!user && (
                 <div
-                  onClick={() => setModal(true)}
+                  onClick={showAndHideModal}
                   className="flex items-center cursor-pointer"
                 >
                   <li>
@@ -284,7 +284,7 @@ const Header = () => {
         </div>
       </header>
 
-      {modal && <Modal showAndCloseModal={showAndCloseModal} />}
+      {modal && <Modal />}
 
       <OnlineStatus />
     </>

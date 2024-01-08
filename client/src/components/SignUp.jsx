@@ -2,13 +2,16 @@ import { useState } from 'react'
 import { FcGoogle } from 'react-icons/fc'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../configs/firebase.config'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { authenticateUser } from '../features/authSlice'
+import { toggleModal } from '../features/modalSlice'
 
 const SignUp = ({ handleUser, googleSignIn, showAndCloseModal }) => {
   const [formData, setFormData] = useState({})
   const [loading, setLoading] = useState(null)
   const [error, setError] = useState(null)
+  const dispatch = useDispatch()
+  const { modal } = useSelector((store) => store.modal)
 
   // const dispatch = useDispatch()
 
@@ -52,7 +55,7 @@ const SignUp = ({ handleUser, googleSignIn, showAndCloseModal }) => {
         return
       }
       setLoading(false)
-      showAndCloseModal(false)
+      dispatch(toggleModal(!modal))
 
       console.log(data)
     } catch (error) {

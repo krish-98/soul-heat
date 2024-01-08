@@ -1,13 +1,30 @@
 import { Schema, model } from 'mongoose'
 
-const userSchema = new Schema({
-  providerId: { type: String },
-  uid: { type: String },
-  displayName: { type: String },
-  email: { type: String },
-  phoneNumber: { type: String },
-  photoURL: { type: String },
-})
+const userSchema = new Schema(
+  {
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    avatar: {
+      type: String,
+      default:
+        'https://t3.ftcdn.net/jpg/03/64/62/36/360_F_364623623_ERzQYfO4HHHyawYkJ16tREsizLyvcaeg.jpg',
+    },
+  },
+  { timestamps: true }
+)
 
 const User = model('User', userSchema)
 

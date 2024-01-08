@@ -4,7 +4,7 @@ import Stripe from 'stripe'
 import mongoose from 'mongoose'
 import path from 'path'
 
-import userRouter from './routes/cart.routes.js'
+import userRouter from './routes/user.routes.js'
 import restaurantRouter from './routes/restaurant.routes.js'
 import cartRouter from './routes/cart.routes.js'
 

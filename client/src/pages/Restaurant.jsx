@@ -22,7 +22,6 @@ const Restaurant = () => {
         const res = await fetch(`/api/restaurant/${resId}`)
         const jsonData = await res.json()
 
-        console.log(jsonData)
         setRestaurantMenu(jsonData?.data?.cards)
       } catch (error) {
         console.error(error)

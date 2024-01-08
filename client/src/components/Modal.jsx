@@ -1,13 +1,13 @@
-import SignUp from "./SignUp"
-import { CgClose } from "react-icons/cg"
-import { AiOutlineCloseCircle } from "react-icons/ai"
-import logo from "../assets/logo.png"
-import { useEffect, useState } from "react"
-import Login from "./Login"
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"
-import { auth } from "../configs/firebase.config"
-import { useDispatch, useSelector } from "react-redux"
-import { authenticateUser } from "../features/authSlice"
+import SignUp from './SignUp'
+import { CgClose } from 'react-icons/cg'
+import { AiOutlineCloseCircle } from 'react-icons/ai'
+import logo from '../assets/logo.png'
+import { useEffect, useState } from 'react'
+import Login from './Login'
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import { auth } from '../configs/firebase.config'
+import { useDispatch, useSelector } from 'react-redux'
+import { authenticateUser } from '../features/authSlice'
 
 const Modal = ({ showAndCloseModal }) => {
   const [newUser, setNewUser] = useState(true)
@@ -48,7 +48,6 @@ const Modal = ({ showAndCloseModal }) => {
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img src={logo} alt="soul heat logo" />
         </div>
-
         {newUser ? (
           <SignUp
             handleUser={() => setNewUser(false)}

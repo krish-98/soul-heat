@@ -52,6 +52,7 @@ export const removeItemFromCart = async (req, res) => {
 export const getAllCartItems = async (req, res) => {
   const items = await Cart.find({})
 
+  console.log(items)
   res.json(items)
 }
 

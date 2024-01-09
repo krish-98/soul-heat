@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import Modal from './Modal'
 import OnlineStatus from './OnlineStatus'
 import logo from '../assets/logo.png'
 
@@ -15,7 +14,6 @@ import { FaRegBuilding } from 'react-icons/fa'
 import { signOut } from 'firebase/auth'
 import { auth } from '../configs/firebase.config'
 import { logout } from '../features/authSlice'
-import { toggleModal } from '../features/modalSlice'
 
 const Header = () => {
   const dispatch = useDispatch()
@@ -23,25 +21,14 @@ const Header = () => {
   const [showSignout, setShowSignout] = useState(false)
   const { totalItems } = useSelector((store) => store.cart)
   const { user } = useSelector((store) => store.auth)
-  const { modal } = useSelector((store) => store.modal)
 
   const handleToggler = () => {
     setToggle(!toggle)
   }
 
-  const showAndHideModal = () => {
-    dispatch(toggleModal(!modal))
-  }
-
-  const signOutUser = async () => {
-    try {
-      await signOut(auth)
-
-      dispatch(logout())
-      setShowSignout(false)
-    } catch (error) {
-      console.error(error.message)
-    }
+  const signOutUser = () => {
+    dispatch(logout())
+    setShowSignout(false)
   }
 
   return (
@@ -69,6 +56,7 @@ const Header = () => {
           </Link>
 
           <div className="flex items-center gap-5">
+            {/* Cart icon */}
             <Link to="/cart" className="hover:bg-[#f9bca8] relative">
               <IoCartOutline className="w-8 h-8 stroke-white cursor-pointer" />
 
@@ -80,53 +68,31 @@ const Header = () => {
             </Link>
 
             {/* Displaying user Profile pic */}
-            {user ? (
-              user?.photoURL === null ? (
-                <div onClick={() => setShowSignout(true)} className="relative">
-                  <p className="w-10 truncate rounded-full p-1.5 ring-white ring-2 text-white">
-                    {user?.email}
-                  </p>
-
-                  {showSignout && (
-                    <button
-                      onClick={signOutUser}
-                      className="absolute top-12 right-0 z-50 bg-white p-2 text-sm rounded-md"
-                    >
-                      Logout
-                    </button>
-                  )}
-                </div>
-              ) : (
-                <div className="relative cursor-pointer">
-                  <img
-                    onClick={() => {
-                      setShowSignout(!showSignout)
-                    }}
-                    className="w-14 md:w-12 object-contain border rounded-full ring-1 ring-white ring-offset-2"
-                    src={user?.photoURL}
-                    alt="user profile"
-                    referrerPolicy="no-referrer"
-                  />
-
-                  {showSignout && (
-                    <button
-                      onClick={signOutUser}
-                      className="absolute top-12 xs:top-16 right-0 z-50 bg-white p-2 text-sm rounded-md"
-                    >
-                      Logout
-                    </button>
-                  )}
-                </div>
-              )
+            {!user ? (
+              <Link to={'/sign-in'}>
+                <HiOutlineUserCircle className="w-8 h-9 stroke-white cursor-pointer" />
+              </Link>
             ) : (
-              ''
-            )}
+              <div className="relative cursor-pointer">
+                <img
+                  onClick={() => {
+                    setShowSignout(!showSignout)
+                  }}
+                  className="w-14 md:w-12 object-contain border rounded-full ring-1 ring-white ring-offset-2"
+                  src={user?.avatar}
+                  alt="user profile"
+                  referrerPolicy="no-referrer"
+                />
 
-            {!user && (
-              <HiOutlineUserCircle
-                onClick={showAndHideModal}
-                className="w-8 h-9 stroke-white cursor-pointer"
-              />
+                {showSignout && (
+                  <button
+                    onClick={signOutUser}
+                    className="absolute top-12 xs:top-16 right-0 z-50 bg-white p-2 text-sm rounded-md"
+                  >
+                    Logout
+                  </button>
+                )}
+              </div>
             )}
           </div>
         </div>
@@ -225,49 +191,27 @@ const Header = () => {
               </li>
 
               {/* User Profile Icon */}
-              {!user && (
-                <div
-                  onClick={showAndHideModal}
+              {!user ? (
+                <Link
+                  to="/sign-in"
                   className="flex items-center cursor-pointer"
                 >
                   <li>
                     <HiOutlineUserCircle className="w-9 h-10 stroke-white" />
                   </li>
                   <p className="pl-0.5">Sign In</p>
-                </div>
-              )}
-
-              {user && user?.photoURL && (
+                </Link>
+              ) : (
                 <div
                   onClick={() => setShowSignout(!showSignout)}
                   className="rounded-full ring ring-white cursor-pointer relative"
                 >
                   <img
                     className="w-11 h-11 object-contain rounded-full"
-                    src={user?.photoURL}
+                    src={user?.avatar}
                     alt="user profile"
                     referrerPolicy="no-referrer"
                   />
-
-                  {showSignout && (
-                    <button
-                      onClick={signOutUser}
-                      className="absolute top-14 -right-4 w-20 bg-white text-black z-50 p-2 tracking-wide rounded-md"
-                    >
-                      Logout
-                    </button>
-                  )}
-                </div>
-              )}
-
-              {user && !user?.photoURL && (
-                <div className="relative rounded-full ring ring-white cursor-pointer">
-                  <p
-                    onClick={() => setShowSignout(!showSignout)}
-                    className="lowercase p-2 w-10 h-10 truncate"
-                  >
-                    {user?.email}
-                  </p>
 
                   {showSignout && (
                     <button
@@ -283,8 +227,6 @@ const Header = () => {
           </ul>
         </div>
       </header>
-
-      {modal && <Modal />}
 
       <OnlineStatus />
     </>

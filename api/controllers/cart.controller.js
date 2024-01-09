@@ -29,8 +29,6 @@ export const removeItemFromCart = async (req, res) => {
     const { id, quantity } = req.body
     let existingCartItem = await Cart.findOne({ id })
 
-    console.log(existingCartItem)
-
     if (existingCartItem && existingCartItem.quantity > 0) {
       existingCartItem.quantity -= quantity || 1
       existingCartItem.save()
@@ -52,7 +50,6 @@ export const removeItemFromCart = async (req, res) => {
 export const getAllCartItems = async (req, res) => {
   const items = await Cart.find({})
 
-  console.log(items)
   res.json(items)
 }
 

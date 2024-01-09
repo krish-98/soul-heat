@@ -10,9 +10,6 @@ import { HiOutlineUserCircle } from 'react-icons/hi'
 import { PiHamburgerFill } from 'react-icons/pi'
 import { AiOutlineHome } from 'react-icons/ai'
 import { FaRegBuilding } from 'react-icons/fa'
-
-import { signOut } from 'firebase/auth'
-import { auth } from '../configs/firebase.config'
 import { logout } from '../features/authSlice'
 
 const Header = () => {
@@ -68,7 +65,7 @@ const Header = () => {
             </Link>
 
             {/* Displaying user Profile pic */}
-            {!user ? (
+            {!user?._id ? (
               <Link to={'/sign-in'}>
                 <HiOutlineUserCircle className="w-8 h-9 stroke-white cursor-pointer" />
               </Link>
@@ -191,7 +188,7 @@ const Header = () => {
               </li>
 
               {/* User Profile Icon */}
-              {!user ? (
+              {!user?._id ? (
                 <Link
                   to="/sign-in"
                   className="flex items-center cursor-pointer"

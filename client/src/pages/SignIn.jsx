@@ -1,11 +1,8 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { FcGoogle } from 'react-icons/fc'
-
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
-import { auth } from '../configs/firebase.config'
+import { useDispatch } from 'react-redux'
 import { authenticateUser } from '../features/authSlice'
+import OAuth from '../components/OAuth'
 
 const SignIn = () => {
   const [formData, setFormData] = useState({})
@@ -13,19 +10,6 @@ const SignIn = () => {
   const [error, setError] = useState(null)
   const navigate = useNavigate()
   const dispatch = useDispatch()
-
-  const googleProvider = new GoogleAuthProvider()
-
-  const signInWithGoogle = async () => {
-    try {
-      const response = await signInWithPopup(auth, googleProvider)
-      dispatch(authenticateUser(response?.user?.providerData?.[0]))
-    } catch (error) {
-      console.error(error)
-      console.error(error.code)
-      console.error(error.message)
-    }
-  }
 
   const handleChange = (e) => {
     setFormData({
@@ -146,12 +130,7 @@ const SignIn = () => {
             or
           </p>
 
-          <button
-            onClick={signInWithGoogle}
-            className="flex items-center justify-center gap-1 bg-white w-full py-2 rounded-xl hover:bg-gray-100 transition-all duration-300 decoration-clone"
-          >
-            <FcGoogle className="w-9 h-9" /> Sign in with Google
-          </button>
+          <OAuth btnName="Sign in with Google" />
         </div>
 
         <p className="mt-8 text-center text-sm text-white">

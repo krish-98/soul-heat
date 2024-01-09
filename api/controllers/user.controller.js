@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import User from '../models/user.model.js'
 import { handleError } from '../utils/error.js'
@@ -24,16 +24,18 @@ export const signup = async (req, res, next) => {
 export const signin = async (req, res, next) => {
   try {
     const { email, password } = req.body
+    console.log('Normal Password', password)
 
     const validUser = await User.findOne({ email })
     if (!validUser) {
       next(handleError(404, 'User not found'))
     }
 
-    const decryptedPassword = bcrypt.compareSync(password, validUser.password)
-    const validPassword = await User.findOne({ decryptedPassword })
-    if (!validPassword) {
+    const isPasswordValid = bcrypt.compareSync(password, validUser.password)
+    console.log('isPasswordValid Password', isPasswordValid)
+    if (!isPasswordValid) {
       next(handleError(401, 'Wrong credentials'))
+      return
     }
 
     const { password: userPW, ...rest } = validUser._doc

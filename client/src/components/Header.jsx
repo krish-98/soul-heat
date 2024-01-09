@@ -233,7 +233,7 @@ const Header = () => {
                   <li>
                     <HiOutlineUserCircle className="w-9 h-10 stroke-white" />
                   </li>
-                  <p className="pl-0.5">Login</p>
+                  <p className="pl-0.5">Sign In</p>
                 </div>
               )}
 

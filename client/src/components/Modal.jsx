@@ -3,7 +3,7 @@ import { CgClose } from 'react-icons/cg'
 import { AiOutlineCloseCircle } from 'react-icons/ai'
 import logo from '../assets/logo.png'
 import { useEffect, useState } from 'react'
-import Login from './Login'
+import SignIn from './SignIn'
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { auth } from '../configs/firebase.config'
 import { useDispatch, useSelector } from 'react-redux'
@@ -60,7 +60,7 @@ const Modal = () => {
             googleSignIn={signInWithGoogle}
           />
         ) : (
-          <Login
+          <SignIn
             handleUser={() => setNewUser(true)}
             googleSignIn={signInWithGoogle}
           />

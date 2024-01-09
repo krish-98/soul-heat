@@ -13,8 +13,6 @@ const SignUp = ({ handleUser, googleSignIn, showAndCloseModal }) => {
   const dispatch = useDispatch()
   const { modal } = useSelector((store) => store.modal)
 
-  // const dispatch = useDispatch()
-
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -24,11 +22,11 @@ const SignUp = ({ handleUser, googleSignIn, showAndCloseModal }) => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
-
     setLoading(true)
+
     if (
       formData.username === '' ||
-      formData.name === '' ||
+      formData.email === '' ||
       formData.password === ''
     ) {
       alert('Kindly fill the form with real information to move further')
@@ -66,7 +64,7 @@ const SignUp = ({ handleUser, googleSignIn, showAndCloseModal }) => {
 
   return (
     <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-      {error && <p className="mb-4 font-semibold">{error}</p>}
+      {error && <p className="text-center mb-4 font-semibold">{error}</p>}
       <form className="space-y-6" onSubmit={handleFormSubmit}>
         <div>
           <label
@@ -167,7 +165,7 @@ const SignUp = ({ handleUser, googleSignIn, showAndCloseModal }) => {
           onClick={handleUser}
           className="font-semibold text-black leading-6 transition duration-500 hover:underline"
         >
-          Login
+          Sign in
         </button>
       </p>
     </div>

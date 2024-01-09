@@ -17,6 +17,8 @@ import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from './configs/firebase.config'
 import { authenticateUser } from './features/authSlice'
 import { calculateCartTotal, getCart } from './features/cartSlice'
+import SignIn from './components/SignIn'
+import SignUp from './components/SignUp'
 
 function App() {
   const dispatch = useDispatch()
@@ -52,6 +54,8 @@ function App() {
         <Route path="about" element={<About />} />
         <Route path="contact" element={<Contact />} />
         <Route path="cart" element={<Cart />} />
+        <Route path="sign-in" element={<SignIn />} />
+        <Route path="sign-up" element={<SignUp />} />
         <Route path="success" element={<Success />} />
         <Route path="cancel" element={<Cancel />} />
         <Route path="*" element={<ErrorPage />} />

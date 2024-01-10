@@ -23,9 +23,18 @@ const Header = () => {
     setToggle(!toggle)
   }
 
-  const signOutUser = () => {
-    dispatch(logout())
-    setShowSignout(false)
+  const handleSignOutUser = async () => {
+    try {
+      const res = await fetch('/api/user/signout')
+      const data = await res.json()
+
+      if (data.success === false) return
+
+      dispatch(logout())
+      setShowSignout(false)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -83,7 +92,7 @@ const Header = () => {
 
                 {showSignout && (
                   <button
-                    onClick={signOutUser}
+                    onClick={handleSignOutUser}
                     className="absolute top-12 xs:top-16 right-0 z-50 bg-white p-2 text-sm rounded-md"
                   >
                     Logout
@@ -212,7 +221,7 @@ const Header = () => {
 
                   {showSignout && (
                     <button
-                      onClick={signOutUser}
+                      onClick={handleSignOutUser}
                       className="absolute top-14 -right-4 w-20 bg-white text-black z-50 p-2 tracking-wide rounded-md"
                     >
                       Logout

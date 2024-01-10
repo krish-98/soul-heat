@@ -62,7 +62,7 @@ const Cart = () => {
         quantity: 1,
       }
 
-      const res = await fetch('/api/cart/cart-items', {
+      const res = await fetch('/api/cart/add-item', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -91,7 +91,7 @@ const Cart = () => {
         quantity: 1,
       }
 
-      const res = await fetch('http://localhost:3000/api/cart/remove-cart', {
+      const res = await fetch('http://localhost:3000/api/cart/remove-item', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

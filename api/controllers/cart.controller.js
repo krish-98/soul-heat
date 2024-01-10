@@ -1,7 +1,7 @@
 import { stripe } from '../index.js'
 import Cart from '../models/cart.model.js'
 
-export const addItemsToCart = async (req, res) => {
+export const addItem = async (req, res, next) => {
   try {
     const { id, quantity } = req.body
 
@@ -18,13 +18,11 @@ export const addItemsToCart = async (req, res) => {
       return res.status(201).json(newCartItem)
     }
   } catch (error) {
-    return res
-      .status(500)
-      .json({ error: 'Internal Server Error', details: error.message })
+    next(error)
   }
 }
 
-export const removeItemFromCart = async (req, res) => {
+export const removeItem = async (req, res) => {
   try {
     const { id, quantity } = req.body
     let existingCartItem = await Cart.findOne({ id })
@@ -47,7 +45,7 @@ export const removeItemFromCart = async (req, res) => {
   }
 }
 
-export const getAllCartItems = async (req, res) => {
+export const getCartItems = async (req, res) => {
   const items = await Cart.find({})
 
   res.json(items)

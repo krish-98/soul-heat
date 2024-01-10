@@ -1,16 +1,17 @@
 import { Router } from 'express'
 import {
-  addItemsToCart,
+  addItem,
   checkout,
-  getAllCartItems,
-  removeItemFromCart,
+  getCartItems,
+  removeItem,
 } from '../controllers/cart.controller.js'
+import { verifyToken } from '../utils/verify.js'
 
 const router = Router()
 
-router.post('/cart-items', addItemsToCart)
-router.get('/all-items', getAllCartItems)
-router.post('/remove-cart', removeItemFromCart)
-router.post('/checkout-payment', checkout)
+router.post('/add-item', verifyToken, addItem)
+router.post('/remove-item', verifyToken, removeItem)
+router.get('/all-items', verifyToken, getCartItems)
+router.post('/checkout-payment', verifyToken, checkout)
 
 export default router

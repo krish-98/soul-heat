@@ -19,8 +19,9 @@ const userSchema = new Schema(
     avatar: {
       type: String,
       default:
-        'https://t3.ftcdn.net/jpg/03/64/62/36/360_F_364623623_ERzQYfO4HHHyawYkJ16tREsizLyvcaeg.jpg',
+        'https://e7.pngegg.com/pngimages/348/800/png-clipart-man-wearing-blue-shirt-illustration-computer-icons-avatar-user-login-avatar-blue-child.png',
     },
+    cartItems: [{ type: Schema.Types.ObjectId, ref: 'cart' }],
   },
   { timestamps: true }
 )

@@ -6,6 +6,7 @@ import toast from 'react-hot-toast'
 const RestaurantDishes = ({ restaurantMenuLists }) => {
   const dispatch = useDispatch()
   const { cartItems } = useSelector((state) => state.cart)
+  const { user } = useSelector((state) => state.auth)
 
   const dishes =
     restaurantMenuLists?.itemCards ||
@@ -14,6 +15,14 @@ const RestaurantDishes = ({ restaurantMenuLists }) => {
 
   const addItemToCart = async (item) => {
     try {
+      if (!user) {
+        toast.error('Sign In to add item', {
+          position: 'top-center',
+        })
+
+        return
+      }
+
       const cartItem = {
         id: item?.id,
         name: item?.name,
@@ -22,20 +31,22 @@ const RestaurantDishes = ({ restaurantMenuLists }) => {
         imageId: item?.imageId,
         price: item?.price || item.defaultPrice,
         quantity: 1,
+        userRef: user?._id,
       }
 
-      const res = await fetch('/api/cart/cart-items', {
+      const res = await fetch('/api/cart/add-item', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(cartItem),
       })
       const data = await res.json()
 
+      if (data?.error) return
+
       toast.success('Added to the cart', {
         position: 'top-center',
       })
       dispatch(addToCart(data))
-
       dispatch(calculateCartTotal())
     } catch (error) {
       console.log(error)

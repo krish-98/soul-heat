@@ -2,6 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import Stripe from 'stripe'
 import mongoose from 'mongoose'
+import cookieParser from 'cookie-parser'
 import path from 'path'
 
 import userRouter from './routes/user.routes.js'
@@ -17,6 +18,7 @@ const app = express()
 const PORT = process.env.PORT
 
 app.use(express.json())
+app.use(cookieParser())
 
 app.use('/api/user', userRouter)
 app.use('/api/restaurant', restaurantRouter)

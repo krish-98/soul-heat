@@ -17,21 +17,21 @@ import { calculateCartTotal, getCart } from './features/cartSlice'
 function App() {
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    const getAllCartItems = async () => {
-      try {
-        const res = await fetch('/api/cart/all-items')
-        const data = await res.json()
+  // useEffect(() => {
+  //   const getAllCartItems = async () => {
+  //     try {
+  //       const res = await fetch('/api/cart/all-items')
+  //       const data = await res.json()
 
-        dispatch(getCart(data))
-        dispatch(calculateCartTotal())
-      } catch (error) {
-        console.log(error)
-      }
-    }
+  //       dispatch(getCart(data))
+  //       dispatch(calculateCartTotal())
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   }
 
-    getAllCartItems()
-  }, [])
+  //   getAllCartItems()
+  // }, [])
 
   return (
     <BrowserRouter>

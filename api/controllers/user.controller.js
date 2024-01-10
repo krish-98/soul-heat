@@ -41,7 +41,7 @@ export const signin = async (req, res, next) => {
     const { password: pass, ...rest } = validUser._doc
     const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET)
     res
-      .cookie('access_token', token, { httpOnly: true, expiresIn: '1h' })
+      .cookie('access_token', token, { httpOnly: true, expiresIn: '1d' })
       .status(200)
       .json(rest)
   } catch (error) {
@@ -59,7 +59,7 @@ export const google = async (req, res, next) => {
       const { password: pass, ...rest } = user._doc
 
       res
-        .cookie('access_token', token, { httpOnly: true, expiresIn: '1h' })
+        .cookie('access_token', token, { httpOnly: true, expiresIn: '1d' })
         .status(200)
         .json(rest)
     } else {
@@ -82,7 +82,7 @@ export const google = async (req, res, next) => {
       const { password: pass, ...rest } = newUser._doc
 
       res
-        .cookie('access_token', token, { httpOnly: true, expiresIn: '1h' })
+        .cookie('access_token', token, { httpOnly: true, expiresIn: '1d' })
         .status(200)
         .json(rest)
     }

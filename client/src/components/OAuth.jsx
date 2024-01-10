@@ -27,6 +27,8 @@ const OAuth = ({ btnName }) => {
       })
       const data = await res.json()
 
+      if (data.success) return
+
       dispatch(authenticateUser(data))
       navigate('/')
     } catch (error) {

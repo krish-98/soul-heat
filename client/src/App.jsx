@@ -12,26 +12,30 @@ import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import Success from './pages/Success'
 import Cancel from './pages/Cancel'
-import { calculateCartTotal, getCart } from './features/cartSlice'
+import { clearCart } from './features/cartSlice'
+import { logout } from './features/authSlice'
 
 function App() {
   const dispatch = useDispatch()
 
-  // useEffect(() => {
-  //   const getAllCartItems = async () => {
-  //     try {
-  //       const res = await fetch('/api/cart/all-items')
-  //       const data = await res.json()
+  useEffect(() => {
+    const getCookieInfo = () => {
+      const cookieArray = document.cookie.split('; ')
+      const cookieObject = {}
 
-  //       dispatch(getCart(data))
-  //       dispatch(calculateCartTotal())
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
+      cookieArray.forEach((cookie) => {
+        const [key, value] = cookie.split('=')
+        cookieObject[key] = value
+      })
 
-  //   getAllCartItems()
-  // }, [])
+      if (!cookieObject.access_token) {
+        dispatch(logout())
+        dispatch(clearCart())
+      }
+    }
+
+    getCookieInfo()
+  }, [])
 
   return (
     <BrowserRouter>

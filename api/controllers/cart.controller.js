@@ -5,10 +5,9 @@ export const addItem = async (req, res, next) => {
   try {
     const { id, quantity } = req.body
 
-    let existingCartItem = await Cart.findOne({ id })
-
+    const existingCartItem = await Cart.findOne({ id })
     if (existingCartItem) {
-      existingCartItem.quantity += quantity || 1
+      existingCartItem.quantity += quantity
       await existingCartItem.save()
 
       return res.status(200).json(existingCartItem)
@@ -46,9 +45,19 @@ export const removeItem = async (req, res) => {
 }
 
 export const getCartItems = async (req, res) => {
-  const items = await Cart.find({})
+  try {
+    const items = await Cart.find({ userRef: req.user.id })
 
-  res.json(items)
+    res.json(items)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const clearCart = async (req, res) => {
+  const deleted = await Cart.deleteMany({ userRef: req.user.id })
+  console.log(deleted)
+  res.json('Cart items has been deleted!')
 }
 
 export const checkout = async (req, res) => {

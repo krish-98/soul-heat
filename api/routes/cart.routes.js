@@ -2,6 +2,7 @@ import { Router } from 'express'
 import {
   addItem,
   checkout,
+  clearCart,
   getCartItems,
   removeItem,
 } from '../controllers/cart.controller.js'
@@ -13,5 +14,6 @@ router.post('/add-item', verifyToken, addItem)
 router.post('/remove-item', verifyToken, removeItem)
 router.get('/all-items', verifyToken, getCartItems)
 router.post('/checkout-payment', verifyToken, checkout)
+router.delete('/clear-cart', verifyToken, clearCart)
 
 export default router

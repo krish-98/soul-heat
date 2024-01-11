@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import OnlineStatus from './OnlineStatus'
 import logo from '../assets/logo.png'
@@ -11,11 +11,13 @@ import { PiHamburgerFill } from 'react-icons/pi'
 import { AiOutlineHome } from 'react-icons/ai'
 import { FaRegBuilding } from 'react-icons/fa'
 import { logout } from '../features/authSlice'
+import { clearCart } from '../features/cartSlice'
 
 const Header = () => {
-  const dispatch = useDispatch()
   const [toggle, setToggle] = useState(false)
   const [showSignout, setShowSignout] = useState(false)
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
   const { totalItems } = useSelector((store) => store.cart)
   const { user } = useSelector((store) => store.auth)
 
@@ -31,7 +33,9 @@ const Header = () => {
       if (data.success === false) return
 
       dispatch(logout())
+      dispatch(clearCart())
       setShowSignout(false)
+      navigate('/')
     } catch (error) {
       console.log(error)
     }

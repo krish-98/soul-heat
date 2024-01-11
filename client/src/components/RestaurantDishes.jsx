@@ -1,11 +1,11 @@
-import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addToCart, calculateCartTotal, getCart } from '../features/cartSlice'
+import { addToCart, calculateCartTotal } from '../features/cartSlice'
 import toast from 'react-hot-toast'
+import { useState } from 'react'
 
 const RestaurantDishes = ({ restaurantMenuLists }) => {
+  const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
-  const { cartItems } = useSelector((state) => state.cart)
   const { user } = useSelector((state) => state.auth)
 
   const dishes =
@@ -13,16 +13,16 @@ const RestaurantDishes = ({ restaurantMenuLists }) => {
     restaurantMenuLists?.categories?.[0]?.itemCards ||
     restaurantMenuLists?.carousel
 
-  const addItemToCart = async (item) => {
+  const handleCartItem = async (item) => {
     try {
       if (!user) {
         toast.error('Sign In to add item', {
           position: 'top-center',
         })
-
         return
       }
 
+      setLoading(true)
       const cartItem = {
         id: item?.id,
         name: item?.name,
@@ -41,13 +41,16 @@ const RestaurantDishes = ({ restaurantMenuLists }) => {
       })
       const data = await res.json()
 
-      if (data?.error) return
+      if (data.success === false) {
+        toast.error('Something went wrong', {
+          position: 'top-center',
+        })
+        return
+      }
 
-      toast.success('Added to the cart', {
-        position: 'top-center',
-      })
       dispatch(addToCart(data))
       dispatch(calculateCartTotal())
+      setLoading(false)
     } catch (error) {
       console.log(error)
     }
@@ -95,7 +98,8 @@ const RestaurantDishes = ({ restaurantMenuLists }) => {
               />
 
               <button
-                onClick={() => addItemToCart(item?.info)}
+                disabled={loading}
+                onClick={() => handleCartItem(item?.info)}
                 className="absolute -bottom-3 bg-white text-[#60b246] border w-[80%] left-3 py-1 rounded-lg text-sm font-bold md:text-base md:left-4 hover:bg-gray-50 transition-all duration-300"
               >
                 ADD

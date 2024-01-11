@@ -24,7 +24,6 @@ export const signup = async (req, res, next) => {
 export const signin = async (req, res, next) => {
   try {
     const { email, password } = req.body
-    console.log('Normal Password', password)
 
     const validUser = await User.findOne({ email })
     if (!validUser) {
@@ -32,7 +31,6 @@ export const signin = async (req, res, next) => {
     }
 
     const isPasswordValid = bcrypt.compareSync(password, validUser.password)
-    console.log('isPasswordValid Password', isPasswordValid)
     if (!isPasswordValid) {
       next(handleError(401, 'Wrong credentials'))
       return
@@ -41,7 +39,7 @@ export const signin = async (req, res, next) => {
     const { password: pass, ...rest } = validUser._doc
     const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET)
     res
-      .cookie('access_token', token, { httpOnly: true, expiresIn: '1d' })
+      .cookie('access_token', token, { expiresIn: '1d' }) //httpOnly: true,
       .status(200)
       .json(rest)
   } catch (error) {
@@ -59,7 +57,7 @@ export const google = async (req, res, next) => {
       const { password: pass, ...rest } = user._doc
 
       res
-        .cookie('access_token', token, { httpOnly: true, expiresIn: '1d' })
+        .cookie('access_token', token, { expiresIn: '1d' }) //httpOnly: true,
         .status(200)
         .json(rest)
     } else {
@@ -80,9 +78,8 @@ export const google = async (req, res, next) => {
 
       const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET)
       const { password: pass, ...rest } = newUser._doc
-
       res
-        .cookie('access_token', token, { httpOnly: true, expiresIn: '1d' })
+        .cookie('access_token', token, { expiresIn: '1d' }) //httpOnly: true,
         .status(200)
         .json(rest)
     }

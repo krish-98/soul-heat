@@ -4,19 +4,9 @@ import EmptyCart from '../assets/pngwing.com-3.png'
 import { RiEBike2Fill } from 'react-icons/ri'
 import { IoBagCheckOutline } from 'react-icons/io5'
 import { BsArrowLeft } from 'react-icons/bs'
-import { FcGoogle } from 'react-icons/fc'
 import { FaRegTrashAlt } from 'react-icons/fa'
-import {
-  addToCart,
-  calculateCartTotal,
-  clearCart,
-  getCart,
-  removeFromCart,
-} from '../features/cartSlice'
+import { calculateCartTotal, clearCart, getCart } from '../features/cartSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { authenticateUser } from '../features/authSlice'
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
-import { auth } from '../configs/firebase.config'
 import { loadStripe } from '@stripe/stripe-js'
 
 const Cart = () => {
@@ -26,31 +16,21 @@ const Cart = () => {
   const { cartItems, totalItems, totalAmount } = useSelector(
     (store) => store.cart
   )
-  const { user } = useSelector((store) => store.auth)
 
   useEffect(() => {
     const getAllCartItems = async () => {
       const res = await fetch('/api/cart/all-items')
       const data = await res.json()
 
+      if (data.success === false) return
       dispatch(getCart(data))
+      dispatch(calculateCartTotal())
     }
 
     getAllCartItems()
   }, [totalItems])
 
-  const googleProvider = new GoogleAuthProvider()
-
-  const signInWithGoogle = async () => {
-    try {
-      const response = await signInWithPopup(auth, googleProvider)
-      dispatch(authenticateUser(response?.user?.providerData?.[0]))
-    } catch (error) {
-      console.error(error.message)
-    }
-  }
-
-  const increaseQty = async (item) => {
+  const handleIncreaseQty = async (item) => {
     try {
       const cartItem = {
         id: item?.id,
@@ -71,15 +51,13 @@ const Cart = () => {
       })
       const data = await res.json()
 
-      // dispatch(addToCart(item))
-
       dispatch(calculateCartTotal())
     } catch (error) {
       console.log(error)
     }
   }
 
-  const decreaseQty = async (item) => {
+  const handleDecreaseQty = async (item) => {
     try {
       const cartItem = {
         id: item?.id,
@@ -100,8 +78,19 @@ const Cart = () => {
       })
       const data = await res.json()
 
-      // dispatch(removeFromCart(item))
-      dispatch(calculateCartTotal(item))
+      dispatch(calculateCartTotal())
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleClearCart = async () => {
+    try {
+      const res = await fetch('/api/cart/clear-cart', { method: 'DELETE' })
+      const data = await res.json()
+
+      console.log(data)
+      dispatch(clearCart())
     } catch (error) {
       console.log(error)
     }
@@ -151,7 +140,7 @@ const Cart = () => {
           {/* Clear cart button */}
           {cartItems?.length > 0 && (
             <div
-              onClick={() => dispatch(clearCart())}
+              onClick={handleClearCart}
               className={
                 'top-1 right-0 flex items-center gap-1 text-white bg-[#FB923C] py-1 px-2 rounded-xl cursor-pointer transition-all duration-300 hover:bg-[#FB3C46]'
               }
@@ -212,14 +201,14 @@ const Cart = () => {
 
                       <div className="flex items-center gap-2">
                         <button
-                          onClick={() => decreaseQty(item)}
+                          onClick={() => handleDecreaseQty(item)}
                           className="bg-[#fb923c] text-white font-bold p-2 py-0.5 rounded-md"
                         >
                           -
                         </button>
                         <p className="font-semibold">{item?.quantity}</p>
                         <button
-                          onClick={() => increaseQty(item)}
+                          onClick={() => handleIncreaseQty(item)}
                           className="bg-[#fb923c] text-white font-bold p-2 py-0.5 rounded-md"
                         >
                           +
@@ -256,32 +245,21 @@ const Cart = () => {
                 <span>₹ {totalAmount}</span>
               </p>
 
-              {/* Show checkout button or Show signin with google button, if the user is not signed in */}
-              {!user ? (
-                <button
-                  onClick={signInWithGoogle}
-                  className="flex items-center justify-center mt-10 py-2 gap-1 w-full rounded-xl bg-white hover:bg-[#fb923c] hover:text-white transition-all duration-300 decoration-clone"
-                >
-                  <FcGoogle className="w-9 h-9" />{' '}
-                  <span className="font-semibold">Sign In to Checkout</span>
-                </button>
-              ) : (
-                <button
-                  onClick={handlePayment}
-                  disabled={paymentLoader}
-                  className={`bg-[#fb923c] w-full mt-10 py-3 px-6 rounded-2xl flex items-center justify-center gap-1 hover:bg-[#ffa13c] hover:shadow-xl transistion duration-300 cursor-pointer focus:scale-90 ${
-                    paymentLoader &&
-                    'disabled:opacity-75 hover:cursor-not-allowed'
-                  }`}
-                >
-                  <p className="text-white font-semibold tracking-wider uppercase">
-                    {paymentLoader ? 'Processing...' : 'Checkout'}
-                  </p>
-                  {!paymentLoader && (
-                    <IoBagCheckOutline className="w-7 h-[26px] stroke-white" />
-                  )}
-                </button>
-              )}
+              <button
+                onClick={handlePayment}
+                disabled={paymentLoader}
+                className={`bg-[#fb923c] w-full mt-10 py-3 px-6 rounded-2xl flex items-center justify-center gap-1 hover:bg-[#ffa13c] hover:shadow-xl transistion duration-300 cursor-pointer focus:scale-90 ${
+                  paymentLoader &&
+                  'disabled:opacity-75 hover:cursor-not-allowed'
+                }`}
+              >
+                <p className="text-white font-semibold tracking-wider uppercase">
+                  {paymentLoader ? 'Processing...' : 'Checkout'}
+                </p>
+                {!paymentLoader && (
+                  <IoBagCheckOutline className="w-7 h-[26px] stroke-white" />
+                )}
+              </button>
             </div>
           </div>
         )}

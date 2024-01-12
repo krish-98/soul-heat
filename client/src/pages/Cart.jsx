@@ -118,7 +118,7 @@ const Cart = () => {
         import.meta.env.VITE_STRIPE_PUBLIC_KEY
       )
 
-      const res = await fetch('/api/cart/checkout-payment', {
+      const res = await fetch('/api/cart/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ cartItems: cartItems }),
@@ -128,6 +128,8 @@ const Cart = () => {
 
       const session = await res.json()
       stripePromise.redirectToCheckout({ sessionId: session.id })
+
+      handleClearCart()
     } catch (error) {
       console.log(error)
     }

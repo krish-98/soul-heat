@@ -21,7 +21,7 @@ export const addItem = async (req, res, next) => {
   }
 }
 
-export const removeItem = async (req, res) => {
+export const removeItem = async (req, res, next) => {
   try {
     const { id, quantity } = req.body
 
@@ -40,14 +40,11 @@ export const removeItem = async (req, res) => {
       res.json({ message: 'Cart deleted' })
     }
   } catch (error) {
-    console.error(error)
-    return res
-      .status(500)
-      .json({ error: 'Internal Server Error', details: error.message })
+    next(error)
   }
 }
 
-export const getCartItems = async (req, res) => {
+export const getCartItems = async (req, res, next) => {
   try {
     const items = await Cart.find({ userRef: req.user.id })
 
@@ -57,33 +54,35 @@ export const getCartItems = async (req, res) => {
   }
 }
 
-export const clearCart = async (req, res) => {
-  const deleted = await Cart.deleteMany({ userRef: req.user.id })
-  console.log(deleted)
-  res.json('Cart items has been deleted!')
+export const clearCart = async (req, res, next) => {
+  try {
+    const deleted = await Cart.deleteMany({ userRef: req.user.id })
+    console.log(deleted)
+    res.json('Cart items has been deleted!')
+  } catch (error) {
+    next(error)
+  }
 }
 
-export const checkout = async (req, res) => {
-  const { cartItems } = req.body
-
+export const checkout = async (req, res, next) => {
   try {
-    const lineItems = cartItems.map((item) => {
+    const { cartItems } = req.body
+
+    const lineItems = cartItems.map((cartItem) => {
       return {
         price_data: {
           currency: 'inr',
           product_data: {
-            name: item.name,
-            images: [`${process.env.CLOUDINARY_URL}${item.imageId}`],
+            name: cartItem.name,
+            images: [`${process.env.CLOUDINARY_URL}${cartItem.imageId}`],
           },
-          unit_amount: Math.round(
-            item.price || item.defaultPrice + item.quantity
-          ),
+          unit_amount: Math.round(cartItem.price),
         },
         adjustable_quantity: {
           enabled: true,
           minimum: 1,
         },
-        quantity: item.quantity,
+        quantity: cartItem.quantity,
       }
     })
 
@@ -95,11 +94,10 @@ export const checkout = async (req, res) => {
       cancel_url: `${process.env.FRONTEND_URL}/cancel`,
       submit_type: 'pay',
       billing_address_collection: 'auto',
-      // shipping_options: [{ shipping_rate: 'shr_1NeFaFSBzzrld9LFwwmTon9O' }],
     })
 
     res.json({ id: session.id })
-  } catch (err) {
-    res.status(err.statusCode || 500).json(err.message)
+  } catch (error) {
+    next(error)
   }
 }

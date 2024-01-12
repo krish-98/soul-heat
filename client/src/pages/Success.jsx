@@ -1,4 +1,4 @@
-import Truck from "../assets/delivery-truck-100.png"
+import Truck from '../assets/delivery-truck-100.png'
 
 const Success = () => {
   return (
@@ -7,7 +7,9 @@ const Success = () => {
       <p className="text-2xl text-green-500 border-b-2 pb-4 border-dashed border-b-slate-600 font-medium lg:text-4xl lg:pb-6">
         Payment Successful!
       </p>
-      <p className="text-sm lg:text-base">Your Food Truck is on the way</p>
+      <p className="text-sm lg:text-base font-semibold">
+        Your Food Truck is on the way
+      </p>
       <a
         href="/"
         className="bg-[#fb923c] text-white p-2 rounded-lg font-medium lg:px-4 lg:py-2.5 hover:bg-orange-300 transition-all"

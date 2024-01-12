@@ -12,7 +12,7 @@ import cartRouter from './routes/cart.routes.js'
 dotenv.config()
 export const stripe = Stripe(process.env.STRIPE_SECRET_KEY)
 
-// const __dirname = path.resolve()
+const __dirname = path.resolve()
 
 const app = express()
 const PORT = process.env.PORT
@@ -24,11 +24,12 @@ app.use('/api/user', userRouter)
 app.use('/api/restaurant', restaurantRouter)
 app.use('/api/cart', cartRouter)
 
-// app.use(express.static(path.join(__dirname, '/client/dist')))
+// front-end
+app.use(express.static(path.join(__dirname, '/client/dist')))
 
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
-// })
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
+})
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500

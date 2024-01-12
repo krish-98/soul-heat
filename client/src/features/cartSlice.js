@@ -30,6 +30,50 @@ export const cartSlice = createSlice({
       })
     },
 
+    removeFromCart: (state, action) => {
+      const itemIndex = state.cartItems.findIndex(
+        (item) => item.id === action.payload.id
+      )
+
+      if (itemIndex >= 0) {
+        if (state.cartItems[itemIndex].quantity > 1) {
+          state.cartItems[itemIndex].quantity -= 1
+
+          toast.error('Item reduced from the cart', {
+            position: 'top-center',
+            autoClose: 1000,
+            hideProgressBar: true,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+            theme: 'light',
+          })
+
+          return
+        }
+
+        if (state.cartItems[itemIndex].quantity === 1) {
+          state.cartItems = state.cartItems.filter(
+            (item) => item.quantity !== 1
+          )
+
+          toast.error('Item removed from cart', {
+            position: 'top-center',
+            autoClose: 1000,
+            hideProgressBar: true,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+            theme: 'light',
+          })
+
+          return
+        }
+      }
+    },
+
     calculateCartTotal: (state) => {
       const { item, amount } = state.cartItems.reduce(
         (acc, currentItem) => {

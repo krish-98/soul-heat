@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import OnlineStatus from './OnlineStatus'
@@ -11,7 +11,7 @@ import { PiHamburgerFill } from 'react-icons/pi'
 import { AiOutlineHome } from 'react-icons/ai'
 import { FaRegBuilding } from 'react-icons/fa'
 import { logout } from '../features/authSlice'
-import { clearCart } from '../features/cartSlice'
+import { calculateCartTotal, clearCart, getCart } from '../features/cartSlice'
 
 const Header = () => {
   const [toggle, setToggle] = useState(false)
@@ -20,6 +20,24 @@ const Header = () => {
   const dispatch = useDispatch()
   const { totalItems } = useSelector((store) => store.cart)
   const { user } = useSelector((store) => store.auth)
+
+  useEffect(() => {
+    const getAllCartItems = async () => {
+      try {
+        const res = await fetch('/api/cart/all-items')
+        const data = await res.json()
+
+        if (data.success === false) return
+
+        dispatch(getCart(data))
+        dispatch(calculateCartTotal())
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    getAllCartItems()
+  }, [user])
 
   const handleToggler = () => {
     setToggle(!toggle)

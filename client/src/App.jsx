@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 import Header from './components/Header'
 import Body from './components/Body'
 import About from './pages/About'
@@ -14,6 +13,7 @@ import Success from './pages/Success'
 import Cancel from './pages/Cancel'
 import { clearCart } from './features/cartSlice'
 import { logout } from './features/authSlice'
+import { useDispatch } from 'react-redux'
 
 function App() {
   const dispatch = useDispatch()

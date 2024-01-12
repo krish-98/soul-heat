@@ -24,17 +24,20 @@ export const addItem = async (req, res, next) => {
 export const removeItem = async (req, res) => {
   try {
     const { id, quantity } = req.body
-    let existingCartItem = await Cart.findOne({ id })
 
-    if (existingCartItem && existingCartItem.quantity > 0) {
-      existingCartItem.quantity -= quantity || 1
+    console.log(quantity)
+
+    const existingCartItem = await Cart.findOne({ id })
+    if (existingCartItem && existingCartItem.quantity > 1) {
+      existingCartItem.quantity -= quantity
       existingCartItem.save()
 
-      if (existingCartItem.quantity === 0) {
-        await existingCartItem.deleteOne()
-        res.json({ message: 'Cart deleted' })
-      }
       return res.status(200).json(existingCartItem)
+    }
+
+    if (existingCartItem.quantity === 1) {
+      await existingCartItem.deleteOne()
+      res.json({ message: 'Cart deleted' })
     }
   } catch (error) {
     console.error(error)

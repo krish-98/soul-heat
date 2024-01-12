@@ -5,7 +5,13 @@ import { RiEBike2Fill } from 'react-icons/ri'
 import { IoBagCheckOutline } from 'react-icons/io5'
 import { BsArrowLeft } from 'react-icons/bs'
 import { FaRegTrashAlt } from 'react-icons/fa'
-import { calculateCartTotal, clearCart, getCart } from '../features/cartSlice'
+import {
+  addToCart,
+  calculateCartTotal,
+  clearCart,
+  getCart,
+  removeFromCart,
+} from '../features/cartSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { loadStripe } from '@stripe/stripe-js'
 
@@ -16,15 +22,21 @@ const Cart = () => {
   const { cartItems, totalItems, totalAmount } = useSelector(
     (store) => store.cart
   )
+  const { user } = useSelector((state) => state.auth)
 
   useEffect(() => {
     const getAllCartItems = async () => {
-      const res = await fetch('/api/cart/all-items')
-      const data = await res.json()
+      try {
+        const res = await fetch('/api/cart/all-items')
+        const data = await res.json()
 
-      if (data.success === false) return
-      dispatch(getCart(data))
-      dispatch(calculateCartTotal())
+        if (data.success === false) return
+
+        dispatch(getCart(data))
+        dispatch(calculateCartTotal())
+      } catch (error) {
+        console.log(error)
+      }
     }
 
     getAllCartItems()
@@ -51,6 +63,7 @@ const Cart = () => {
       })
       const data = await res.json()
 
+      dispatch(addToCart(data))
       dispatch(calculateCartTotal())
     } catch (error) {
       console.log(error)
@@ -67,9 +80,10 @@ const Cart = () => {
         imageId: item?.imageId,
         price: item?.price || item.defaultPrice,
         quantity: 1,
+        userRef: user?._id,
       }
 
-      const res = await fetch('http://localhost:3000/api/cart/remove-item', {
+      const res = await fetch('/api/cart/remove-item', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -78,6 +92,7 @@ const Cart = () => {
       })
       const data = await res.json()
 
+      dispatch(removeFromCart(data))
       dispatch(calculateCartTotal())
     } catch (error) {
       console.log(error)
@@ -226,7 +241,14 @@ const Cart = () => {
                   <span>
                     Item {cartItems?.length > 1 ? 'Totals' : 'Total'} :{' '}
                   </span>
-                  <span>₹ {totalAmount}</span>
+                  <span>
+                    {totalAmount.toLocaleString('en-US', {
+                      style: 'currency',
+                      currency: 'INR',
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 0,
+                    })}
+                  </span>
                 </h3>
 
                 <div className="flex justify-between items-center font-medium">
@@ -235,14 +257,25 @@ const Cart = () => {
                     <RiEBike2Fill className="fill-red-600 inline" /> :{' '}
                   </span>
 
-                  <span className="line-through">₹ 49</span>
+                  <span className="space-x-2">
+                    <span>Free</span>
+                    <span className="line-through">₹ 149</span>
+                  </span>
                 </div>
               </div>
 
               <p className="pt-4 text-lg font-semibold flex justify-between items-center">
                 <span>Total Amount : </span>
 
-                <span>₹ {totalAmount}</span>
+                <span>
+                  {/* ₹{' '} */}
+                  {totalAmount.toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'INR',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  })}
+                </span>
               </p>
 
               <button

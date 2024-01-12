@@ -13,7 +13,7 @@ const RestaurantDishes = ({ restaurantMenuLists }) => {
     restaurantMenuLists?.categories?.[0]?.itemCards ||
     restaurantMenuLists?.carousel
 
-  const handleCartItem = async (item) => {
+  const handleAddItemToCart = async (item) => {
     try {
       if (!user) {
         toast.error('Sign In to add item', {
@@ -99,7 +99,7 @@ const RestaurantDishes = ({ restaurantMenuLists }) => {
 
               <button
                 disabled={loading}
-                onClick={() => handleCartItem(item?.info)}
+                onClick={() => handleAddItemToCart(item?.info)}
                 className="absolute -bottom-3 bg-white text-[#60b246] border w-[80%] left-3 py-1 rounded-lg text-sm font-bold md:text-base md:left-4 hover:bg-gray-50 transition-all duration-300"
               >
                 ADD

@@ -37,7 +37,13 @@ const Restaurant = () => {
     restaurantMenu?.[3]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.[1]?.card
       ?.card ||
     restaurantMenu?.[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.[2]?.card
+      ?.card ||
+    restaurantMenu?.[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.[2]?.card
       ?.card
+
+  const restaurantHeader =
+    restaurantMenu?.[0]?.card?.card?.info ||
+    restaurantMenu?.[2]?.card?.card?.info
 
   return (
     <div className="mt-12 flex flex-col items-center px-6 max-w-[968px] mx-auto relative">
@@ -52,9 +58,7 @@ const Restaurant = () => {
             <BsArrowLeft />
             back
           </button>
-          <RestaurantHeader
-            restaurantHeader={restaurantMenu?.[0]?.card?.card?.info}
-          />
+          <RestaurantHeader restaurantHeader={restaurantHeader} />
           <RestaurantDishes restaurantMenuLists={restaurantMenuLists} />
         </>
       )}

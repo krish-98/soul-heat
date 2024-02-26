@@ -19,6 +19,10 @@ const Body = () => {
     const fetchRestaurantsData = async () => {
       try {
         const res = await fetch('/api/restaurant')
+        if (!res.ok) {
+          throw new Error('Network error occured!')
+        }
+
         const data = await res.json()
 
         const restaurantData =
@@ -49,7 +53,7 @@ const Body = () => {
 
   return (
     <main className="py-8 px-4 bg-[#f5f3f3] min-h-screen">
-      <div className="max-w-[1280px] mx-auto">
+      <div className="max-w-7xl mx-auto">
         <form
           onSubmit={searchFormHandler}
           className="flex justify-center max-w-[600px] mx-auto"

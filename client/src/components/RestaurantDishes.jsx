@@ -1,17 +1,20 @@
+import { useState } from 'react'
+import toast from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { addToCart, calculateCartTotal } from '../features/cartSlice'
-import toast from 'react-hot-toast'
-import { useState } from 'react'
+import Accordion from './Accordion'
 
 const RestaurantDishes = ({ restaurantMenuLists }) => {
   const [loading, setLoading] = useState(false)
+
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.auth)
 
-  const dishes =
-    restaurantMenuLists?.itemCards ||
-    restaurantMenuLists?.categories?.[0]?.itemCards ||
-    restaurantMenuLists?.carousel
+  const MenuLists = restaurantMenuLists?.filter(
+    (list) =>
+      list?.card?.card['@type'] ===
+      'type.googleapis.com/swiggy.presentation.food.v2.ItemCategory'
+  )
 
   const handleAddItemToCart = async (item) => {
     try {
@@ -23,21 +26,19 @@ const RestaurantDishes = ({ restaurantMenuLists }) => {
       }
 
       setLoading(true)
-      const cartItem = {
-        id: item?.id,
-        name: item?.name,
-        category: item?.category,
-        description: item?.description,
-        imageId: item?.imageId,
-        price: item?.price || item.defaultPrice,
-        quantity: 1,
-        userRef: user?._id,
-      }
-
       const res = await fetch('/api/cart/add-item', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(cartItem),
+        body: JSON.stringify({
+          id: item?.id,
+          name: item?.name,
+          category: item?.category,
+          description: item?.description,
+          imageId: item?.imageId,
+          price: item?.price || item.defaultPrice,
+          quantity: 1,
+          userRef: user?._id,
+        }),
       })
       const data = await res.json()
 
@@ -57,57 +58,15 @@ const RestaurantDishes = ({ restaurantMenuLists }) => {
   }
 
   return (
-    <div className="space-y-4 mt-6 w-full md:space-y-2">
-      <div className="flex items-center justify-between mb-2 md:mb-6">
-        <h2 className="font-semibold text-lg md:text-2xl">
-          {restaurantMenuLists?.title}
-        </h2>
-      </div>
-
-      {dishes?.map((dish) => {
-        const item = dish?.card || dish?.dish
-
-        return (
-          <div
-            key={item?.info?.id || dish?.dish?.info?.id}
-            className="flex justify-between items-center pb-7 border-b"
-          >
-            <div className="flex flex-col gap-1 max-w-[65%] md:gap-2">
-              <h3 className="text-sm font-semibold md:text-lg">
-                {item?.info?.name}
-              </h3>
-              <p className="text-sm md:text-base">
-                ₹{' '}
-                {item?.info?.price
-                  ? String(item?.info?.price).slice(0, 3)
-                  : String(item?.info?.defaultPrice).slice(0, 3)}
-              </p>
-              <p className="text-sm text-gray-400 md:text-base">
-                {item?.info?.description}
-              </p>
-            </div>
-
-            <div className="max-w-[30%] relative">
-              <img
-                className="w-[170px] h-[78px] md:h-[125px] object-cover rounded-xl"
-                src={
-                  'https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/' +
-                  item?.info?.imageId
-                }
-                alt={item?.info?.name}
-              />
-
-              <button
-                disabled={loading}
-                onClick={() => handleAddItemToCart(item?.info)}
-                className="absolute -bottom-3 bg-white text-[#60b246] border w-[80%] left-3 py-1 rounded-lg text-sm font-bold md:text-base md:left-4 hover:bg-gray-50 transition-all duration-300"
-              >
-                ADD
-              </button>
-            </div>
-          </div>
-        )
-      })}
+    <div className="mt-6 w-full space-y-4 md:space-y-8">
+      {MenuLists?.map((menu, i) => (
+        <Accordion
+          key={i}
+          menu={menu}
+          loading={loading}
+          handleAddItemToCart={handleAddItemToCart}
+        />
+      ))}
     </div>
   )
 }

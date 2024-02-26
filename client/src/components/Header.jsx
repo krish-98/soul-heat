@@ -18,7 +18,7 @@ const Header = () => {
   const [showSignout, setShowSignout] = useState(false)
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { totalItems } = useSelector((store) => store.cart)
+  const { totalItems, cartItems } = useSelector((store) => store.cart)
   const { user } = useSelector((store) => store.auth)
 
   useEffect(() => {
@@ -36,8 +36,8 @@ const Header = () => {
       }
     }
 
-    getAllCartItems()
-  }, [user])
+    cartItems.length > 0 && getAllCartItems()
+  }, [user, cartItems.length])
 
   const handleToggler = () => {
     setToggle(!toggle)
@@ -169,7 +169,7 @@ const Header = () => {
 
       {/* Desktop Navbar */}
       <header className="bg-[#fb923c]">
-        <div className="hidden lg:flex items-center max-w-[1280px] mx-auto pr-12">
+        <div className="hidden lg:flex items-center max-w-7xl mx-auto pr-12">
           <Link to="/" className="cursor-pointer">
             <img className="h-20 object-cover" src={logo} alt="logo" />
           </Link>

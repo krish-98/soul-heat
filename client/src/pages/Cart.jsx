@@ -136,8 +136,8 @@ const Cart = () => {
   }
 
   return (
-    <div className="min-h-[calc(100vh-96px)] pt-12 p-6 md:px-10 lg:px-0 bg-[#f5f3f3] lg:min-h-[calc(100vh-80px)]">
-      <div className="max-w-[900px] mx-auto">
+    <div className="h-[calc(100vh-96px)] pt-12 p-6 md:px-10 lg:px-0 bg-[#f5f3f3] lg:h-[calc(100vh-80px)]">
+      <div className="max-w-4xl mx-auto">
         <div className="pb-10 relative flex items-center justify-between gap-6">
           {totalItems > 0 && (
             <>
@@ -170,7 +170,8 @@ const Cart = () => {
           )}
         </div>
 
-        {!cartItems?.length ? (
+        {!cartItems.length ? (
+          // Empty cart pic
           <div className="mt-24 flex flex-col gap-8">
             <img
               className="md:w-1/2 md:mx-auto"
@@ -184,7 +185,7 @@ const Cart = () => {
         ) : (
           <div className="lg:flex justify-between lg:gap-16">
             {/* Cart Items Section */}
-            <div className="flex flex-col gap-8 pb-8 lg:w-[70%]">
+            <div className="flex flex-col gap-8 pb-8 h-[28rem] lg:w-[70%] lg:h-[35rem] overflow-auto">
               {cartItems.length > 0 &&
                 cartItems.map((item) => (
                   <div key={item?._id} className="flex items-center gap-8">

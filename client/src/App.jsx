@@ -19,6 +19,12 @@ function App() {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    })
+
     const getCookieInfo = () => {
       const cookieArray = document.cookie.split('; ')
       const cookieObject = {}

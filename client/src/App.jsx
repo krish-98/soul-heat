@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Header from './components/Header'
-import Body from './components/Body'
+import Home from './components/Home'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import Restaurant from './pages/Restaurant'
@@ -14,9 +14,12 @@ import Cancel from './pages/Cancel'
 import { clearCart } from './features/cartSlice'
 import { logout } from './features/authSlice'
 import { useDispatch } from 'react-redux'
+import ProtectedRoute from './components/ProtectedRoute'
+import { useSelector } from 'react-redux'
 
 function App() {
   const dispatch = useDispatch()
+  const { user } = useSelector((state) => state.auth)
 
   useEffect(() => {
     window.scrollTo({
@@ -47,15 +50,23 @@ function App() {
     <BrowserRouter>
       <Header />
       <Routes>
-        <Route path="/" element={<Body />} />
+        <Route path="/" element={<Home />} />
         <Route path="restaurant/:resId" element={<Restaurant />} />
         <Route path="about" element={<About />} />
         <Route path="contact" element={<Contact />} />
         <Route path="cart" element={<Cart />} />
-        <Route path="sign-up" element={<SignUp />} />
-        <Route path="sign-in" element={<SignIn />} />
-        <Route path="success" element={<Success />} />
-        <Route path="cancel" element={<Cancel />} />
+        <Route
+          path="sign-up"
+          element={!user ? <SignUp /> : <Navigate to="/" />}
+        />
+        <Route
+          path="sign-in"
+          element={!user ? <SignIn /> : <Navigate to="/" />}
+        />
+        <Route element={<ProtectedRoute />}>
+          <Route path="success" element={<Success />} />
+          <Route path="cancel" element={<Cancel />} />
+        </Route>
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>

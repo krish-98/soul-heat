@@ -48,7 +48,7 @@ const SignIn = () => {
         return
       }
       setLoading(false)
-      navigate('/')
+      navigate(-1)
     } catch (error) {
       setLoading(false)
       setError(error.message)

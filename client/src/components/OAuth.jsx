@@ -26,11 +26,10 @@ const OAuth = ({ btnName }) => {
         }),
       })
       const data = await res.json()
-
-      if (data.success) return
+      // if (data.success) return
 
       dispatch(authenticateUser(data))
-      navigate('/')
+      navigate(-1)
     } catch (error) {
       console.error(`Couldn't signup with firebase google auth`, error)
     }

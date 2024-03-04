@@ -10,7 +10,7 @@ const filterRestaurant = (searchText, restaurants) => {
   return filteredData
 }
 
-const Body = () => {
+const Home = () => {
   const [allRestaurants, setAllRestaurants] = useState(null)
   const [filteredRestaurants, setFilteredRestaurants] = useState(null)
   const [searchText, setSearchText] = useState('')
@@ -96,4 +96,4 @@ const Body = () => {
   )
 }
 
-export default Body
+export default Home

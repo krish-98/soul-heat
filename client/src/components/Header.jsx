@@ -22,20 +22,23 @@ const Header = () => {
   useEffect(() => {
     const getAllCartItems = async () => {
       try {
-        const res = await fetch('/api/cart/all-items')
-        const data = await res.json()
+        if (user !== null) {
+          const res = await fetch('/api/cart/all-items')
+          const data = await res.json()
 
-        if (data.success === false) return
+          if (data.success === false) return
 
-        dispatch(getCart(data))
-        dispatch(calculateCartTotal())
+          dispatch(getCart(data))
+          dispatch(calculateCartTotal())
+        }
       } catch (error) {
         console.log(error)
       }
     }
 
-    cartItems.length > 0 && getAllCartItems()
-  }, [user, cartItems.length])
+    // cartItems.length > 0 && getAllCartItems()
+    getAllCartItems()
+  }, [user, cartItems.length, dispatch])
 
   const handleToggler = () => {
     setToggle(!toggle)
@@ -86,8 +89,8 @@ const Header = () => {
             <Link to="/cart" className="hover:bg-[#f9bca8] relative">
               <IoCartOutline className="w-8 h-8 stroke-white cursor-pointer" />
 
-              <div className="absolute -right-1 bottom-5  bg-white w-5 h-5 rounded-full">
-                <p className="text-center text-[#FB3C46] font-bold text-sm">
+              <div className="absolute -right-1 bottom-5 bg-white w-6 h-6 rounded-full">
+                <p className="text-center text-[#fb923c] font-bold text-sm pt-0.5">
                   {totalItems}
                 </p>
               </div>
@@ -208,8 +211,8 @@ const Header = () => {
                 <Link to="/cart" className="relative">
                   <IoCartOutline className="w-8 h-10 stroke-white cursor-pointer" />
 
-                  <div className="absolute -right-2 bottom-6 bg-white w-5 h-5 rounded-full">
-                    <p className="text-center text-[#fb923c] font-bold text-sm">
+                  <div className="absolute -right-2 bottom-6 bg-white w-6 h-6 rounded-full">
+                    <p className="text-center text-[#fb923c] font-bold text-sm pt-0.5">
                       {totalItems}
                     </p>
                   </div>

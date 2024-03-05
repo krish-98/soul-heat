@@ -9,10 +9,10 @@ const OAuth = ({ btnName }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const handleGoogleClick = async () => {
+  const handleGooglePopup = async () => {
     try {
       const googleProvider = new GoogleAuthProvider()
-      const result = await signInWithPopup(auth, googleProvider)
+      const { user } = await signInWithPopup(auth, googleProvider)
 
       const res = await fetch('/api/user/google', {
         method: 'POST',
@@ -20,13 +20,13 @@ const OAuth = ({ btnName }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name: result.user.displayName,
-          email: result.user.email,
-          photo: result.user.photoURL,
+          name: user?.displayName,
+          email: user?.email,
+          photo: user?.photoURL,
         }),
       })
+      if (!res.ok) return new Error('Error occurred!')
       const data = await res.json()
-      // if (data.success) return
 
       dispatch(authenticateUser(data))
       navigate(-1)
@@ -37,7 +37,7 @@ const OAuth = ({ btnName }) => {
 
   return (
     <button
-      onClick={handleGoogleClick}
+      onClick={handleGooglePopup}
       className="flex items-center justify-center gap-1 bg-white w-full py-2 rounded-xl hover:bg-gray-100 transition-all duration-300 decoration-clone"
     >
       <FcGoogle className="w-9 h-9" />

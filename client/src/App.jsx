@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Header from './components/Header'
 import Home from './components/Home'
@@ -16,6 +17,7 @@ import { logout } from './features/authSlice'
 import { useDispatch } from 'react-redux'
 import ProtectedRoute from './components/ProtectedRoute'
 import { useSelector } from 'react-redux'
+import OnlineStatus from './components/OnlineStatus'
 
 function App() {
   const dispatch = useDispatch()
@@ -47,29 +49,32 @@ function App() {
   }, [])
 
   return (
-    <BrowserRouter>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="restaurant/:resId" element={<Restaurant />} />
-        <Route path="about" element={<About />} />
-        <Route path="contact" element={<Contact />} />
-        <Route path="cart" element={<Cart />} />
-        <Route
-          path="sign-up"
-          element={!user ? <SignUp /> : <Navigate to="/" />}
-        />
-        <Route
-          path="sign-in"
-          element={!user ? <SignIn /> : <Navigate to="/" />}
-        />
-        <Route element={<ProtectedRoute />}>
-          <Route path="success" element={<Success />} />
-          <Route path="cancel" element={<Cancel />} />
-        </Route>
-        <Route path="*" element={<ErrorPage />} />
-      </Routes>
-    </BrowserRouter>
+    <>
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="restaurant/:resId" element={<Restaurant />} />
+          <Route path="about" element={<About />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="cart" element={<Cart />} />
+          <Route
+            path="sign-up"
+            element={!user ? <SignUp /> : <Navigate to="/" />}
+          />
+          <Route
+            path="sign-in"
+            element={!user ? <SignIn /> : <Navigate to="/" />}
+          />
+          <Route element={<ProtectedRoute />}>
+            <Route path="success" element={<Success />} />
+            <Route path="cancel" element={<Cancel />} />
+          </Route>
+          <Route path="*" element={<ErrorPage />} />
+        </Routes>
+      </BrowserRouter>
+      {createPortal(<OnlineStatus />, document.querySelector('#status'))}
+    </>
   )
 }
 

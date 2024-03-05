@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import OAuth from '../components/OAuth'
 
-const Modal = () => {
+const SignUp = () => {
   const [formData, setFormData] = useState({})
   const [loading, setLoading] = useState(null)
   const [error, setError] = useState(null)
@@ -19,11 +19,7 @@ const Modal = () => {
     e.preventDefault()
     setLoading(true)
 
-    if (
-      formData.username === '' ||
-      formData.email === '' ||
-      formData.password === ''
-    ) {
+    if (!formData.username || !formData.email || !formData.password) {
       alert('Kindly fill the form with real information to move further')
       setLoading(false)
       return
@@ -169,4 +165,4 @@ const Modal = () => {
   )
 }
 
-export default Modal
+export default SignUp

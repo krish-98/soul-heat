@@ -22,7 +22,7 @@ const SignIn = () => {
     e.preventDefault()
     setLoading(true)
 
-    if (formData.email === '' || formData.password === '') {
+    if (!formData.email || !formData.password) {
       alert('Kindly fill the form with real information to move further')
       setLoading(false)
       return

@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import OnlineStatus from './OnlineStatus'
 import logo from '../assets/logo.png'
-
 import { VscChromeClose } from 'react-icons/vsc'
 import { IoCallOutline, IoCartOutline } from 'react-icons/io5'
 import { HiOutlineUserCircle } from 'react-icons/hi'
@@ -255,8 +253,6 @@ const Header = () => {
           </ul>
         </div>
       </header>
-
-      <OnlineStatus />
     </>
   )
 }

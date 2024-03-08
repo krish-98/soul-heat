@@ -9,7 +9,6 @@ import {
   addToCart,
   calculateCartTotal,
   clearCart,
-  getCart,
   removeFromCart,
 } from '../features/cartSlice'
 import { useDispatch, useSelector } from 'react-redux'
@@ -23,24 +22,6 @@ const Cart = () => {
     (store) => store.cart
   )
   const { user } = useSelector((state) => state.auth)
-
-  useEffect(() => {
-    const getAllCartItems = async () => {
-      try {
-        const res = await fetch('/api/cart/all-items')
-        const data = await res.json()
-
-        if (data.success === false) return
-
-        dispatch(getCart(data))
-        dispatch(calculateCartTotal())
-      } catch (error) {
-        console.log(error)
-      }
-    }
-
-    getAllCartItems()
-  }, [totalItems])
 
   const handleIncreaseQty = async (item) => {
     try {
@@ -138,6 +119,7 @@ const Cart = () => {
   return (
     <div className="min-h-[calc(100vh-96px)] pt-12 p-6 md:px-10 lg:px-0 bg-[#f5f3f3] lg:min-h-[calc(100vh-80px)]">
       <div className="max-w-4xl mx-auto">
+        {/* Cart Header */}
         <div className="pb-10 relative flex items-center justify-between gap-6">
           {totalItems > 0 && (
             <>

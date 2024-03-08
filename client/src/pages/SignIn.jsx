@@ -37,7 +37,6 @@ const SignIn = () => {
         body: JSON.stringify(formData),
       })
       const data = await res.json()
-      dispatch(authenticateUser(data))
 
       if (data.success === false) {
         setError(data.message)
@@ -47,6 +46,8 @@ const SignIn = () => {
         }, 5000)
         return
       }
+
+      dispatch(authenticateUser(data))
       setLoading(false)
       navigate(-1)
     } catch (error) {
@@ -62,9 +63,7 @@ const SignIn = () => {
           Sign In
         </p>
 
-        {error && (
-          <p className="text-sm text-center text-red-500 font-bold">{error}</p>
-        )}
+        {error && <p className="text-xl text-center font-bold">{error}</p>}
 
         <form className="space-y-6" onSubmit={handleFormSubmit}>
           <div>
@@ -117,7 +116,7 @@ const SignIn = () => {
             <button
               disabled={loading}
               type="submit"
-              className="flex w-full justify-center rounded-md border bg-[#fb923c] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-white hover:text-[#fb923c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black transition duration-500"
+              className="flex w-full justify-center rounded-md border bg-[#fb923c] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-white hover:text-[#fb923c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black transition duration-500 disabled:cursor-not-allowed"
             >
               {loading ? 'Signing up...' : 'Sign up'}
             </button>

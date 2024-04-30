@@ -30,7 +30,7 @@ const Restaurant = () => {
     }
 
     fetchRestaurantMenu()
-  }, [])
+  }, [resId])
 
   const restaurantHeader =
     restaurantMenu?.[0]?.card?.card?.info ||

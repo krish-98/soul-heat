@@ -25,10 +25,12 @@ export const removeItem = async (req, res, next) => {
   try {
     const { id, quantity } = req.body
 
-    console.log(quantity)
-
     const existingCartItem = await Cart.findOne({ id })
-    if (existingCartItem && existingCartItem.quantity > 1) {
+    if (!existingCartItem) {
+      res.status(404).json({ message: 'Item not found' })
+    }
+
+    if (existingCartItem.quantity > 1) {
       existingCartItem.quantity -= quantity
       existingCartItem.save()
 
@@ -40,6 +42,7 @@ export const removeItem = async (req, res, next) => {
       res.json({ message: 'Cart deleted' })
     }
   } catch (error) {
+    console.log(error)
     next(error)
   }
 }

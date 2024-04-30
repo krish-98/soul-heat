@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import EmptyCart from '../assets/pngwing.com-3.png'
 import { RiEBike2Fill } from 'react-icons/ri'
@@ -13,6 +13,7 @@ import {
 } from '../features/cartSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { loadStripe } from '@stripe/stripe-js'
+import { toast } from 'react-hot-toast'
 
 const Cart = () => {
   const [paymentLoader, setPaymentLoader] = useState(false)
@@ -31,7 +32,7 @@ const Cart = () => {
         category: item?.category,
         description: item?.description,
         imageId: item?.imageId,
-        price: item?.price || item.defaultPrice,
+        price: item?.price || item?.defaultPrice,
         quantity: 1,
       }
 
@@ -73,6 +74,7 @@ const Cart = () => {
       })
       const data = await res.json()
 
+      console.log(`Removed Item: ${data}`)
       dispatch(removeFromCart(data))
       dispatch(calculateCartTotal())
     } catch (error) {
@@ -85,7 +87,9 @@ const Cart = () => {
       const res = await fetch('/api/cart/clear-cart', { method: 'DELETE' })
       const data = await res.json()
 
-      console.log(data)
+      toast(`${data}!`, {
+        icon: '🧹',
+      })
       dispatch(clearCart())
     } catch (error) {
       console.log(error)
@@ -109,8 +113,6 @@ const Cart = () => {
 
       const session = await res.json()
       stripePromise.redirectToCheckout({ sessionId: session.id })
-
-      handleClearCart()
     } catch (error) {
       console.log(error)
     }

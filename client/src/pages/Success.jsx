@@ -1,6 +1,27 @@
+import { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { clearCart } from '../features/cartSlice'
 import Truck from '../assets/delivery-truck-100.png'
 
 const Success = () => {
+  const { pathname } = useLocation()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    const handleClearCart = async () => {
+      try {
+        const res = await fetch('/api/cart/clear-cart', { method: 'DELETE' })
+        const data = await res.json()
+
+        dispatch(clearCart())
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    pathname === '/success' && handleClearCart()
+  }, [])
   return (
     <div className="bg-[#f5f3f3] min-h-[calc(100vh-96px)] flex flex-col justify-center items-center gap-4 lg:min-h-[calc(100vh-80px)]">
       <img src={Truck} alt="Delivery truck" />

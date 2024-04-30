@@ -11,26 +11,27 @@ const MenuCard = ({ item }) => {
 
   const handleAddItemToCart = async (item) => {
     try {
-      if (user === null) {
+      if (!user) {
         return toast.error('Sign In to add item', {
           position: 'top-center',
         })
       }
 
       setLoading(true)
+      const cartItem = {
+        id: item?.id,
+        name: item?.name,
+        category: item?.category,
+        description: item?.description,
+        imageId: item?.imageId,
+        price: item?.price || item?.defaultPrice,
+        quantity: 1,
+        userRef: user?._id,
+      }
       const res = await fetch('/api/cart/add-item', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          id: item?.id,
-          name: item?.name,
-          category: item?.category,
-          description: item?.description,
-          imageId: item?.imageId,
-          price: item?.price || item?.defaultPrice,
-          quantity: 1,
-          userRef: user?._id,
-        }),
+        body: JSON.stringify(cartItem),
       })
 
       if (!res.ok) {

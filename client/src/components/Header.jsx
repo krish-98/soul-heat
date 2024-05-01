@@ -14,8 +14,10 @@ import { calculateCartTotal, clearCart, getCart } from '../features/cartSlice'
 const Header = () => {
   const [toggle, setToggle] = useState(false)
   const [showSignout, setShowSignout] = useState(false)
+
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
   const { totalItems, cartItems } = useSelector((store) => store.cart)
   const { user } = useSelector((store) => store.auth)
 
@@ -42,6 +44,10 @@ const Header = () => {
 
   const handleToggler = () => {
     setToggle(!toggle)
+  }
+
+  const handleModal = () => {
+    setShowSignout(false)
   }
 
   const handleSignOutUser = async () => {
@@ -114,12 +120,18 @@ const Header = () => {
                 />
 
                 {showSignout && (
-                  <button
-                    onClick={handleSignOutUser}
-                    className="absolute top-12 xs:top-16 right-0 z-50 bg-white p-2 text-sm rounded-md"
-                  >
-                    Logout
-                  </button>
+                  <>
+                    <div
+                      className="fixed inset-0 h-full w-full z-50"
+                      onClick={handleModal}
+                    />
+                    <button
+                      onClick={handleSignOutUser}
+                      className="absolute top-10 xs:top-14 md:top-16 right-0 z-50 bg-white p-2 text-sm rounded-md"
+                    >
+                      Logout
+                    </button>
+                  </>
                 )}
               </div>
             )}
@@ -243,12 +255,18 @@ const Header = () => {
                   />
 
                   {showSignout && (
-                    <button
-                      onClick={handleSignOutUser}
-                      className="absolute top-14 -right-4 w-20 bg-white text-black z-50 p-2 tracking-wide rounded-md"
-                    >
-                      Logout
-                    </button>
+                    <>
+                      <div
+                        className="fixed inset-0 h-full w-full z-50"
+                        onClick={handleModal}
+                      />
+                      <button
+                        onClick={handleSignOutUser}
+                        className="absolute top-14 w-20 bg-white text-black z-50 p-2 tracking-wide rounded-md"
+                      >
+                        Logout
+                      </button>
+                    </>
                   )}
                 </div>
               )}

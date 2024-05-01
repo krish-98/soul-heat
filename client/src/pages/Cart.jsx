@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import EmptyCart from '../assets/pngwing.com-3.png'
+import EmptyCart from '../assets/empty-cart.png'
 import { RiEBike2Fill } from 'react-icons/ri'
 import { IoBagCheckOutline } from 'react-icons/io5'
 import { BsArrowLeft } from 'react-icons/bs'
@@ -17,8 +17,10 @@ import { toast } from 'react-hot-toast'
 
 const Cart = () => {
   const [paymentLoader, setPaymentLoader] = useState(false)
+
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
   const { cartItems, totalItems, totalAmount } = useSelector(
     (store) => store.cart
   )
@@ -99,21 +101,38 @@ const Cart = () => {
   const handlePayment = async () => {
     try {
       setPaymentLoader(true)
-      const stripePromise = await loadStripe(
-        import.meta.env.VITE_STRIPE_PUBLIC_KEY
-      )
+      const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY)
 
       const res = await fetch('/api/cart/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cartItems: cartItems }),
+        body: JSON.stringify({ cartItems }),
       })
 
       if (res.status === 500) return
 
       const session = await res.json()
-      stripePromise.redirectToCheckout({ sessionId: session.id })
+
+      const result = stripe.redirectToCheckout({ sessionId: session.id })
+
+      console.log(`User's stripe's session id ${result}`)
+      setPaymentLoader(false)
     } catch (error) {
+      setPaymentLoader(false)
+      toast.error(
+        `Something went wrong 😐
+         Try after sometime`,
+        {
+          position: 'top-center',
+          autoClose: 1000,
+          hideProgressBar: true,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+          theme: 'light',
+        }
+      )
       console.log(error)
     }
   }

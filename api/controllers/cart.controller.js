@@ -77,13 +77,11 @@ export const checkout = async (req, res, next) => {
           currency: 'inr',
           product_data: {
             name: cartItem.name,
-            images: [`${process.env.CLOUDINARY_URL}${cartItem.imageId}`],
+            images: [
+              `https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/${cartItem.imageId}`,
+            ],
           },
           unit_amount: Math.round(cartItem.price),
-        },
-        adjustable_quantity: {
-          enabled: true,
-          minimum: 1,
         },
         quantity: cartItem.quantity,
       }

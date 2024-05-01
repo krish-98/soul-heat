@@ -1,4 +1,4 @@
-import Burger from '../assets/404-2.png'
+import Burger from '../assets/404.png'
 
 const ErrorPage = () => {
   return (

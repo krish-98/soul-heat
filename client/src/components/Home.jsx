@@ -43,7 +43,7 @@ const Home = () => {
     fetchRestaurantsData()
   }, [])
 
-  const searchFormHandler = (e) => {
+  const handleSearch = (e) => {
     e.preventDefault()
 
     const data = filterRestaurant(searchText, allRestaurants)
@@ -55,7 +55,7 @@ const Home = () => {
     <main className="py-8 px-4 bg-[#f5f3f3] min-h-screen">
       <div className="max-w-7xl mx-auto">
         <form
-          onSubmit={searchFormHandler}
+          onSubmit={handleSearch}
           className="flex justify-center max-w-[600px] mx-auto"
         >
           <input

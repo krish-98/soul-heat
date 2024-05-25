@@ -1,8 +1,7 @@
 import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import Header from './components/Header'
-import Home from './components/Home'
+
 import About from './pages/About'
 import Contact from './pages/Contact'
 import Restaurant from './pages/Restaurant'
@@ -12,12 +11,15 @@ import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import Success from './pages/Success'
 import Cancel from './pages/Cancel'
+
+import Header from './components/Header'
+import Home from './components/Home'
+import ProtectedRoute from './components/ProtectedRoute'
+import OnlineStatus from './components/OnlineStatus'
+
+import { useDispatch, useSelector } from 'react-redux'
 import { clearCart } from './features/cartSlice'
 import { logout } from './features/authSlice'
-import { useDispatch } from 'react-redux'
-import ProtectedRoute from './components/ProtectedRoute'
-import { useSelector } from 'react-redux'
-import OnlineStatus from './components/OnlineStatus'
 
 function App() {
   const dispatch = useDispatch()
@@ -73,6 +75,7 @@ function App() {
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </BrowserRouter>
+
       {createPortal(<OnlineStatus />, document.querySelector('#status'))}
     </>
   )

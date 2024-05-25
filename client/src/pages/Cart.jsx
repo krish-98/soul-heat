@@ -1,10 +1,15 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+
+import { toast } from 'react-hot-toast'
+import { loadStripe } from '@stripe/stripe-js'
+
 import EmptyCart from '../assets/empty-cart.png'
 import { RiEBike2Fill } from 'react-icons/ri'
 import { IoBagCheckOutline } from 'react-icons/io5'
 import { BsArrowLeft } from 'react-icons/bs'
 import { FaRegTrashAlt } from 'react-icons/fa'
+
 import {
   addToCart,
   calculateCartTotal,
@@ -12,8 +17,6 @@ import {
   removeFromCart,
 } from '../features/cartSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { loadStripe } from '@stripe/stripe-js'
-import { toast } from 'react-hot-toast'
 
 const Cart = () => {
   const [paymentLoader, setPaymentLoader] = useState(false)

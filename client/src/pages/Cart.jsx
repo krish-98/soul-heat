@@ -20,10 +20,9 @@ import { useDispatch, useSelector } from 'react-redux'
 
 const Cart = () => {
   const [paymentLoader, setPaymentLoader] = useState(false)
-
   const navigate = useNavigate()
-  const dispatch = useDispatch()
 
+  const dispatch = useDispatch()
   const { cartItems, totalItems, totalAmount } = useSelector(
     (store) => store.cart
   )
@@ -79,7 +78,6 @@ const Cart = () => {
       })
       const data = await res.json()
 
-      console.log(`Removed Item: ${data}`)
       dispatch(removeFromCart(data))
       dispatch(calculateCartTotal())
     } catch (error) {

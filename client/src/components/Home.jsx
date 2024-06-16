@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import RestaurantCard from './RestaurantCard'
+import toast from 'react-hot-toast'
 import Shimmer from './Shimmer'
 
 const filterRestaurant = (searchText, restaurants) => {
@@ -20,7 +21,7 @@ const Home = () => {
       try {
         const res = await fetch('/api/restaurant')
         if (!res.ok) {
-          throw new Error('Network error occured!')
+          throw new Error('Network error occured')
         }
 
         const data = await res.json()
@@ -36,6 +37,7 @@ const Home = () => {
         setAllRestaurants(restaurantData)
         setFilteredRestaurants(restaurantData)
       } catch (error) {
+        toast.error(`${error.message}!`, {})
         console.error(error)
       }
     }

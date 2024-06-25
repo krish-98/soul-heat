@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import OAuth from '../components/OAuth'
+import GoogleOAuth from '../components/GoogleOAuth'
+import toast from 'react-hot-toast'
 
 const SignUp = () => {
   const [formData, setFormData] = useState({})
   const [loading, setLoading] = useState(null)
-  const [error, setError] = useState(null)
+
   const navigate = useNavigate()
 
   const handleChange = (e) => {
@@ -19,8 +20,11 @@ const SignUp = () => {
     e.preventDefault()
     setLoading(true)
 
+    // input validation
     if (!formData.username || !formData.email || !formData.password) {
-      alert('Kindly fill the form with real information to move further')
+      toast('Kindly fill all the required fields', {
+        icon: '❗',
+      })
       setLoading(false)
       return
     }
@@ -36,18 +40,15 @@ const SignUp = () => {
       const data = await res.json()
 
       if (data.success === false) {
-        setError(data.message)
         setLoading(false)
-        setTimeout(() => {
-          setError(null)
-        }, 5000)
+        toast.error(data.message)
         return
       }
-      setLoading(false)
+
+      toast.success('Account created successfully!')
       navigate('/sign-in')
     } catch (error) {
       setLoading(false)
-      setError(error.message)
     }
   }
 
@@ -57,10 +58,6 @@ const SignUp = () => {
         <p className="text-3xl font-semibold text-center text-white tracking-wide md:text-4xl my-4">
           Sign Up
         </p>
-
-        {error && (
-          <p className="text-sm text-center text-red-500 font-bold">{error}</p>
-        )}
 
         <form className="space-y-6" onSubmit={handleFormSubmit}>
           <div>
@@ -148,7 +145,7 @@ const SignUp = () => {
             or
           </p>
 
-          <OAuth btnName="Sign up with Google" />
+          <GoogleOAuth btnName="Sign up with Google" />
         </div>
 
         <p className="mt-8 text-center text-sm text-white">

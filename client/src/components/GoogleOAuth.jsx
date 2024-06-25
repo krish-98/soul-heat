@@ -5,7 +5,7 @@ import { auth } from '../configs/firebase.config'
 import { authenticateUser } from '../features/authSlice'
 import { useDispatch } from 'react-redux'
 
-const OAuth = ({ btnName }) => {
+const GoogleOAuth = ({ btnName }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -46,4 +46,4 @@ const OAuth = ({ btnName }) => {
   )
 }
 
-export default OAuth
+export default GoogleOAuth

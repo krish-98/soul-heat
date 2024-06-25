@@ -1,13 +1,15 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import OAuth from '../components/OAuth'
+import GoogleOAuth from '../components/GoogleOAuth'
+import toast from 'react-hot-toast'
+
 import { useDispatch } from 'react-redux'
 import { authenticateUser } from '../features/authSlice'
 
 const SignIn = () => {
   const [formData, setFormData] = useState({})
   const [loading, setLoading] = useState(null)
-  const [error, setError] = useState(null)
+
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -22,8 +24,11 @@ const SignIn = () => {
     e.preventDefault()
     setLoading(true)
 
+    // input validation
     if (!formData.email || !formData.password) {
-      alert('Kindly fill the form with real information to move further')
+      toast('Kindly fill all the required fields', {
+        icon: '❗',
+      })
       setLoading(false)
       return
     }
@@ -39,11 +44,8 @@ const SignIn = () => {
       const data = await res.json()
 
       if (data.success === false) {
-        setError(data.message)
         setLoading(false)
-        setTimeout(() => {
-          setError(null)
-        }, 5000)
+        toast.error(data.message)
         return
       }
 
@@ -52,7 +54,6 @@ const SignIn = () => {
       navigate(-1)
     } catch (error) {
       setLoading(false)
-      setError(error.message)
     }
   }
 
@@ -62,8 +63,6 @@ const SignIn = () => {
         <p className="text-3xl font-semibold text-center text-white tracking-wide md:text-4xl my-4">
           Sign In
         </p>
-
-        {error && <p className="text-xl text-center font-bold">{error}</p>}
 
         <form className="space-y-6" onSubmit={handleFormSubmit}>
           <div>
@@ -118,7 +117,7 @@ const SignIn = () => {
               type="submit"
               className="flex w-full justify-center rounded-md border bg-[#fb923c] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-white hover:text-[#fb923c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black transition duration-500 disabled:cursor-not-allowed"
             >
-              {loading ? 'Signing up...' : 'Sign up'}
+              {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </div>
         </form>
@@ -129,7 +128,7 @@ const SignIn = () => {
             or
           </p>
 
-          <OAuth btnName="Sign in with Google" />
+          <GoogleOAuth btnName="Sign in with Google" />
         </div>
 
         <p className="mt-8 text-center text-sm text-white">

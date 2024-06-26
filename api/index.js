@@ -8,6 +8,7 @@ import path from 'path'
 import userRouter from './routes/user.routes.js'
 import restaurantRouter from './routes/restaurant.routes.js'
 import cartRouter from './routes/cart.routes.js'
+import orderRouter from './routes/order.routes.js'
 
 dotenv.config()
 export const stripe = Stripe(process.env.STRIPE_SECRET_KEY)
@@ -23,6 +24,7 @@ app.use(cookieParser())
 app.use('/api/restaurant', restaurantRouter)
 app.use('/api/user', userRouter)
 app.use('/api/cart', cartRouter)
+app.use('/api/order', orderRouter)
 
 // front-end
 app.use(express.static(path.join(__dirname, '/client/dist')))

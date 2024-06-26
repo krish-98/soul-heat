@@ -1,12 +1,16 @@
-import { useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { clearCart } from '../features/cartSlice'
 import Truck from '../assets/delivery-truck-100.png'
 
 const Success = () => {
-  const { pathname } = useLocation()
+  // const { pathname } = useLocation()
+  const [orderedItems, setOrderedItems] = useState([])
+  const navigate = useNavigate()
+
   const dispatch = useDispatch()
+  const { cartItems } = useSelector((store) => store.cart)
 
   useEffect(() => {
     const handleClearCart = async () => {
@@ -20,8 +24,32 @@ const Success = () => {
       }
     }
 
-    pathname === '/success' && handleClearCart()
+    const handleOrders = async () => {
+      const modifiedCartItems = cartItems.map(({ _id, ...rest }) => rest)
+
+      try {
+        const res = await fetch('/api/order/order-details', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(modifiedCartItems),
+        })
+        const data = await res.json()
+        setOrderedItems(data)
+
+        handleClearCart()
+        console.log(data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    handleOrders()
+
+    const timerId = setTimeout(() => navigate('/my-orders'), 2000)
+
+    return () => clearTimeout(timerId)
   }, [])
+
   return (
     <div className="bg-[#f5f3f3] min-h-[calc(100vh-96px)] flex flex-col justify-center items-center gap-4 lg:min-h-[calc(100vh-80px)]">
       <img src={Truck} alt="Delivery truck" />

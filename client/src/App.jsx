@@ -20,6 +20,7 @@ import OnlineStatus from './components/OnlineStatus'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearCart } from './features/cartSlice'
 import { logout } from './features/authSlice'
+import Orders from './pages/Orders'
 
 function App() {
   const dispatch = useDispatch()
@@ -69,6 +70,7 @@ function App() {
             element={!user ? <SignIn /> : <Navigate to="/" />}
           />
           <Route element={<ProtectedRoute />}>
+            <Route path="/my-orders" element={<Orders />} />
             <Route path="success" element={<Success />} />
             <Route path="cancel" element={<Cancel />} />
           </Route>

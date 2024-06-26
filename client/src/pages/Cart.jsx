@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 const Cart = () => {
   const [paymentLoader, setPaymentLoader] = useState(false)
+
   const navigate = useNavigate()
 
   const dispatch = useDispatch()
@@ -113,7 +114,6 @@ const Cart = () => {
       if (res.status === 500) return
 
       const session = await res.json()
-
       const result = stripe.redirectToCheckout({ sessionId: session.id })
 
       console.log(`User's stripe's session id ${result}`)

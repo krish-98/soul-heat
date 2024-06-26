@@ -1,11 +1,13 @@
 import { useState } from 'react'
-import toast from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { addToCart, calculateCartTotal } from '../features/cartSlice'
+
+import toast from 'react-hot-toast'
 import { ClipLoader } from 'react-spinners'
 
 const MenuCard = ({ item }) => {
   const [loading, setLoading] = useState(false)
+
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.auth)
 
@@ -28,6 +30,7 @@ const MenuCard = ({ item }) => {
         quantity: 1,
         userRef: user?._id,
       }
+
       const res = await fetch('/api/cart/add-item', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

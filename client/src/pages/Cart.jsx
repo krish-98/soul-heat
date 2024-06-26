@@ -14,6 +14,7 @@ import {
   addToCart,
   calculateCartTotal,
   clearCart,
+  getCart,
   removeFromCart,
 } from '../features/cartSlice'
 import { useDispatch, useSelector } from 'react-redux'
@@ -65,7 +66,7 @@ const Cart = () => {
         category: item?.category,
         description: item?.description,
         imageId: item?.imageId,
-        price: item?.price || item.defaultPrice,
+        price: item?.price || item?.defaultPrice,
         quantity: 1,
         userRef: user?._id,
       }

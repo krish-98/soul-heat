@@ -40,7 +40,7 @@ const Header = () => {
 
     // cartItems.length > 0 && getAllCartItems()
     getAllCartItems()
-  }, [user, cartItems.length, dispatch, totalItems])
+  }, [user, cartItems?.length, dispatch, totalItems])
 
   const handleToggler = () => {
     setToggle(!toggle)

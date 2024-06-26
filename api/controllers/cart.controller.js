@@ -39,7 +39,8 @@ export const removeItem = async (req, res, next) => {
 
     if (existingCartItem.quantity === 1) {
       await existingCartItem.deleteOne()
-      res.json({ message: 'Cart deleted' })
+      existingCartItem.quantity = 0
+      res.json({ message: 'Cart deleted', ...existingCartItem._doc })
     }
   } catch (error) {
     console.log(error)

@@ -1,21 +1,26 @@
 import { stripe } from '../index.js'
 import Cart from '../models/cart.model.js'
 import User from '../models/user.model.js'
+import { handleError } from '../utils/error.js'
 
 export const addItem = async (req, res, next) => {
   try {
+    if (!Object.keys(req.body).length) {
+      next(handleError(400, 'Request body cannot be empty'))
+    }
+
     const { id, quantity } = req.body
 
-    const existingCartItem = await Cart.findOne({ id })
-    if (existingCartItem) {
-      existingCartItem.quantity += quantity
-      await existingCartItem.save()
-
-      return res.status(200).json(existingCartItem)
-    } else {
+    const cartItem = await Cart.findOne({ id })
+    if (!cartItem) {
       const newCartItem = await Cart.create(req.body)
 
       return res.status(201).json(newCartItem)
+    } else {
+      cartItem.quantity += quantity
+      await cartItem.save()
+
+      return res.status(200).json(cartItem)
     }
   } catch (error) {
     next(error)
@@ -26,20 +31,20 @@ export const removeItem = async (req, res, next) => {
   try {
     const { id, quantity } = req.body
 
-    const existingCartItem = await Cart.findOne({ id })
-    if (!existingCartItem) {
+    const cartItem = await Cart.findOne({ id })
+    if (!cartItem) {
       res.status(404).json({ message: 'Item not found' })
     }
 
-    if (existingCartItem.quantity > 1) {
-      existingCartItem.quantity -= quantity
-      existingCartItem.save()
+    if (cartItem.quantity > 1) {
+      cartItem.quantity -= quantity
+      cartItem.save()
 
-      return res.status(200).json(existingCartItem)
+      return res.status(200).json(cartItem)
     }
 
-    if (existingCartItem.quantity === 1) {
-      await existingCartItem.deleteOne()
+    if (cartItem.quantity === 1) {
+      await cartItem.deleteOne()
       res.json({ message: 'Cart deleted' })
     }
   } catch (error) {

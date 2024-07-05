@@ -20,7 +20,6 @@ const userSchema = new Schema(
     avatar: {
       type: String,
     },
-    // cartItems: [{ type: Schema.Types.ObjectId, ref: 'cart' }],
   },
   { timestamps: true }
 )

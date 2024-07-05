@@ -20,7 +20,6 @@ import { useDispatch, useSelector } from 'react-redux'
 
 const Cart = () => {
   const [paymentLoader, setPaymentLoader] = useState(false)
-
   const navigate = useNavigate()
 
   const dispatch = useDispatch()
@@ -100,26 +99,22 @@ const Cart = () => {
     }
   }
 
-  const handlePayment = async () => {
+  const handleCheckout = async () => {
     try {
       setPaymentLoader(true)
-      const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY)
 
+      const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY)
       const res = await fetch('/api/cart/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ cartItems }),
       })
 
-      if (res.status === 500) return
+      if (!res.ok) throw new Error('Failed to create checkout session')
 
       const session = await res.json()
-      const result = stripe.redirectToCheckout({ sessionId: session.id })
-
-      console.log(`User's stripe's session id ${result}`)
-      setPaymentLoader(false)
+      await stripe.redirectToCheckout({ sessionId: session.id })
     } catch (error) {
-      setPaymentLoader(false)
       toast.error(
         `Something went wrong 😐
          Try after sometime`,
@@ -135,13 +130,14 @@ const Cart = () => {
         }
       )
       console.log(error)
+    } finally {
+      setPaymentLoader(false)
     }
   }
 
   return (
     <div className="min-h-[calc(100vh-96px)] pt-12 p-6 md:px-10 lg:px-0 bg-[#f5f3f3] lg:min-h-[calc(100vh-80px)]">
       <div className="max-w-4xl mx-auto">
-        {/* Cart Header */}
         <div className="pb-10 relative flex items-center justify-between gap-6">
           {totalItems > 0 && (
             <>
@@ -174,8 +170,7 @@ const Cart = () => {
           )}
         </div>
 
-        {!cartItems.length ? (
-          // Empty cart pic
+        {!cartItems?.length ? (
           <div className="mt-24 flex flex-col gap-8">
             <img
               className="md:w-1/2 md:mx-auto"
@@ -286,7 +281,7 @@ const Cart = () => {
               </p>
 
               <button
-                onClick={handlePayment}
+                onClick={handleCheckout}
                 disabled={paymentLoader}
                 className={`bg-[#fb923c] w-full mt-10 py-3 px-6 rounded-2xl flex items-center justify-center gap-1 hover:bg-[#ffa13c] hover:shadow-xl transistion duration-300 cursor-pointer focus:scale-90 ${
                   paymentLoader &&

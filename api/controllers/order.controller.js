@@ -1,18 +1,25 @@
-import Cart from '../models/cart.model.js'
 import Order from '../models/order.model.js'
 
+export const saveOrders = async (req, res) => {
+  try {
+    const orderDocument = await Order.create({ orders: req.body })
+
+    res.json({ orderedItems: orderDocument })
+  } catch (error) {
+    console.error('Error saving orders:', error)
+    res.status(500).json({ error: 'Failed to save orders' })
+  }
+}
+
 export const orderDetails = async (req, res) => {
-  const orders = await Order.create(req.body)
-  //   const userOrders = await Cart.findOne()
-
-  res.json({ orderedItems: orders })
-}
-
-export const getOrderDetails = async (req, res) => {
   console.log(req.user)
-  const orders = await Order.find({ userRef: req.user.id })
-  console.log(orders)
+  try {
+    const orders = await Order.find({ userRef: req.user.id })
+    console.log(orders)
 
-  res.json(orders)
+    res.json(orders)
+  } catch (error) {
+    console.error(error.message)
+    res.status(500).json({ error: 'Error getting the order details' })
+  }
 }
-// getOrderDetails()

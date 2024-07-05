@@ -16,34 +16,13 @@ const Success = () => {
     const handleClearCart = async () => {
       try {
         const res = await fetch('/api/cart/clear-cart', { method: 'DELETE' })
-        const data = await res.json()
+        await res.json()
 
         dispatch(clearCart())
       } catch (error) {
         console.log(error)
       }
     }
-
-    const handleOrders = async () => {
-      const modifiedCartItems = cartItems.map(({ _id, ...rest }) => rest)
-
-      try {
-        const res = await fetch('/api/order/order-details', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(modifiedCartItems),
-        })
-        const data = await res.json()
-        setOrderedItems(data)
-
-        handleClearCart()
-        console.log(data)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-
-    handleOrders()
 
     const timerId = setTimeout(() => navigate('/my-orders'), 2000)
 

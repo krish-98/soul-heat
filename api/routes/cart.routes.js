@@ -1,10 +1,11 @@
-import { Router } from 'express'
+import express, { Router } from 'express'
 import {
   addItem,
   checkout,
   clearCart,
   getCartItems,
   removeItem,
+  stripeWebhook,
 } from '../controllers/cart.controller.js'
 import { verifyToken } from '../utils/verify.js'
 
@@ -14,6 +15,11 @@ router.post('/add-item', verifyToken, addItem)
 router.post('/remove-item', verifyToken, removeItem)
 router.get('/all-items', verifyToken, getCartItems)
 router.post('/checkout', verifyToken, checkout)
+router.post(
+  '/webhook',
+  express.raw({ type: 'application/json' }),
+  stripeWebhook
+)
 router.delete('/clear-cart', verifyToken, clearCart)
 
 export default router

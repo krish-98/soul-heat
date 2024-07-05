@@ -1,5 +1,6 @@
 import { stripe } from '../index.js'
 import Cart from '../models/cart.model.js'
+import User from '../models/user.model.js'
 
 export const addItem = async (req, res, next) => {
   try {
@@ -71,6 +72,12 @@ export const checkout = async (req, res, next) => {
   try {
     const { cartItems } = req.body
 
+    if (!cartItems || !Array.isArray(cartItems)) {
+      return res.status(400).json({ error: 'Invalid cart items' })
+    }
+
+    const user = await User.findOne({ _id: req.user.id })
+
     const lineItems = cartItems.map((cartItem) => {
       return {
         price_data: {
@@ -91,14 +98,58 @@ export const checkout = async (req, res, next) => {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
+      customer_email: user.email,
       success_url: `${process.env.FRONTEND_URL}/success`,
       cancel_url: `${process.env.FRONTEND_URL}/cancel`,
       submit_type: 'pay',
       billing_address_collection: 'auto',
     })
 
+    console.log(`Session`, session)
+
     res.json({ id: session.id })
   } catch (error) {
     next(error)
   }
+}
+
+const fulfillOrder = (lineItems) => {
+  // TODO: fill me in
+  console.log('Fulfilling order', lineItems)
+}
+export const stripeWebhook = async (req, res, next) => {
+  const payload = req.body
+  const sig = req.headers['stripe-payments']
+
+  let event
+
+  try {
+    event = stripe.webhooks.constructEvent(
+      payload,
+      sig,
+      process.env.STRIPE_WEBHOOK_SECRET
+    )
+
+    console.log(event)
+  } catch (error) {
+    return res.status(400).send(`Webhook Error: ${error.message}`)
+  }
+
+  // Handle the checkout.session.completed event
+  if (event.type === 'checkout.session.completed') {
+    // Retrieve the session. If you require line items in the response, you may include them by expanding line_items.
+    const sessionWithLineItems = await stripe.checkout.sessions.retrieve(
+      event.data.object.id,
+      {
+        expand: ['line_items'],
+      }
+    )
+
+    const lineItems = sessionWithLineItems.lineItems
+
+    // Fulfill the purchase...
+    fulfillOrder(lineItems)
+  }
+
+  res.status(200).end()
 }

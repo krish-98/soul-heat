@@ -1,13 +1,10 @@
 import { Router } from 'express'
 import { verifyToken } from '../utils/verify.js'
-import {
-  getOrderDetails,
-  orderDetails,
-} from '../controllers/order.controller.js'
+import { orderDetails, saveOrders } from '../controllers/order.controller.js'
 
 const router = Router()
 
-router.post('/order-details', verifyToken, orderDetails)
-router.get('/order-details', verifyToken, getOrderDetails)
+router.post('/save-orders', verifyToken, saveOrders)
+router.get('/order-details', verifyToken, orderDetails)
 
 export default router

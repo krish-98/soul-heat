@@ -1,11 +1,11 @@
-const Shimmer = () => {
+const HomeShimmer = () => {
   return (
     <div
       className="flex flex-wrap justify-center items-center mt-14 gap-10"
       data-testid="shimmer"
     >
       {Array(20)
-        .fill("")
+        .fill('')
         .map((e, index) => (
           <div
             key={index}
@@ -24,4 +24,4 @@ const Shimmer = () => {
   )
 }
 
-export default Shimmer
+export default HomeShimmer

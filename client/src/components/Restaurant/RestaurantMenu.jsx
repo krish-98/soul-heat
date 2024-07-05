@@ -1,6 +1,6 @@
-import Accordion from './Accordion'
+import MenuCardAccordion from './MenuCardAccordion'
 
-const RestaurantDishes = ({ restaurantMenuLists }) => {
+const RestaurantMenu = ({ restaurantMenuLists }) => {
   const menuLists = restaurantMenuLists?.filter(
     (list) =>
       list?.card?.card['@type'] ===
@@ -10,10 +10,10 @@ const RestaurantDishes = ({ restaurantMenuLists }) => {
   return (
     <div className="mt-6 w-full space-y-4 md:space-y-8">
       {menuLists?.map((menu, i) => (
-        <Accordion key={i} menu={menu} />
+        <MenuCardAccordion key={i} menu={menu} />
       ))}
     </div>
   )
 }
 
-export default RestaurantDishes
+export default RestaurantMenu

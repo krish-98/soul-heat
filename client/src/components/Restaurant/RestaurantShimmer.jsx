@@ -1,4 +1,4 @@
-const ShimmerTwo = () => {
+const RestaurantShimmer = () => {
   return (
     <div className="w-full pt-6">
       <div className="flex justify-between">
@@ -20,7 +20,7 @@ const ShimmerTwo = () => {
         </div>
 
         {Array(15)
-          .fill("")
+          .fill('')
           .map((e, index) => (
             <div key={index} className="my-8 space-y-4 flex justify-between">
               <div className="space-y-2">
@@ -41,4 +41,4 @@ const ShimmerTwo = () => {
   )
 }
 
-export default ShimmerTwo
+export default RestaurantShimmer

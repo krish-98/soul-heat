@@ -13,7 +13,7 @@ import Success from './pages/Success'
 import Cancel from './pages/Cancel'
 
 import Header from './components/Header'
-import Home from './components/Home'
+import Home from './components/Home/Home'
 import ProtectedRoute from './components/ProtectedRoute'
 import OnlineStatus from './components/OnlineStatus'
 

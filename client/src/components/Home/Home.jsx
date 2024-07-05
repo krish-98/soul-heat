@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import RestaurantCard from './RestaurantCard'
 import toast from 'react-hot-toast'
-import Shimmer from './Shimmer'
+
+import HomeShimmer from './HomeShimmer'
 
 const filterRestaurant = (searchText, restaurants) => {
   const filteredData = restaurants?.filter((res) =>
@@ -78,7 +79,7 @@ const Home = () => {
         </form>
 
         {!allRestaurants || allRestaurants?.length === 0 ? (
-          <Shimmer />
+          <HomeShimmer />
         ) : (
           <div className="flex flex-wrap justify-center items-center mt-10 gap-10">
             {filteredRestaurants?.length === 0 ? (

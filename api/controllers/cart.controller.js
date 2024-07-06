@@ -66,7 +66,6 @@ export const getCartItems = async (req, res, next) => {
 export const clearCart = async (req, res, next) => {
   try {
     const deleted = await Cart.deleteMany({ userRef: req.user.id })
-    console.log(deleted)
 
     res.status(200).json({ message: 'Cart items has been deleted!' })
   } catch (error) {
@@ -111,8 +110,6 @@ export const checkout = async (req, res, next) => {
       billing_address_collection: 'auto',
     })
 
-    // console.log(`Session`, session)
-
     await Order.create({
       orders: req.body,
       userRef: req.user.id,
@@ -125,13 +122,9 @@ export const checkout = async (req, res, next) => {
   }
 }
 
-const fulfillOrder = (lineItems) => {
-  // TODO: fill me in
-  console.log('Fulfilling order', lineItems)
-}
 export const stripeWebhook = async (req, res, next) => {
   const payload = req.body
-  const sig = req.headers['stripe-payments']
+  const sig = req.headers['stripe-signature']
 
   let event
 
@@ -139,17 +132,16 @@ export const stripeWebhook = async (req, res, next) => {
     event = stripe.webhooks.constructEvent(
       payload,
       sig,
-      process.env.STRIPE_WEBHOOK_SECRET
+      // process.env.STRIPE_WEBHOOK_SECRET
+      whsec_2b39976e9f89e6776fa2c3f60a5da4ed46ac4dcf581e4b7b486b7b9a0cb3d697
     )
-
-    console.log(event)
+    console.log('event: ', event)
   } catch (error) {
     return res.status(400).send(`Webhook Error: ${error.message}`)
   }
 
-  // Handle the checkout.session.completed event
+  console.log('I came here')
   if (event.type === 'checkout.session.completed') {
-    // Retrieve the session. If you require line items in the response, you may include them by expanding line_items.
     const sessionWithLineItems = await stripe.checkout.sessions.retrieve(
       event.data.object.id,
       {
@@ -157,11 +149,23 @@ export const stripeWebhook = async (req, res, next) => {
       }
     )
 
-    const lineItems = sessionWithLineItems.lineItems
-
-    // Fulfill the purchase...
-    fulfillOrder(lineItems)
+    const lineItems = sessionWithLineItems.line_items
+    console.log(`Line Items from Webhook:`, lineItems)
   }
 
   res.status(200).end()
 }
+
+// try {
+//   // Update the order status to "Completed"
+//   await Order.findOneAndUpdate(
+//     { userRef: session.client_reference_id }, // Assuming client_reference_id is used to reference the order
+//     { status: 'Completed' }
+//   )
+
+//   // Log or handle the line items if needed
+//   console.log(lineItems)
+// } catch (error) {
+//   console.error('Error updating order:', error)
+//   return res.status(500).send(`Internal Server Error: ${error.message}`)
+// }

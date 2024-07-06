@@ -20,7 +20,6 @@ export default function Orders() {
     getOrderDetails()
   }, [])
 
-  console.log(orderedItems)
   return (
     <div className="px-6">
       <div className="max-w-5xl mx-auto my-6">

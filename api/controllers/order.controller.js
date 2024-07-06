@@ -12,10 +12,10 @@ export const saveOrders = async (req, res) => {
 }
 
 export const orderDetails = async (req, res) => {
-  console.log(req.user)
   try {
-    const orders = await Order.find({ userRef: req.user.id })
-    console.log(orders)
+    const orders = await Order.find({ userRef: req.user.id }).sort({
+      createdAt: -1,
+    })
 
     res.json(orders)
   } catch (error) {

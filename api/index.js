@@ -1,9 +1,9 @@
 import express from 'express'
-import dotenv from 'dotenv'
-import Stripe from 'stripe'
 import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
 import path from 'path'
+import dotenv from 'dotenv'
+import Stripe from 'stripe'
 
 import userRouter from './routes/user.routes.js'
 import restaurantRouter from './routes/restaurant.routes.js'

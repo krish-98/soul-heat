@@ -1,5 +1,6 @@
 import { stripe } from '../index.js'
 import Cart from '../models/cart.model.js'
+import Order from '../models/order.model.js'
 import User from '../models/user.model.js'
 import { handleError } from '../utils/error.js'
 
@@ -38,7 +39,7 @@ export const removeItem = async (req, res, next) => {
 
     if (cartItem.quantity > 1) {
       cartItem.quantity -= quantity
-      cartItem.save()
+      await cartItem.save()
 
       return res.status(200).json(cartItem)
     }
@@ -48,7 +49,6 @@ export const removeItem = async (req, res, next) => {
       res.json({ message: 'Cart deleted' })
     }
   } catch (error) {
-    console.log(error)
     next(error)
   }
 }
@@ -57,7 +57,7 @@ export const getCartItems = async (req, res, next) => {
   try {
     const items = await Cart.find({ userRef: req.user.id })
 
-    res.json(items)
+    res.json({ items })
   } catch (error) {
     next(error)
   }
@@ -67,7 +67,8 @@ export const clearCart = async (req, res, next) => {
   try {
     const deleted = await Cart.deleteMany({ userRef: req.user.id })
     console.log(deleted)
-    res.json('Cart items has been deleted!')
+
+    res.status(200).json({ message: 'Cart items has been deleted!' })
   } catch (error) {
     next(error)
   }
@@ -75,7 +76,7 @@ export const clearCart = async (req, res, next) => {
 
 export const checkout = async (req, res, next) => {
   try {
-    const { cartItems } = req.body
+    const cartItems = req.body
 
     if (!cartItems || !Array.isArray(cartItems)) {
       return res.status(400).json({ error: 'Invalid cart items' })
@@ -110,7 +111,13 @@ export const checkout = async (req, res, next) => {
       billing_address_collection: 'auto',
     })
 
-    console.log(`Session`, session)
+    // console.log(`Session`, session)
+
+    await Order.create({
+      orders: req.body,
+      userRef: req.user.id,
+      status: 'Processing',
+    })
 
     res.json({ id: session.id })
   } catch (error) {

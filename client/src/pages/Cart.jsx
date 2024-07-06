@@ -87,6 +87,11 @@ const Cart = () => {
         },
         body: JSON.stringify(cartItem),
       })
+
+      if (!res.ok) {
+        throw new Error('Newtork error occurred')
+      }
+
       const data = await res.json()
 
       dispatch(removeFromCart(data))
@@ -103,13 +108,21 @@ const Cart = () => {
   const handleClearCart = async () => {
     try {
       const res = await fetch('/api/cart/clear-cart', { method: 'DELETE' })
+
+      if (!res.ok) {
+        throw new Error('Failed to clear cart')
+      }
+
       const data = await res.json()
 
-      toast(`${data}!`, {
+      toast(`${data?.message}!`, {
         icon: '🧹',
       })
       dispatch(clearCart())
     } catch (error) {
+      toast(`${error.message}!`, {
+        icon: '🧹',
+      })
       console.log(error)
     }
   }
@@ -122,7 +135,7 @@ const Cart = () => {
       const res = await fetch('/api/cart/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cartItems }),
+        body: JSON.stringify(cartItems),
       })
 
       if (!res.ok) throw new Error('Failed to create checkout session')

@@ -11,6 +11,7 @@ import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import Success from './pages/Success'
 import Cancel from './pages/Cancel'
+import Orders from './pages/Orders'
 
 import Header from './components/Header'
 import Home from './components/Home/Home'
@@ -20,7 +21,6 @@ import OnlineStatus from './components/OnlineStatus'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearCart } from './features/cartSlice'
 import { logout } from './features/authSlice'
-import Orders from './pages/Orders'
 
 function App() {
   const dispatch = useDispatch()

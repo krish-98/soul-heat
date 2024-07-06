@@ -18,6 +18,11 @@ const orderSchema = new Schema(
       ref: 'User',
       required: true,
     },
+    status: {
+      type: String,
+      enum: ['Processing', 'Failed', 'Confirmed', 'Delivered'],
+      required: true,
+    },
   },
   { timestamps: true }
 )

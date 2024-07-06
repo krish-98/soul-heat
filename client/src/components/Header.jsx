@@ -10,6 +10,7 @@ import { AiOutlineHome } from 'react-icons/ai'
 import { FaRegBuilding } from 'react-icons/fa'
 import { logout } from '../features/authSlice'
 import { calculateCartTotal, clearCart, getCart } from '../features/cartSlice'
+import toast from 'react-hot-toast'
 
 const MobileHeader = ({
   toggle,
@@ -19,7 +20,7 @@ const MobileHeader = ({
   showSignout,
   setShowSignout,
   handleModal,
-  handleSignOutUser,
+  handleSignOut,
 }) => {
   return (
     <header className="relative bg-[#fb923c] px-3.5 py-2 lg:hidden">
@@ -83,7 +84,7 @@ const MobileHeader = ({
                       My orders
                     </Link>
                     <hr />
-                    <button onClick={handleSignOutUser}>Logout</button>
+                    <button onClick={handleSignOut}>Logout</button>
                   </div>
                 </>
               )}
@@ -151,19 +152,24 @@ const Header = () => {
       try {
         if (user !== null) {
           const res = await fetch('/api/cart/all-items')
+
+          if (!res.ok) {
+            throw new Error('Newtork error occurred')
+          }
+
           const data = await res.json()
 
-          if (data.success === false) return
-
-          dispatch(getCart(data))
+          dispatch(getCart(data?.items))
           dispatch(calculateCartTotal())
         }
       } catch (error) {
+        toast(`Something went wrong!`, {
+          icon: '🙄',
+        })
         console.log(error)
       }
     }
 
-    // cartItems.length > 0 && getAllCartItems()
     getAllCartItems()
   }, [user, cartItems.length, dispatch, totalItems])
 
@@ -175,7 +181,7 @@ const Header = () => {
     setShowSignout(false)
   }
 
-  const handleSignOutUser = async () => {
+  const handleSignOut = async () => {
     try {
       const res = await fetch('/api/user/signout')
       const data = await res.json()
@@ -201,7 +207,7 @@ const Header = () => {
         showSignout={showSignout}
         setShowSignout={setShowSignout}
         handleModal={handleModal}
-        handleSignOutUser={handleSignOutUser}
+        handleSignOut={handleSignOut}
       />
 
       {/* Desktop Navbar */}
@@ -289,7 +295,7 @@ const Header = () => {
                           My orders
                         </Link>
                         <hr />
-                        <button onClick={handleSignOutUser}>Logout</button>
+                        <button onClick={handleSignOut}>Logout</button>
                       </div>
                     </>
                   )}

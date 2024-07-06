@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import ShimmerTwo from '../components/ShimmerTwo'
-import RestaurantHeader from '../components/RestaurantHeader'
-import RestaurantDishes from '../components/RestaurantDishes'
+
+import RestaurantHeader from '../components/Restaurant/RestaurantHeader'
+import RestaurantMenu from '../components/Restaurant/RestaurantMenu'
+import RestaurantShimmer from '../components/Restaurant/RestaurantShimmer'
 
 const Restaurant = () => {
   const [restaurantMenu, setRestaurantMenu] = useState(null)
@@ -43,11 +44,11 @@ const Restaurant = () => {
   return (
     <div className="mt-10 flex flex-col items-center px-6 max-w-5xl mx-auto relative">
       {!restaurantMenu ? (
-        <ShimmerTwo />
+        <RestaurantShimmer />
       ) : (
         <>
           <RestaurantHeader restaurantHeader={restaurantHeader} />
-          <RestaurantDishes restaurantMenuLists={restaurantMenuLists} />
+          <RestaurantMenu restaurantMenuLists={restaurantMenuLists} />
         </>
       )}
     </div>

@@ -1,24 +1,29 @@
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { addToCart, calculateCartTotal } from '../features/cartSlice'
-
+import { Navigate, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { ClipLoader } from 'react-spinners'
 
-const MenuCard = ({ item }) => {
+import { useDispatch, useSelector } from 'react-redux'
+import { addToCart, calculateCartTotal } from '../../features/cartSlice'
+
+const MenuCardItem = ({ item }) => {
   const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
 
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.auth)
 
   const handleAddItemToCart = async (item) => {
-    try {
-      if (!user) {
-        return toast.error('Sign In to add item', {
-          position: 'top-center',
-        })
-      }
+    if (!user) {
+      toast.error('Sign In to add item', {
+        position: 'top-center',
+      })
 
+      setTimeout(() => navigate('/sign-up'), 1000)
+      return
+    }
+
+    try {
       setLoading(true)
       const cartItem = {
         id: item?.id,
@@ -40,17 +45,17 @@ const MenuCard = ({ item }) => {
       if (!res.ok) {
         throw new Error('Newtork error occurred')
       }
+
       const data = await res.json()
 
       dispatch(addToCart(data))
       dispatch(calculateCartTotal())
-      setLoading(false)
     } catch (error) {
-      setLoading(false)
       toast(`Something went wrong!`, {
         icon: '🙄',
       })
-      console.log(error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -102,4 +107,4 @@ const MenuCard = ({ item }) => {
   )
 }
 
-export default MenuCard
+export default MenuCardItem

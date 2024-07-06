@@ -11,6 +11,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
+      lowercase: true,
     },
     password: {
       type: String,
@@ -19,7 +20,6 @@ const userSchema = new Schema(
     avatar: {
       type: String,
     },
-    // cartItems: [{ type: Schema.Types.ObjectId, ref: 'cart' }],
   },
   { timestamps: true }
 )

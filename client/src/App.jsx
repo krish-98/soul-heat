@@ -11,9 +11,10 @@ import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import Success from './pages/Success'
 import Cancel from './pages/Cancel'
+import Orders from './pages/Orders'
 
 import Header from './components/Header'
-import Home from './components/Home'
+import Home from './components/Home/Home'
 import ProtectedRoute from './components/ProtectedRoute'
 import OnlineStatus from './components/OnlineStatus'
 
@@ -69,6 +70,7 @@ function App() {
             element={!user ? <SignIn /> : <Navigate to="/" />}
           />
           <Route element={<ProtectedRoute />}>
+            <Route path="/my-orders" element={<Orders />} />
             <Route path="success" element={<Success />} />
             <Route path="cancel" element={<Cancel />} />
           </Route>

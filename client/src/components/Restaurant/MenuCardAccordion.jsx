@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { FaChevronUp, FaChevronDown } from 'react-icons/fa6'
-import MenuCard from './MenuCard'
+import MenuCardItem from './MenuCardItem'
 
-const Accordion = ({ menu, loading, handleAddItemToCart }) => {
+const MenuCardAccordion = ({ menu }) => {
   const [isAccordionOpen, setIsAccordionOpen] = useState(true)
 
   return (
@@ -25,7 +25,7 @@ const Accordion = ({ menu, loading, handleAddItemToCart }) => {
             const item = dish?.card || dish?.dish
 
             return (
-              <MenuCard
+              <MenuCardItem
                 key={item?.info?.id || dish?.dish?.info?.id}
                 item={item}
               />
@@ -39,4 +39,4 @@ const Accordion = ({ menu, loading, handleAddItemToCart }) => {
   )
 }
 
-export default Accordion
+export default MenuCardAccordion

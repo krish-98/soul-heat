@@ -11,14 +11,16 @@ import ErrorBoundary from './components/ErrorBoundary.jsx'
 import Fallback from './components/Fallback.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <Toaster />
-        <ErrorBoundary fallback={<Fallback />}>
-          <App />
-        </ErrorBoundary>
-      </PersistGate>
-    </Provider>
-  </React.StrictMode>
+  // <React.StrictMode>
+
+  // </React.StrictMode>
+
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <Toaster />
+      <ErrorBoundary fallback={<Fallback />}>
+        <App />
+      </ErrorBoundary>
+    </PersistGate>
+  </Provider>
 )

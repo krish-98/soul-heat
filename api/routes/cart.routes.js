@@ -1,4 +1,5 @@
 import express, { Router } from 'express'
+import bodyParser from 'body-parser'
 import {
   addItem,
   checkout,
@@ -17,7 +18,7 @@ router.get('/all-items', verifyToken, getCartItems)
 router.post('/checkout', verifyToken, checkout)
 router.post(
   '/webhook',
-  express.raw({ type: 'application/json' }),
+  bodyParser.raw({ type: 'application/json' }),
   stripeWebhook
 )
 router.delete('/clear-cart', verifyToken, clearCart)

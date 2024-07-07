@@ -108,6 +108,9 @@ export const checkout = async (req, res, next) => {
       cancel_url: `${process.env.FRONTEND_URL}/cancel`,
       submit_type: 'pay',
       billing_address_collection: 'auto',
+      metadata: {
+        userId: req.user.id,
+      },
     })
 
     await Order.create({
@@ -132,40 +135,28 @@ export const stripeWebhook = async (req, res, next) => {
     event = stripe.webhooks.constructEvent(
       payload,
       sig,
-      // process.env.STRIPE_WEBHOOK_SECRET
-      whsec_2b39976e9f89e6776fa2c3f60a5da4ed46ac4dcf581e4b7b486b7b9a0cb3d697
+      process.env.STRIPE_WEBHOOK_SECRET
     )
-    console.log('event: ', event)
-  } catch (error) {
-    return res.status(400).send(`Webhook Error: ${error.message}`)
+    console.log(`Event: ${event}`)
+  } catch (err) {
+    return res.status(400).send(`Webhook Error: ${err.message}`)
   }
 
-  console.log('I came here')
+  // Handle the checkout.session.completed event
   if (event.type === 'checkout.session.completed') {
+    // Retrieve the session. If you require line items in the response, you may include them by expanding line_items.
     const sessionWithLineItems = await stripe.checkout.sessions.retrieve(
       event.data.object.id,
       {
         expand: ['line_items'],
       }
     )
-
     const lineItems = sessionWithLineItems.line_items
-    console.log(`Line Items from Webhook:`, lineItems)
+
+    // Fulfill the purchase...
+    // fulfillOrder(lineItems)
+    console.log(`LineItems: ${lineItems}`)
   }
 
-  res.status(200).end()
+  response.status(200).end()
 }
-
-// try {
-//   // Update the order status to "Completed"
-//   await Order.findOneAndUpdate(
-//     { userRef: session.client_reference_id }, // Assuming client_reference_id is used to reference the order
-//     { status: 'Completed' }
-//   )
-
-//   // Log or handle the line items if needed
-//   console.log(lineItems)
-// } catch (error) {
-//   console.error('Error updating order:', error)
-//   return res.status(500).send(`Internal Server Error: ${error.message}`)
-// }

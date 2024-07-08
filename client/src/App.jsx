@@ -21,6 +21,7 @@ import OnlineStatus from './components/OnlineStatus'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearCart } from './features/cartSlice'
 import { logout } from './features/authSlice'
+import Footer from './components/Footer'
 
 function App() {
   const dispatch = useDispatch()

@@ -1,17 +1,17 @@
-import { useEffect } from 'react'
+import { lazy, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 
-import About from './pages/About'
-import Contact from './pages/Contact'
-import Restaurant from './pages/Restaurant'
-import ErrorPage from './pages/ErrorPage'
-import Cart from './pages/Cart'
-import SignIn from './pages/SignIn'
-import SignUp from './pages/SignUp'
-import Success from './pages/Success'
-import Cancel from './pages/Cancel'
-import Orders from './pages/Orders'
+const About = lazy(() => import('./pages/About'))
+const Contact = lazy(() => import('./pages/Contact'))
+const Restaurant = lazy(() => import('./pages/Restaurant'))
+const ErrorPage = lazy(() => import('./pages/ErrorPage'))
+const Cart = lazy(() => import('./pages/Cart'))
+const SignIn = lazy(() => import('./pages/SignIn'))
+const SignUp = lazy(() => import('./pages/SignUp'))
+const Success = lazy(() => import('./pages/Success'))
+const Cancel = lazy(() => import('./pages/Cancel'))
+const Orders = lazy(() => import('./pages/Orders'))
 
 import Header from './components/Header'
 import Home from './components/Home/Home'
@@ -21,7 +21,7 @@ import OnlineStatus from './components/OnlineStatus'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearCart } from './features/cartSlice'
 import { logout } from './features/authSlice'
-import Footer from './components/Footer'
+import SuspenseWrapper from './components/Suspense/SuspenseWrapper'
 
 function App() {
   const dispatch = useDispatch()
@@ -58,24 +58,51 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="restaurant/:resId" element={<Restaurant />} />
-          <Route path="about" element={<About />} />
-          <Route path="contact" element={<Contact />} />
-          <Route path="cart" element={<Cart />} />
+          <Route
+            path="restaurant/:resId"
+            element={<SuspenseWrapper component={Restaurant} />}
+          />
+          <Route path="about" element={<SuspenseWrapper component={About} />} />
+          <Route
+            path="contact"
+            element={<SuspenseWrapper component={Contact} />}
+          />
+          <Route path="cart" element={<SuspenseWrapper component={Cart} />} />
           <Route
             path="sign-up"
-            element={!user ? <SignUp /> : <Navigate to="/" />}
+            element={
+              !user ? (
+                <SuspenseWrapper component={SignUp} />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
           />
           <Route
             path="sign-in"
-            element={!user ? <SignIn /> : <Navigate to="/" />}
+            element={
+              !user ? (
+                <SuspenseWrapper component={SignIn} />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
           />
           <Route element={<ProtectedRoute />}>
-            <Route path="/my-orders" element={<Orders />} />
-            <Route path="success" element={<Success />} />
-            <Route path="cancel" element={<Cancel />} />
+            <Route
+              path="my-orders"
+              element={<SuspenseWrapper component={Orders} />}
+            />
+            <Route
+              path="success"
+              element={<SuspenseWrapper component={Success} />}
+            />
+            <Route
+              path="cancel"
+              element={<SuspenseWrapper component={Cancel} />}
+            />
           </Route>
-          <Route path="*" element={<ErrorPage />} />
+          <Route path="*" element={<SuspenseWrapper component={ErrorPage} />} />
         </Routes>
       </BrowserRouter>
 

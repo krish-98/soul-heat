@@ -15,9 +15,7 @@ const MenuCardItem = ({ item }) => {
 
   const handleAddItemToCart = async (item) => {
     if (!user) {
-      toast.error('Sign In to add item', {
-        position: 'top-center',
-      })
+      toast.error('Sign In to add item')
 
       setTimeout(() => navigate('/sign-up'), 1000)
       return

@@ -55,7 +55,6 @@ const Cart = () => {
       }
 
       const data = await res.json()
-
       dispatch(addToCart(data))
       dispatch(calculateCartTotal())
     } catch (error) {
@@ -95,7 +94,12 @@ const Cart = () => {
 
       const data = await res.json()
 
-      dispatch(removeFromCart(data))
+      if (data?.message) {
+        dispatch(removeFromCart({ id: cartItem.id, message: data.message }))
+      } else {
+        dispatch(removeFromCart(cartItem))
+      }
+
       dispatch(calculateCartTotal())
     } catch (error) {
       toast(`Something went wrong!`, {
@@ -148,7 +152,6 @@ const Cart = () => {
         `Something went wrong 😐
          Try after sometime`,
         {
-          position: 'top-center',
           autoClose: 1000,
           hideProgressBar: true,
           closeOnClick: false,

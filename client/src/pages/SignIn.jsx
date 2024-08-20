@@ -59,8 +59,8 @@ const SignIn = () => {
 
   return (
     <div className="flex min-h-[calc(100vh-96px)] md:min-h-[calc(100vh-80px)] items-center justify-center bg-[#fb923c] px-8 py-12">
-      <div className="flex flex-col gap-4 w-full md:max-w-md">
-        <p className="text-3xl font-semibold text-center text-white tracking-wide md:text-4xl my-4">
+      <div className="flex flex-col gap-4 w-full bg-white rounded-xl md:max-w-md p-8">
+        <p className="text-3xl font-semibold text-center text-black tracking-wide md:text-4xl my-4">
           Sign In
         </p>
 
@@ -68,7 +68,7 @@ const SignIn = () => {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium leading-6 text-white"
+              className="block text-sm font-medium leading-6 text-black"
             >
               Email address
             </label>
@@ -91,7 +91,7 @@ const SignIn = () => {
             <div className="flex items-center justify-between">
               <label
                 htmlFor="password"
-                className="block text-sm font-medium leading-6 text-white"
+                className="block text-sm font-medium leading-6 text-black"
               >
                 Password
               </label>
@@ -115,7 +115,7 @@ const SignIn = () => {
             <button
               disabled={loading}
               type="submit"
-              className="flex w-full justify-center rounded-md border bg-[#fb923c] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-white hover:text-[#fb923c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black transition duration-500 disabled:cursor-not-allowed"
+              className="flex w-full justify-center rounded-md border text-white px-3 py-1.5 text-sm font-semibold leading-6 bg-black shadow-sm hover:text-white hover:bg-[#fb923c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black transition duration-500 disabled:cursor-not-allowed"
             >
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
@@ -124,14 +124,14 @@ const SignIn = () => {
 
         {/* Sign in with Google btn */}
         <div>
-          <p className="text-center py-5 relative before:content before:absolute before:w-[45%] before:h-[2px] before:bg-white before:left-0 before:top-8 after:content after:absolute after:w-[45%] after:h-[2px] after:bg-white after:right-0 after:top-8">
+          <p className="text-center py-3 relative before:content before:absolute before:w-[45%] before:h-[2px] before:bg-white before:left-0 before:top-8 after:content after:absolute after:w-[45%] after:h-[2px] after:bg-white after:right-0 after:top-8">
             or
           </p>
 
           <GoogleOAuth btnName="Sign in with Google" />
         </div>
 
-        <p className="mt-8 text-center text-sm text-white">
+        <p className="mt-8 text-center text-sm text-black">
           Don&apos;t have an account?{' '}
           <Link
             to={'/sign-up'}

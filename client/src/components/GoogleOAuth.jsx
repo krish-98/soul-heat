@@ -38,9 +38,9 @@ const GoogleOAuth = ({ btnName }) => {
   return (
     <button
       onClick={handleGooglePopup}
-      className="flex items-center justify-center gap-1 bg-white w-full py-2 rounded-xl hover:bg-gray-100 transition-all duration-300 decoration-clone"
+      className="flex items-center justify-center gap-1.5 font-medium text-sm bg-white w-full py-2 rounded-xl border hover:bg-gray-100 transition-all duration-300 decoration-clone"
     >
-      <FcGoogle className="w-9 h-9" />
+      <FcGoogle className="w-8 h-8" />
       {btnName}
     </button>
   )

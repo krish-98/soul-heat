@@ -2,6 +2,16 @@ import { lazy, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 
+import Header from './components/Header'
+import Home from './components/Home/Home'
+import ProtectedRoute from './components/ProtectedRoute'
+import OnlineStatus from './components/OnlineStatus'
+import SuspenseWrapper from './components/Suspense/SuspenseWrapper'
+
+import { useDispatch, useSelector } from 'react-redux'
+import { clearCart } from './features/cartSlice'
+import { logout } from './features/authSlice'
+
 const About = lazy(() => import('./pages/About'))
 const Contact = lazy(() => import('./pages/Contact'))
 const Restaurant = lazy(() => import('./pages/Restaurant'))
@@ -12,16 +22,6 @@ const SignUp = lazy(() => import('./pages/SignUp'))
 const Success = lazy(() => import('./pages/Success'))
 const Cancel = lazy(() => import('./pages/Cancel'))
 const Orders = lazy(() => import('./pages/Orders'))
-
-import Header from './components/Header'
-import Home from './components/Home/Home'
-import ProtectedRoute from './components/ProtectedRoute'
-import OnlineStatus from './components/OnlineStatus'
-
-import { useDispatch, useSelector } from 'react-redux'
-import { clearCart } from './features/cartSlice'
-import { logout } from './features/authSlice'
-import SuspenseWrapper from './components/Suspense/SuspenseWrapper'
 
 function App() {
   const dispatch = useDispatch()

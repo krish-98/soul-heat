@@ -4,6 +4,7 @@ import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { auth } from '../configs/firebase.config'
 import { authenticateUser } from '../features/authSlice'
 import { useDispatch } from 'react-redux'
+import toast from 'react-hot-toast'
 
 const GoogleOAuth = ({ btnName }) => {
   const dispatch = useDispatch()
@@ -25,13 +26,18 @@ const GoogleOAuth = ({ btnName }) => {
           photo: user?.photoURL,
         }),
       })
-      if (!res.ok) return new Error('Error occurred!')
+
+      if (!res.ok) throw new Error('Error occurred!')
+
       const data = await res.json()
 
       dispatch(authenticateUser(data))
       navigate(-1)
     } catch (error) {
-      console.error(`Couldn't signup with firebase google auth`, error)
+      toast(`Couldn't sign up with Google`, {
+        icon: '😥',
+      })
+      console.error(error)
     }
   }
 

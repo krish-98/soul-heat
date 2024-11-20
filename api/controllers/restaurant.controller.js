@@ -19,7 +19,7 @@ export const allRestaurants = async (req, res) => {
     res.json(data)
   } catch (error) {
     console.error(error)
-    res.status(500).send('An error occurred')
+    res.status(500).json({ message: 'An error occurred' })
   }
 }
 
@@ -44,6 +44,6 @@ export const restaurantInfo = async (req, res) => {
     res.json(data)
   } catch (error) {
     console.error(error)
-    res.status(500).send('An error occurred')
+    res.status(500).json({ message: 'An error occurred' })
   }
 }

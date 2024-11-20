@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import toast from 'react-hot-toast'
 import logo from '../assets/logo.png'
+
+import { logout } from '../features/authSlice'
+import { calculateCartTotal, clearCart, getCart } from '../features/cartSlice'
+
 import { VscChromeClose } from 'react-icons/vsc'
 import { IoCallOutline, IoCartOutline } from 'react-icons/io5'
 import { HiOutlineUserCircle } from 'react-icons/hi'
 import { PiHamburgerFill } from 'react-icons/pi'
 import { AiOutlineHome } from 'react-icons/ai'
 import { FaRegBuilding } from 'react-icons/fa'
-import { logout } from '../features/authSlice'
-import { calculateCartTotal, clearCart, getCart } from '../features/cartSlice'
-import toast from 'react-hot-toast'
 
 const MobileHeader = ({
   toggle,
@@ -153,9 +155,7 @@ const Header = () => {
         if (user !== null) {
           const res = await fetch('/api/cart/all-items')
 
-          if (!res.ok) {
-            throw new Error('Newtork error occurred')
-          }
+          if (!res.ok) throw new Error('Newtork error occurred')
 
           const data = await res.json()
 
@@ -166,7 +166,7 @@ const Header = () => {
         toast(`Something went wrong!`, {
           icon: '🙄',
         })
-        console.log(error)
+        console.error(error)
       }
     }
 

@@ -31,7 +31,7 @@ const GoogleOAuth = ({ btnName }) => {
 
       const data = await res.json()
 
-      dispatch(authenticateUser(data))
+      dispatch(authenticateUser(data.user))
       navigate(-1)
     } catch (error) {
       toast(`Couldn't sign up with Google`, {

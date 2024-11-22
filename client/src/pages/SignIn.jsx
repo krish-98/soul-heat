@@ -49,7 +49,7 @@ const SignIn = () => {
         return
       }
 
-      dispatch(authenticateUser(data))
+      dispatch(authenticateUser(data.user))
       setLoading(false)
       navigate(-1)
     } catch (error) {

@@ -8,7 +8,7 @@ import {
   removeItem,
   stripeWebhook,
 } from '../controllers/cart.controller.js'
-import { verifyToken } from '../utils/verify.js'
+import { verifyToken } from '../middlewares/verify.js'
 
 const router = Router()
 

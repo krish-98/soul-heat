@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import GoogleOAuth from '../components/GoogleOAuth'
 import toast from 'react-hot-toast'
+import GoogleOAuth from '../components/GoogleOAuth'
 
 import { useDispatch } from 'react-redux'
 import { authenticateUser } from '../features/authSlice'
 
 const SignIn = () => {
   const [formData, setFormData] = useState({})
-  const [loading, setLoading] = useState(null)
+  const [isLoading, setIsLoading] = useState(null)
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -22,14 +22,14 @@ const SignIn = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
-    setLoading(true)
+    setIsLoading(true)
 
     // input validation
     if (!formData.email || !formData.password) {
       toast('Kindly fill all the required fields', {
         icon: '❗',
       })
-      setLoading(false)
+      setIsLoading(false)
       return
     }
 
@@ -44,16 +44,18 @@ const SignIn = () => {
       const data = await res.json()
 
       if (data.success === false) {
-        setLoading(false)
+        setIsLoading(false)
         toast.error(data.message)
         return
       }
 
-      dispatch(authenticateUser(data.user))
-      setLoading(false)
+      dispatch(authenticateUser({ user: data?.user, token: data?.token }))
+
       navigate(-1)
     } catch (error) {
-      setLoading(false)
+      console.error(error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -113,11 +115,11 @@ const SignIn = () => {
 
           <div>
             <button
-              disabled={loading}
+              disabled={isLoading}
               type="submit"
-              className="flex w-full justify-center rounded-md border text-white px-3 py-1.5 text-sm font-semibold leading-6 bg-black shadow-sm hover:text-white hover:bg-[#fb923c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black transition duration-500 disabled:cursor-not-allowed"
+              className="flex w-full justify-center rounded-md border text-white px-3 py-1.5 text-sm font-semibold leading-6 bg-black shadow-sm hover:text-white hover:bg-[#fb923c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black transition duration-500 disabled:cursor-not-allowed disabled:bg-orange-300"
             >
-              {loading ? 'Signing in...' : 'Sign In'}
+              {isLoading ? 'Signing in...' : 'Sign In'}
             </button>
           </div>
         </form>

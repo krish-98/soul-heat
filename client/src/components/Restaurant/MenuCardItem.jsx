@@ -11,7 +11,7 @@ const MenuCardItem = ({ item }) => {
   const navigate = useNavigate()
 
   const dispatch = useDispatch()
-  const { user } = useSelector((state) => state.auth)
+  const { user, token } = useSelector((state) => state.auth)
 
   const handleAddItemToCart = async (item) => {
     if (!user) {
@@ -23,6 +23,7 @@ const MenuCardItem = ({ item }) => {
 
     try {
       setLoading(true)
+
       const cartItem = {
         id: item?.id,
         name: item?.name,
@@ -36,7 +37,10 @@ const MenuCardItem = ({ item }) => {
 
       const res = await fetch('/api/cart/add-item', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(cartItem),
       })
 

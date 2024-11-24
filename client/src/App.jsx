@@ -34,22 +34,22 @@ function App() {
       behavior: 'smooth',
     })
 
-    const getCookieInfo = () => {
-      const cookieArray = document.cookie.split('; ')
-      const cookieObject = {}
+    // const getCookieInfo = () => {
+    //   const cookieArray = document.cookie.split('; ')
+    //   const cookieObject = {}
 
-      cookieArray.forEach((cookie) => {
-        const [key, value] = cookie.split('=')
-        cookieObject[key] = value
-      })
+    //   cookieArray.forEach((cookie) => {
+    //     const [key, value] = cookie.split('=')
+    //     cookieObject[key] = value
+    //   })
 
-      if (!cookieObject.access_token) {
-        dispatch(logout())
-        dispatch(clearCart())
-      }
-    }
+    //   if (!cookieObject.access_token) {
+    //     dispatch(logout())
+    //     dispatch(clearCart())
+    //   }
+    // }
 
-    getCookieInfo()
+    // getCookieInfo()
   }, [])
 
   return (

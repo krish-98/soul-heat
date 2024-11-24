@@ -52,16 +52,21 @@ export const signin = async (req, res, next) => {
     // Generate Tokens
     const { access_token, refresh_token } = generateTokens(isUserValid._id)
 
-    res.cookie('access_token', access_token, {
-      maxAge: 15 * 60 * 1000,
-      secure: true,
-    })
+    // res.cookie('access_token', access_token, {
+    //   maxAge: 15 * 60 * 1000,
+    //   secure: true,
+    // })
     res.cookie('refresh_token', refresh_token, {
       maxAge: 24 * 60 * 60 * 1000,
       httpOnly: true,
       secure: true,
     })
-    res.json({ message: 'Login successful!', success: true, user: rest })
+    res.json({
+      message: 'Login successful!',
+      success: true,
+      user: rest,
+      token: access_token,
+    })
   } catch (error) {
     next(error)
   }
@@ -78,16 +83,21 @@ export const google = async (req, res, next) => {
       // Generate tokens
       const { access_token, refresh_token } = generateTokens(existingUser._id)
 
-      res.cookie('access_token', access_token, {
-        maxAge: 15 * 60 * 1000,
-        secure: true,
-      })
+      // res.cookie('access_token', access_token, {
+      //   maxAge: 15 * 60 * 1000,
+      //   secure: true,
+      // })
       res.cookie('refresh_token', refresh_token, {
         maxAge: 24 * 60 * 60 * 1000,
         httpOnly: true,
         secure: true,
       })
-      res.json({ message: 'Login successful!', success: true, user: rest })
+      res.json({
+        message: 'Login successful!',
+        success: true,
+        user: rest,
+        token: access_token,
+      })
     } else {
       // Generate a random password
       const generatedPassword =
@@ -108,16 +118,21 @@ export const google = async (req, res, next) => {
       // Generate tokens
       const { access_token, refresh_token } = generateTokens(newUser._id)
 
-      res.cookie('access_token', access_token, {
-        maxAge: 15 * 60 * 1000,
-        secure: true,
-      })
+      // res.cookie('access_token', access_token, {
+      //   maxAge: 15 * 60 * 1000,
+      //   secure: true,
+      // })
       res.cookie('refresh_token', refresh_token, {
         maxAge: 24 * 60 * 60 * 1000,
         httpOnly: true,
         secure: true,
       })
-      res.json({ message: 'Login successful!', success: true, user: rest })
+      res.json({
+        message: 'Login successful!',
+        success: true,
+        user: rest,
+        token: access_token,
+      })
     }
   } catch (error) {
     next(error)

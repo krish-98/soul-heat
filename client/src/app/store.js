@@ -6,8 +6,8 @@ import cartReducer from '../features/cartSlice'
 import authReducer from '../features/authSlice'
 
 const rootReducer = combineReducers({ cart: cartReducer, auth: authReducer })
-const persistConfig = { key: 'root', storage, version: 1 }
 
+const persistConfig = { key: 'root', storage, version: 1 }
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 export const store = configureStore({

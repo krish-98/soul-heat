@@ -19,9 +19,12 @@ export const verifyToken = (req, res, next) => {
         access_token,
         process.env.JWT_ACCESS_TOKEN_SECRET
       )
+
+      console.log('Inside')
       req.user = decoded
       return next()
     } catch (accessError) {
+      console.log('Inside 2')
       if (accessError.name !== 'TokenExpiredError') {
         return next(handleError(401, 'Invalid Access Token'))
       }
@@ -39,7 +42,8 @@ export const verifyToken = (req, res, next) => {
     )
 
     req.user = validateRefreshToken
-    res.json({ token: newAccessToken })
+    req.token = newAccessToken
+
     next()
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
@@ -47,6 +51,28 @@ export const verifyToken = (req, res, next) => {
     }
     return next(handleError(401, 'Invalid Refresh Token'))
   }
+}
+
+// A more straightforward approach to sending token response
+export const sendTokenResponse = (req, res, next) => {
+  // Store the original res.json method
+  const originalJson = res.json
+
+  // Override the json method to inject token if it exists
+  res.json = function (data) {
+    // If a new access token was generated, add it to the response
+    if (req.token) {
+      // If data is an object, add token to it
+      if (typeof data === 'object' && data !== null) {
+        data.token = req.token
+      }
+    }
+
+    // Call the original json method with modified data
+    return originalJson.call(this, data)
+  }
+
+  next()
 }
 
 // export const verifyToken = (req, res, next) => {

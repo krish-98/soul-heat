@@ -1,16 +1,20 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { clearCart } from '../features/cartSlice'
 import Tick from '../assets/success_tick.png'
 
 const Success = () => {
   const dispatch = useDispatch()
+  const { token } = useSelector((store) => store.user)
 
   useEffect(() => {
     const handleClearCart = async () => {
       try {
-        const res = await fetch('/api/cart/clear-cart', { method: 'DELETE' })
+        const res = await fetch('/api/cart/clear-cart', {
+          method: 'DELETE',
+          headers: { Authorization: `Bearer ${token}` },
+        })
         await res.json()
 
         dispatch(clearCart())

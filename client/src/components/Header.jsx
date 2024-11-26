@@ -147,13 +147,19 @@ const Header = () => {
   const dispatch = useDispatch()
 
   const { totalItems, cartItems } = useSelector((store) => store.cart)
-  const { user } = useSelector((store) => store.auth)
+  const { user, token } = useSelector((store) => store.auth)
 
   useEffect(() => {
     const getAllCartItems = async () => {
       try {
         if (user !== null) {
-          const res = await fetch('/api/cart/all-items')
+          const res = await fetch('/api/cart/all-items', {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          })
 
           if (!res.ok) throw new Error('Newtork error occurred')
 

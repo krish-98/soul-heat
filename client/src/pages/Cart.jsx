@@ -29,7 +29,7 @@ const Cart = () => {
   const { cartItems, totalItems, totalAmount } = useSelector(
     (store) => store.cart
   )
-  const { user } = useSelector((state) => state.auth)
+  const { user, token } = useSelector((state) => state.auth)
 
   const handleIncreaseQty = async (item) => {
     try {
@@ -46,7 +46,10 @@ const Cart = () => {
 
       const res = await fetch('/api/cart/add-item', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(cartItem),
       })
 
@@ -83,6 +86,7 @@ const Cart = () => {
       const res = await fetch('/api/cart/remove-item', {
         method: 'POST',
         headers: {
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(cartItem),
@@ -112,7 +116,10 @@ const Cart = () => {
 
   const handleClearCart = async () => {
     try {
-      const res = await fetch('/api/cart/clear-cart', { method: 'DELETE' })
+      const res = await fetch('/api/cart/clear-cart', {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      })
 
       if (!res.ok) {
         throw new Error('Failed to clear cart')
@@ -139,7 +146,10 @@ const Cart = () => {
       const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY)
       const res = await fetch('/api/cart/checkout', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(cartItems),
       })
 

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import toast from 'react-hot-toast'
 import logo from '../assets/logo.png'
 
-import { logout } from '../features/authSlice'
+import { authenticateUser, logout, updateToken } from '../features/authSlice'
 import { calculateCartTotal, clearCart, getCart } from '../features/cartSlice'
 
 import { VscChromeClose } from 'react-icons/vsc'
@@ -167,6 +167,7 @@ const Header = () => {
 
           dispatch(getCart(data?.items))
           dispatch(calculateCartTotal())
+          data?.token && dispatch(updateToken({ token: data.token }))
         }
       } catch (error) {
         toast(`Something went wrong!`, {

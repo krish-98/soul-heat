@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { FcGoogle } from 'react-icons/fc'
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { auth } from '../configs/firebase.config'
-import { authenticateUser } from '../features/authSlice'
+import { authenticateUser, updateToken } from '../features/authSlice'
 import { useDispatch } from 'react-redux'
 import toast from 'react-hot-toast'
 import { useState } from 'react'
@@ -39,7 +39,8 @@ const GoogleOAuth = ({ btnName }) => {
 
       const data = await res.json()
 
-      dispatch(authenticateUser({ user: data?.user, token: data?.token }))
+      dispatch(authenticateUser({ user: data?.user }))
+      dispatch(updateToken({ token: data?.token }))
       navigate(-1)
     } catch (error) {
       toast(`Couldn't sign up with Google`, {

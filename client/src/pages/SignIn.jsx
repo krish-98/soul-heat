@@ -4,7 +4,7 @@ import toast from 'react-hot-toast'
 import GoogleOAuth from '../components/GoogleOAuth'
 
 import { useDispatch } from 'react-redux'
-import { authenticateUser } from '../features/authSlice'
+import { authenticateUser, updateToken } from '../features/authSlice'
 
 const SignIn = () => {
   const [formData, setFormData] = useState({})
@@ -49,7 +49,8 @@ const SignIn = () => {
         return
       }
 
-      dispatch(authenticateUser({ user: data?.user, token: data?.token }))
+      dispatch(authenticateUser({ user: data?.user }))
+      dispatch(updateToken({ token: data?.token }))
 
       navigate(-1)
     } catch (error) {

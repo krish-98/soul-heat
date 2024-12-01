@@ -16,7 +16,7 @@ export const stripe = Stripe(process.env.STRIPE_SECRET_KEY)
 const __dirname = path.resolve()
 
 const app = express()
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 3000
 
 app.use(express.json())
 app.use(cookieParser())
@@ -32,7 +32,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
 })
 
-// Error handling middleware
+// Default error handling middleware
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500
   const message = err.message || 'Internal Server Error'

@@ -1,13 +1,21 @@
 import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import OrderDetails from '../components/Order/OrderDetails'
 
 export default function Orders() {
   const [orderedItems, setOrderedItems] = useState([])
 
+  const { token } = useSelector((store) => store.auth)
+
   useEffect(() => {
     const getOrderDetails = async () => {
       try {
-        const res = await fetch('/api/order/order-details')
+        const res = await fetch('/api/order/order-details', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         const data = await res.json()
 
         setOrderedItems(data)

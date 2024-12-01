@@ -26,10 +26,10 @@ const Cart = () => {
   const navigate = useNavigate()
 
   const dispatch = useDispatch()
+  const { user, token } = useSelector((state) => state.auth)
   const { cartItems, totalItems, totalAmount } = useSelector(
     (store) => store.cart
   )
-  const { user, token } = useSelector((state) => state.auth)
 
   const handleIncreaseQty = async (item) => {
     try {

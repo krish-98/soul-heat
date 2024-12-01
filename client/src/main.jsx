@@ -1,4 +1,4 @@
-import React from 'react'
+import { BrowserRouter } from 'react-router-dom'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
@@ -16,7 +16,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <PersistGate loading={null} persistor={persistor}>
       <Toaster reverseOrder={false} />
       <ErrorBoundary fallback={<Fallback />}>
-        <App />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </ErrorBoundary>
     </PersistGate>
   </Provider>

@@ -8,17 +8,20 @@ export const authSlice = createSlice({
   },
   reducers: {
     authenticateUser: (state, action) => {
-      const { user, token } = action.payload
+      state.user = action.payload.user
+    },
+    updateToken: (state, action) => {
+      const { token } = action.payload
 
-      state.user = user
-      state.token = token
+      if (token) state.token = token
     },
     logout: (state) => {
       state.user = null
+      state.token = ''
     },
   },
 })
 
-export const { authenticateUser, logout } = authSlice.actions
+export const { authenticateUser, updateToken, logout } = authSlice.actions
 
 export default authSlice.reducer

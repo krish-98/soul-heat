@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+
 import { clearCart } from '../features/cartSlice'
 import Tick from '../assets/success_tick.png'
 

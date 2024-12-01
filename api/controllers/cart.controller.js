@@ -65,7 +65,7 @@ export const getCartItems = async (req, res, next) => {
 
 export const clearCart = async (req, res, next) => {
   try {
-    const deleted = await Cart.deleteMany({ userRef: req.user.id })
+    await Cart.deleteMany({ userRef: req.user.id })
 
     res.status(200).json({ message: 'Cart items has been deleted!' })
   } catch (error) {

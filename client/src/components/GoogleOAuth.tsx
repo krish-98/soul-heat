@@ -39,6 +39,7 @@ const GoogleOAuth = ({ btnName }: GoogleOAuthProps) => {
             email: user?.email,
             photo: user?.photoURL,
           }),
+          credentials: 'include',
         }
       )
 

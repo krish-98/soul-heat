@@ -5,7 +5,7 @@ interface Token {
   refresh_token: string
 }
 
-export const generateTokens = (userId: string) => {
+export const generateTokens = (userId: string): Token => {
   const access_token = jwt.sign(
     { id: userId },
     process.env.JWT_ACCESS_TOKEN_SECRET as string,

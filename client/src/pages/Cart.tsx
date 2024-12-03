@@ -52,6 +52,7 @@ const Cart = () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(cartItem),
+          credentials: 'include',
         }
       )
 
@@ -94,6 +95,7 @@ const Cart = () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(cartItem),
+          credentials: 'include',
         }
       )
 
@@ -126,6 +128,7 @@ const Cart = () => {
         {
           method: 'DELETE',
           headers: { Authorization: `Bearer ${token}` },
+          credentials: 'include',
         }
       )
 
@@ -147,43 +150,47 @@ const Cart = () => {
     }
   }
 
-  // const handleCheckout = async () => {
-  //   try {
-  //     setPaymentLoader(true)
+  const handleCheckout = async () => {
+    try {
+      setPaymentLoader(true)
 
-  //     const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY)
-  //     const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/cart/checkout`, {
-  //       method: 'POST',
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(cartItems),
-  //     })
+      const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY)
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/cart/checkout`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(cartItems),
+          credentials: 'include',
+        }
+      )
 
-  //     if (!res.ok) throw new Error('Failed to create checkout session')
+      if (!res.ok) throw new Error('Failed to create checkout session')
 
-  //     const session = await res.json()
-  //     await stripe.redirectToCheckout({ sessionId: session.id })
-  //   } catch (error) {
-  //     toast.error(
-  //       `Something went wrong 😐
-  //        Try after sometime`,
-  //       {
-  //         autoClose: 1000,
-  //         hideProgressBar: true,
-  //         closeOnClick: false,
-  //         pauseOnHover: false,
-  //         draggable: false,
-  //         progress: undefined,
-  //         theme: 'light',
-  //       }
-  //     )
-  //     console.log(error)
-  //   } finally {
-  //     setPaymentLoader(false)
-  //   }
-  // }
+      const session = await res.json()
+      await stripe.redirectToCheckout({ sessionId: session.id })
+    } catch (error) {
+      toast.error(
+        `Something went wrong 😐
+         Try after sometime`,
+        {
+          autoClose: 1000,
+          hideProgressBar: true,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+          theme: 'light',
+        }
+      )
+      console.log(error)
+    } finally {
+      setPaymentLoader(false)
+    }
+  }
 
   return (
     <div className="min-h-[calc(100vh-96px)] pt-12 p-6 md:px-10 lg:px-0 bg-[#f5f3f3] lg:min-h-[calc(100vh-80px)]">

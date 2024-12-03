@@ -16,7 +16,7 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string)
 const PORT: number = Number(process.env.PORT) || 3000
 const app = express()
 
-app.use(cors({ origin: process.env.FRONTEND_URL }))
+app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }))
 app.use(express.json())
 app.use(cookieParser())
 

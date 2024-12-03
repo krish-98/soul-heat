@@ -25,6 +25,7 @@ export default function Orders() {
             headers: {
               Authorization: `Bearer ${token}`,
             },
+            credentials: 'include',
           }
         )
         const data = await res.json()

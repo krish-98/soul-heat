@@ -12,11 +12,11 @@ const RestaurantHeader = ({ restaurantHeader }) => {
 
   // If the scroll height is greater than 200 show the mini-cart
   useEffect(() => {
-    const handleMiniCart = () => {
+    const handleMiniCart = () =>
       window.scrollY > 200 ? setShowMiniCart(true) : setShowMiniCart(false)
-    }
 
     window.addEventListener('scroll', handleMiniCart)
+
     return () => {
       window.removeEventListener('scroll', handleMiniCart)
     }

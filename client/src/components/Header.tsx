@@ -178,6 +178,7 @@ const Header = () => {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
               },
+              credentials: 'include',
             }
           )
 
@@ -215,7 +216,10 @@ const Header = () => {
   const handleSignOut = async () => {
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/user/signout`
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/signout`,
+        {
+          credentials: 'include',
+        }
       )
       const data = await res.json()
 

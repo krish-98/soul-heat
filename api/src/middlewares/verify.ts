@@ -20,7 +20,6 @@ export const verifyToken = (
   const refresh_token = req.cookies.refresh_token
 
   if (!refresh_token) return next(handleError(401, 'No Refresh Token'))
-
   if (!access_token) return next(handleError(401, 'No Access Token'))
 
   try {
@@ -48,7 +47,7 @@ export const verifyToken = (
       process.env.JWT_REFRESH_TOKEN_SECRET as string
     )
 
-    //Type guard
+    //Adding type guard
     if (
       typeof validateRefreshToken === 'object' &&
       validateRefreshToken !== null

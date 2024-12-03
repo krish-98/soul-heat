@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { ClipLoader } from 'react-spinners'
 
@@ -44,6 +44,7 @@ const MenuCardItem = ({ item }) => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(cartItem),
+          credentials: 'include',
         }
       )
 

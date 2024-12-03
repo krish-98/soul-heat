@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import bcrypt from 'bcryptjs'
-
 import User from '../models/user.model'
+
 import { handleError } from '../utils/error'
 import { generateTokens } from '../utils/token'
 
@@ -61,7 +61,6 @@ export const signin = async (
     //@ts-ignore
     const { password: pass, ...rest } = isUserValid._doc
 
-    // Generate Tokens
     //@ts-ignore
     const { access_token, refresh_token } = generateTokens(isUserValid._id)
 
@@ -69,6 +68,7 @@ export const signin = async (
       maxAge: 24 * 60 * 60 * 1000,
       httpOnly: true,
       secure: true,
+      sameSite: 'none',
     })
     res.json({
       message: 'Login successful!',
@@ -94,7 +94,6 @@ export const google = async (
       //@ts-ignore
       const { password: pass, ...rest } = existingUser._doc
 
-      // Generate tokens
       //@ts-ignore
       const { access_token, refresh_token } = generateTokens(existingUser._id)
 
@@ -102,6 +101,7 @@ export const google = async (
         maxAge: 24 * 60 * 60 * 1000,
         httpOnly: true,
         secure: true,
+        sameSite: 'none',
       })
       res.json({
         message: 'Login successful!',
@@ -127,7 +127,6 @@ export const google = async (
       //@ts-ignore
       const { password: pass, ...rest } = newUser._doc
 
-      // Generate tokens
       //@ts-ignore
       const { access_token, refresh_token } = generateTokens(newUser._id)
 
@@ -135,7 +134,9 @@ export const google = async (
         maxAge: 24 * 60 * 60 * 1000,
         httpOnly: true,
         secure: true,
+        sameSite: 'none',
       })
+
       res.json({
         message: 'Login successful!',
         success: true,
@@ -154,8 +155,11 @@ export const signout = async (
   next: NextFunction
 ) => {
   try {
-    res.clearCookie('access_token')
-    res.clearCookie('refresh_token')
+    res.clearCookie('refresh_token', {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+    })
 
     res.json({ message: 'User has been successfully logged out!' })
   } catch (error) {

@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react'
 import toast from 'react-hot-toast'
 import RestaurantCard from './RestaurantCard'
 import HomeShimmer from './HomeShimmer'
+import { RestaurantProps } from '../../types'
 
-const filterRestaurant = (searchText, restaurants) => {
+const filterRestaurant = (searchText: string, restaurants: RestaurantProps) => {
   const filteredData = restaurants?.filter((res) =>
     res?.info?.name?.toLowerCase()?.includes(searchText?.toLowerCase())
   )
@@ -12,9 +13,12 @@ const filterRestaurant = (searchText, restaurants) => {
 }
 
 const Home = () => {
-  const [allRestaurants, setAllRestaurants] = useState(null)
-  const [filteredRestaurants, setFilteredRestaurants] = useState(null)
-  const [searchText, setSearchText] = useState('')
+  const [allRestaurants, setAllRestaurants] = useState<
+    RestaurantProps[] | null
+  >(null)
+  const [filteredRestaurants, setFilteredRestaurants] =
+    useState<RestaurantProps | null>(null)
+  const [searchText, setSearchText] = useState<string>('')
 
   useEffect(() => {
     const fetchRestaurantsData = async () => {
@@ -22,12 +26,14 @@ const Home = () => {
         const res = await fetch(
           `${import.meta.env.VITE_BACKEND_URL}/api/restaurant`
         )
+
         if (!res.ok) {
           throw new Error('Network error occured')
         }
 
         const data = await res.json()
 
+        console.log(data.data?.cards)
         const restaurantData =
           data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
             ?.restaurants ||

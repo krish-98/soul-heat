@@ -21,7 +21,7 @@ const RestaurantShimmer = () => {
 
         {Array(15)
           .fill('')
-          .map((e, index) => (
+          .map((_, index) => (
             <div key={index} className="my-8 space-y-4 flex justify-between">
               <div className="space-y-2">
                 <h3 className="w-36 h-4 md:w-60 bg-gray-200 animate-pulse"></h3>

@@ -151,7 +151,7 @@ export const checkout = async (
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
-      customer_email: user?.email,
+      // customer_email: user?.email,
       success_url: `${process.env.FRONTEND_URL}/success`,
       cancel_url: `${process.env.FRONTEND_URL}/cancel`,
       submit_type: 'pay',

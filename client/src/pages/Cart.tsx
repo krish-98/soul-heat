@@ -1,12 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-
 import { toast } from 'react-hot-toast'
-// import { loadStripe } from '@stripe/stripe-js'
-
-import EmptyCart from '../assets/empty-cart.png'
-import { BsArrowLeft } from 'react-icons/bs'
-import { FaRegTrashAlt } from 'react-icons/fa'
+import { loadStripe } from '@stripe/stripe-js'
 
 import {
   addToCart,
@@ -17,6 +12,10 @@ import {
 import CartItems from '../components/Cart/CartItems'
 import CartCalculation from '../components/Cart/CartCalculation'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
+
+import EmptyCart from '../assets/empty-cart.png'
+import { BsArrowLeft } from 'react-icons/bs'
+import { FaRegTrashAlt } from 'react-icons/fa'
 
 const Cart = () => {
   const [loading, setLoading] = useState(false)

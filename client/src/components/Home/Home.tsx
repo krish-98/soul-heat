@@ -32,8 +32,6 @@ const Home = () => {
         }
 
         const data = await res.json()
-
-        console.log(data.data?.cards)
         const restaurantData =
           data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
             ?.restaurants ||
@@ -42,10 +40,12 @@ const Home = () => {
           data?.data?.cards[3]?.card?.card?.gridElements?.infoWithStyle
             ?.restaurants
 
+        // console.log(data.data?.cards)
+
         setAllRestaurants(restaurantData)
         setFilteredRestaurants(restaurantData)
       } catch (error) {
-        toast.error(`${error.message}!`, {})
+        toast.error(`${error.message}!`)
         console.error(error)
       }
     }
@@ -53,7 +53,7 @@ const Home = () => {
     fetchRestaurantsData()
   }, [])
 
-  const handleSearch = (e) => {
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const data = filterRestaurant(searchText, allRestaurants)

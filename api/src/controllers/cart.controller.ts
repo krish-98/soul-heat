@@ -130,6 +130,11 @@ export const checkout = async (
 
     const user = await User.findOne({ _id: req.user?.id })
 
+    if (!user) {
+      res.status(404).json({ error: 'User not found' })
+      return
+    }
+
     const lineItems = cartItems.map((cartItem) => {
       return {
         price_data: {
@@ -151,11 +156,11 @@ export const checkout = async (
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
-      // customer_email: user?.email,
+      customer_email: user?.email,
+      billing_address_collection: 'required',
       success_url: `${process.env.FRONTEND_URL}/success`,
       cancel_url: `${process.env.FRONTEND_URL}/cancel`,
       submit_type: 'pay',
-      billing_address_collection: 'auto',
       metadata: {
         userId: req.user?.id,
       },

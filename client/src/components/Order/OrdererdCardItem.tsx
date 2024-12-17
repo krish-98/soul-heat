@@ -1,9 +1,7 @@
-import { Link } from 'react-router-dom'
 import { OrderItem } from '../../pages/Orders'
 
 import { TbPackage } from 'react-icons/tb'
 import { CiClock2 } from 'react-icons/ci'
-import { MdKeyboardArrowRight } from 'react-icons/md'
 import { PiCurrencyInr } from 'react-icons/pi'
 import { GoDotFill } from 'react-icons/go'
 import { GiForkKnifeSpoon } from 'react-icons/gi'
@@ -21,7 +19,7 @@ export default function OrdererdCardItem({ item }: { item: OrderItem }) {
         <img
           className="w-full h-full object-cover rounded-t-2xl"
           src={`https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/${item.orders[0].imageId}`}
-          alt="jdksjdl"
+          alt={item.orders?.[0].name}
         />
         <div className="absolute bottom-0 flex items-center justify-between px-4 w-full bg-black/50 py-2">
           <div className="flex items-center gap-3">
@@ -39,9 +37,9 @@ export default function OrdererdCardItem({ item }: { item: OrderItem }) {
               </span>
             </div>
           </div>
-          <p className="bg-shOrangeAccent text-shOrange2 rounded-xl px-3 py-0.5 tracking-tight font-semibold">
-            Preparing
-          </p>
+          {/* <p className="bg-shOrangeAccent text-shOrange2 rounded-xl px-3 py-0.5 tracking-tight font-semibold">
+            Processing
+          </p> */}
         </div>
       </div>
 
@@ -81,7 +79,7 @@ export default function OrdererdCardItem({ item }: { item: OrderItem }) {
         <div className="flex items-center justify-between py-2">
           <span className="bg-green-100 text-green-500 px-4 py-1.5 rounded-2xl flex items-center gap-0.5 text-sm">
             <GoDotFill className="w-4 h-4" />
-            {item.status}
+            {`Payment ${item?.paymentStatus}`}
           </span>
           {/* <Link to="#">
             <MdKeyboardArrowRight className="w-4 h-4 lg:w-7 lg:h-7 text-gray-400" />

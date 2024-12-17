@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
-import { loadStripe } from '@stripe/stripe-js'
+import { loadStripe, Stripe } from '@stripe/stripe-js'
 
 import {
   addToCart,
@@ -16,6 +16,10 @@ import { useAppDispatch, useAppSelector } from '../app/hooks'
 import EmptyCart from '../assets/empty-cart.png'
 import { BsArrowLeft } from 'react-icons/bs'
 import { FaRegTrashAlt } from 'react-icons/fa'
+
+interface CheckoutSession {
+  id: string
+}
 
 const Cart = () => {
   const [loading, setLoading] = useState(false)
@@ -153,7 +157,13 @@ const Cart = () => {
     try {
       setPaymentLoader(true)
 
-      const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY)
+      const stripe: Stripe | null = await loadStripe(
+        import.meta.env.VITE_STRIPE_PUBLIC_KEY
+      )
+      if (!stripe) {
+        throw new Error('Stripe could not be initialized')
+      }
+
       const res = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/api/cart/checkout`,
         {
@@ -169,21 +179,12 @@ const Cart = () => {
 
       if (!res.ok) throw new Error('Failed to create checkout session')
 
-      const session = await res.json()
+      const session: CheckoutSession = await res.json()
       await stripe.redirectToCheckout({ sessionId: session.id })
     } catch (error) {
       toast.error(
         `Something went wrong 😐
-         Try after sometime`,
-        {
-          autoClose: 1000,
-          hideProgressBar: true,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: false,
-          progress: undefined,
-          theme: 'light',
-        }
+         Try after sometime`
       )
       console.log(error)
     } finally {

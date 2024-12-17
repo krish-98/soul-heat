@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { FaChevronUp, FaChevronDown } from 'react-icons/fa6'
 import MenuCardItem from './MenuCardItem'
 
-const MenuCardAccordion = ({ menu }) => {
+const MenuCardAccordion = ({ menu, restaurantDetail }) => {
   const [isAccordionOpen, setIsAccordionOpen] = useState(true)
 
   return (
@@ -28,6 +28,7 @@ const MenuCardAccordion = ({ menu }) => {
               <MenuCardItem
                 key={item?.info?.id || dish?.dish?.info?.id}
                 item={item}
+                restaurantDetail={restaurantDetail}
               />
             )
           })}

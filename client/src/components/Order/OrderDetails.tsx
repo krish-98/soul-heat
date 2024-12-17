@@ -1,10 +1,15 @@
-import OrderedItems from './OrdererdItems'
+import OrdererdCardItem from './OrdererdCardItem'
+import { OrderItem } from '../../pages/Orders'
 
-export default function OrderDetails({ orderedItems }) {
+export default function OrderDetails({
+  orderedItems,
+}: {
+  orderedItems: OrderItem[]
+}) {
   return (
-    <div className="space-y-14">
+    <div className="flex flex-wrap items-center justify-center gap-10 lg:gap-12 xl:justify-start">
       {orderedItems?.map((item) => {
-        return <OrderedItems key={item?._id} item={item} />
+        return <OrdererdCardItem key={item?._id} item={item} />
       })}
     </div>
   )

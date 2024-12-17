@@ -183,9 +183,13 @@ const Header = () => {
           )
 
           if (!res.ok) throw new Error('Newtork error occurred')
+          // if (res.status === 401) {
+          //   dispatch(logout())
+          //   dispatch(clearCart())
+          //   toast('Logout successfully!')
+          // }
 
           const data = await res.json()
-
           dispatch(getCart(data?.items))
           dispatch(calculateCartTotal())
           if (data?.token) {
@@ -196,7 +200,7 @@ const Header = () => {
         toast(`Something went wrong!`, {
           icon: '🙄',
         })
-        console.error(error)
+        console.error(error.message)
       }
     }
 

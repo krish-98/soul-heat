@@ -6,7 +6,7 @@ import { ClipLoader } from 'react-spinners'
 import { useDispatch, useSelector } from 'react-redux'
 import { addToCart, calculateCartTotal } from '../../app/features/cartSlice'
 
-const MenuCardItem = ({ item }) => {
+const MenuCardItem = ({ item, restaurantDetail }) => {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
@@ -16,7 +16,6 @@ const MenuCardItem = ({ item }) => {
   const handleAddItemToCart = async (item) => {
     if (!user) {
       toast.error('Sign In to add item')
-
       setTimeout(() => navigate('/sign-up'), 1000)
       return
     }

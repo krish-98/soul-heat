@@ -18,6 +18,7 @@ const Success = () => {
           {
             method: 'DELETE',
             headers: { Authorization: `Bearer ${token}` },
+            credentials: 'include',
           }
         )
         await res.json()

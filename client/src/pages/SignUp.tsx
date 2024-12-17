@@ -146,7 +146,7 @@ const SignUp = () => {
             <button
               disabled={loading}
               type="submit"
-              className="flex w-full justify-center rounded-md border bg-black text-white px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm hover:bg-[#fb923c] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black transition duration-500"
+              className="flex w-full justify-center rounded-xl border bg-black text-white px-3 l py-2 text-sm font-semibold leading-6 shadow-sm hover:bg-[#fb923c] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black transition duration-500"
             >
               {loading ? 'Signing up...' : 'Sign up'}
             </button>

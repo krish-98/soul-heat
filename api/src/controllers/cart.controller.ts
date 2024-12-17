@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from 'express'
-import { stripe } from '..'
-
 import Cart from '../models/cart.model'
 import Order from '../models/order.model'
 import User from '../models/user.model'
 import { handleError } from '../utils/error'
+
+import Stripe from 'stripe'
+import { stripe } from '..'
 
 interface AuthenticatedRequest extends Request {
   user?: {
@@ -95,6 +96,7 @@ export const getCartItems = async (
   try {
     const items = await Cart.find({ userRef: req.user?.id })
 
+    console.log(items)
     res.json({ items })
   } catch (error) {
     next(error)
@@ -122,40 +124,46 @@ export const checkout = async (
 ): Promise<void> => {
   try {
     const cartItems: CartItem = req.body
-
     if (!cartItems || !Array.isArray(cartItems)) {
       res.status(400).json({ error: 'Invalid cart items' })
       return
     }
 
     const user = await User.findOne({ _id: req.user?.id })
-
     if (!user) {
       res.status(404).json({ error: 'User not found' })
       return
     }
 
+    const order = await Order.create({
+      orders: req.body,
+      userRef: req.user?.id,
+      status: 'Placed',
+    })
+
+    console.log(order)
+
     const lineItems = cartItems.map((cartItem) => {
       return {
         price_data: {
           currency: 'inr',
+          unit_amount: Math.round(cartItem.price),
           product_data: {
             name: cartItem.name,
             images: [
               `https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/${cartItem.imageId}`,
             ],
           },
-          unit_amount: Math.round(cartItem.price),
         },
-        quantity: cartItem.quantity,
+        quantity: parseInt(cartItem.quantity),
       }
     })
 
     //@ts-ignore
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
+      payment_method_types: ['card'],
       customer_email: user?.email,
       billing_address_collection: 'required',
       success_url: `${process.env.FRONTEND_URL}/success`,
@@ -163,14 +171,16 @@ export const checkout = async (
       submit_type: 'pay',
       metadata: {
         userId: req.user?.id,
+        orderId: order._id.toString(),
       },
     })
 
-    await Order.create({
-      orders: req.body,
-      userRef: req.user?.id,
-      status: 'Processing',
-    })
+    // const session = await createSession(
+    //   lineItems,
+    //   'TEST_ORDER_ID',
+    //   restaurant.deliveryPrice,
+    //   restaurant._id.toString()
+    // )
 
     res.json({ id: session.id })
   } catch (error) {
@@ -178,43 +188,28 @@ export const checkout = async (
   }
 }
 
-// export const stripeWebhook = async (
-//   req: AuthenticatedRequest,
-//   res: Response,
-//   next: NextFunction
+// const createSession = async (
+//   lineItems: Stripe.Checkout.SessionCreateParams.LineItem[],
+//   orderId: string,
+//   deliveryPrice: number,
+//   restaurantId: string
 // ) => {
-//   const payload = req.body
-//   const sig = req.headers['stripe-signature'] as string
-
-//   let event: StripeEvent
-
-//   try {
-//     event = stripe.webhooks.constructEvent(
-//       payload,
-//       sig,
-//       process.env.STRIPE_WEBHOOK_SECRET as string
-//     )
-//     console.log(`Event: ${event}`)
-//   } catch (err) {
-//     const error = err as Error
-//     return res.status(400).send(`Webhook Error: ${error.message}`)
-//   }
-
-//   // Handle the checkout.session.completed event
-//   if (event.type === 'checkout.session.completed') {
-//     // Retrieve the session. If you require line items in the response, you may include them by expanding line_items.
-//     const sessionWithLineItems = await stripe.checkout.sessions.retrieve(
-//       event.data.object.id,
+//   const sessionData = await stripe.checkout.sessions.create({
+//     line_items: lineItems,
+//     shipping_options: [
 //       {
-//         expand: ['line_items'],
-//       }
-//     )
-//     const lineItems = sessionWithLineItems.line_items
+//         shipping_rate_data: {
+//           display_name: 'Delivery',
+//           type: 'fixed_amount',
+//           fixed_amount: { amount: deliveryPrice, currency: 'inr' },
+//         },
+//       },
+//     ],
+//     mode: 'payment',
+//     metadata: { orderId, restaurantId },
+//     success_url: `${process.env.FRONTEND_URL}/order-status?success=true`,
+//     cancel_url: `${process.env.FRONTEND_URL}/detail/${restaurantId}?cancelled=true`,
+//   })
 
-//     // Fulfill the purchase...
-//     // fulfillOrder(lineItems)
-//     console.log(`LineItems: ${lineItems}`)
-//   }
-
-//   res.status(200).end()
+//   return sessionData
 // }

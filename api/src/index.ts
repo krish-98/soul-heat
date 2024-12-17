@@ -17,6 +17,7 @@ const PORT: number = Number(process.env.PORT) || 3000
 const app = express()
 
 app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }))
+app.use('/api/order/webhook', express.raw({ type: 'application/json' })) // Raw body middleware for Stripe Webhook
 app.use(express.json())
 app.use(cookieParser())
 
@@ -25,7 +26,6 @@ app.use('/api/user', userRouter)
 app.use('/api/cart', cartRouter)
 app.use('/api/order', orderRouter)
 
-// Default error handling middleware
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   const statusCode = err.statusCode || 500
   const message = err.message || 'Internal Server Error'

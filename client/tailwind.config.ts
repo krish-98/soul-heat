@@ -7,6 +7,13 @@ export default {
       screen: {
         xs: '425px',
       },
+      colors: {
+        shOrange: '#fb923c',
+        shOrange2: '#f39543',
+        shOrangeAccent: '#ffedd5',
+        shAccent: '#525f7f',
+        shBackground: '#f3f4f6',
+      },
     },
   },
   // eslint-disable-next-line @typescript-eslint/no-require-imports

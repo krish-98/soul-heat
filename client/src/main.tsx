@@ -13,16 +13,16 @@ import ErrorBoundary from './components/ErrorBoundary.tsx'
 import Fallback from './components/Fallback.tsx'
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <Toaster reverseOrder={false} />
-        <ErrorBoundary fallback={<Fallback />}>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </ErrorBoundary>
-      </PersistGate>
-    </Provider>
-  </StrictMode>
+  // <StrictMode>
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <Toaster reverseOrder={false} />
+      <ErrorBoundary fallback={<Fallback />}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ErrorBoundary>
+    </PersistGate>
+  </Provider>
+  // </StrictMode>
 )

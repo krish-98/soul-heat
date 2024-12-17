@@ -130,7 +130,7 @@ const SignIn = () => {
             <button
               disabled={isLoading}
               type="submit"
-              className="flex w-full justify-center rounded-md border text-white px-3 py-1.5 text-sm font-semibold leading-6 bg-black shadow-sm hover:text-white hover:bg-[#fb923c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black transition duration-500 disabled:cursor-not-allowed disabled:bg-orange-300"
+              className="flex w-full justify-center rounded-xl border text-white px-3 py-2 text-sm font-semibold leading-6 bg-black shadow-sm hover:text-white hover:bg-[#fb923c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black transition duration-500 disabled:cursor-not-allowed disabled:bg-orange-300"
             >
               {isLoading ? 'Signing in...' : 'Sign In'}
             </button>

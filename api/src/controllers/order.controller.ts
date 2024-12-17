@@ -9,44 +9,22 @@ interface AuthenticatedRequest extends Request {
   }
 }
 
-// export const orderDetails = async (
-//   req: AuthenticatedRequest,
-//   res: Response
-// ) => {
-//   try {
-//     const orders = await Order.find({ userRef: req.user?.id }).limit(5).sort({
-//       createdAt: -1,
-//     })
-
-//     console.log(orders.length)
-//     res.json({ orders })
-//   } catch (error) {
-//     if (error instanceof Error) {
-//       console.error(error.message)
-//     } else {
-//       console.error('An unknown error occurred', error)
-//     }
-//     res.status(500).json({ error: 'Error getting the order details' })
-//   }
-// }
-
 export const orderDetails = async (
   req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const skip = parseInt(req.query.skip as string) || 0 // Default to 0 if not provided
-    const limit = 5 // Fixed limit for each request
+    const skip = parseInt(req.query.skip as string) || 0
+    const limit = 5
 
     const orders = await Order.find({ userRef: req.user?.id })
-      .sort({ createdAt: -1 }) // Fetch latest orders first
+      .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
 
     const totalOrders = await Order.countDocuments({ userRef: req.user?.id })
-
-    const hasMore = skip + orders.length < totalOrders // Check if more orders are available
+    const hasMore = skip + orders.length < totalOrders
 
     res.json({
       orders,
@@ -67,9 +45,6 @@ export const stripeWebhook = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  console.log('Received events')
-  console.log('=========================')
-
   const endPointSecret = process.env.STRIPE_WEBHOOK_SECRET
   if (!endPointSecret) {
     res.status(500).send('Server configuration error')
@@ -104,7 +79,10 @@ export const stripeWebhook = async (
     //@ts-ignore
     const { userId, orderId } = event.data.object?.metadata
 
-    await Order.findByIdAndUpdate(orderId, { status: 'Paid' })
+    await Order.findByIdAndUpdate(orderId, {
+      status: 'Paid',
+      paymentStatus: 'Completed',
+    })
   }
 
   res.status(200).send()

@@ -41,6 +41,11 @@ const orderSchema = new Schema(
       enum: ['Placed', 'Paid', 'InProcess', 'OutForDelivery', 'Delivered'],
       required: true,
     },
+    paymentStatus: {
+      type: String,
+      enum: ['Pending', 'Completed', 'Failed'],
+      required: true,
+    },
   },
   { timestamps: true }
 )

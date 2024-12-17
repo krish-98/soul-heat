@@ -139,9 +139,8 @@ export const checkout = async (
       orders: req.body,
       userRef: req.user?.id,
       status: 'Placed',
+      paymentStatus: 'Pending',
     })
-
-    console.log(order)
 
     const lineItems = cartItems.map((cartItem) => {
       return {

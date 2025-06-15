@@ -1,8 +1,12 @@
 import express from 'express'
+import restaurantRouter from './routes/restaurant.routes'
 
+const PORT = process.env.PORT
 const app = express()
 
-app.get('/', (req, res) => {
+app.use('/api/v1/restaurant', restaurantRouter)
+
+app.get('/test', (req, res) => {
   res.json({ message: 'API is working properly!' })
 })
 

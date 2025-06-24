@@ -10,6 +10,7 @@ import {
 import User from '../models/auth.model'
 import { errorHandler } from '../utils/error'
 import { generateRandomPassword } from '../utils/password'
+import { generateAccessToken, generateRefreshToken } from '../utils/token'
 
 export const signUp = async (
   req: Request,
@@ -24,18 +25,24 @@ export const signUp = async (
 
     const { username, email, password }: SignUpUser = parsedSignUpInput.data
 
-    const hashedPassword = bcrypt.hashSync(password, 10)
+    const isUserExist = await User.findOne({ email })
+    if (isUserExist) {
+      return next(errorHandler(400, 'User already exist, sign in to continue'))
+    }
 
+    const hashedPassword = bcrypt.hashSync(password, 10)
     const user = await User.create({
       username,
       email,
       password: hashedPassword,
     })
     if (!user) {
-      next(errorHandler(500, "Account couldn't be created!"))
+      return next(errorHandler(500, "Account couldn't be created!"))
     }
 
-    return res.json({ success: true, message: 'Account created successfully!' })
+    return res
+      .status(201)
+      .json({ success: true, message: 'Account created successfully!' })
   } catch (error) {
     console.error(error)
     return next(error)
@@ -57,16 +64,24 @@ export const signIn = async (
 
     const user = await User.findOne({ email })
     if (!user) {
-      return next(errorHandler(404, 'User not found!'))
+      return next(errorHandler(401, 'Invalid email or password'))
     }
 
-    const comparedPassword = bcrypt.compareSync(
-      password,
-      user?.password as string
-    )
-    if (!comparedPassword) {
-      return next(errorHandler(400, 'Enter correct password!'))
+    const isValidPassword = bcrypt.compareSync(password, user?.password)
+    if (!isValidPassword) {
+      return next(errorHandler(401, 'Invalid email or password'))
     }
+
+    const accessToken = generateAccessToken(user._id.toString())
+    const refreshToken = generateRefreshToken(user._id.toString())
+
+    res.cookie('accessToken', accessToken, { maxAge: 15 * 60 * 1000 })
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.ENVIRONMENT === 'production' ? true : false,
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    })
 
     return res.json({ success: true, message: 'Login successfull!' })
   } catch (error) {
@@ -106,6 +121,17 @@ export const oauth = async (
           errorHandler(500, "Something went wrong, couldn't create an account!")
         )
       }
+
+      const accessToken = generateAccessToken(user._id.toString())
+      const refreshToken = generateRefreshToken(user._id.toString())
+
+      res.cookie('accessToken', accessToken, { maxAge: 15 * 60 * 1000 })
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        secure: process.env.ENVIRONMENT === 'production' ? true : false,
+        sameSite: 'lax',
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      })
 
       return res.json({ success: true, message: 'OAuth login successful!' })
     }

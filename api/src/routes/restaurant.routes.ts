@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { Handler } from 'express'
 import {
   getAllRestaurants,
   restaurantInfo,
@@ -6,7 +6,7 @@ import {
 
 const router = express.Router()
 
-router.get('/', getAllRestaurants)
-router.get('/:restaurantId', restaurantInfo)
+router.get('/', getAllRestaurants as Handler)
+router.get('/:restaurantId', restaurantInfo as Handler)
 
 export default router

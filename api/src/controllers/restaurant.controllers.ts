@@ -1,7 +1,11 @@
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 
-export const getAllRestaurants = async (req: Request, res: Response) => {
-  const URL = `https://www.swiggy.com/dapi/restaurants/list/v5?lat=9.928668&lng=78.092783&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`
+export const getAllRestaurants = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<Response | void> => {
+  const URL = `${process.env.RESTAURANT_URL}/restaurants/list/v5?lat=9.928668&lng=78.092783&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`
 
   try {
     const response = await fetch(`${URL}`, {
@@ -17,24 +21,25 @@ export const getAllRestaurants = async (req: Request, res: Response) => {
 
     const data = await response.json()
 
-    res.json({
+    return res.json({
       success: true,
       data,
     })
   } catch (error) {
     console.error(error)
 
-    res.status(500).json({
-      success: false,
-      message: error,
-    })
+    return next(error)
   }
 }
 
-export const restaurantInfo = async (req: Request, res: Response) => {
+export const restaurantInfo = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<Response | void> => {
   try {
-    const { id } = req.params
-    const URL = `https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=20.275845&lng=85.776639&restaurantId=${id}&catalog_qa=undefined&submitAction=ENTER`
+    const { restaurantId } = req.params
+    const URL = `${process.env.RESTAURANT_URL}/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=20.275845&lng=85.776639&restaurantId=${restaurantId}&catalog_qa=undefined&submitAction=ENTER`
 
     const response = await fetch(`${URL}`, {
       headers: {
@@ -49,15 +54,13 @@ export const restaurantInfo = async (req: Request, res: Response) => {
 
     const data = await response.json()
 
-    res.json({
+    return res.json({
       success: true,
       data,
     })
   } catch (error) {
     console.error(error)
-    res.status(500).json({
-      success: false,
-      message: error,
-    })
+
+    return next(error)
   }
 }

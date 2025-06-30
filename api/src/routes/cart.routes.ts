@@ -12,8 +12,8 @@ const router = Router()
 
 router.post('/items', verifyToken, addItem as Handler)
 router.delete('/items/:id', verifyToken, removeItem as Handler)
-router.get('/items', verifyToken, getCartItems)
-router.delete('/', verifyToken, clearCart)
+router.get('/items', verifyToken, getCartItems as Handler)
+router.delete('/', verifyToken, clearCart as Handler)
 router.post('/checkout', verifyToken, checkout)
 
 export default router

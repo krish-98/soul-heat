@@ -7,6 +7,7 @@ import {
 } from '../schemas/cart.schema'
 import { HydratedDocument } from 'mongoose'
 import { errorHandler } from '../utils/errorHandler'
+import { error } from 'console'
 
 export const addItem = async (
   req: Request,
@@ -93,10 +94,16 @@ export const getCartItems = async (
   next: NextFunction
 ) => {
   try {
-    //@ts-ignore
-    console.log(`Inside the handler:`, req.user)
-    res.json({ succcss: true, message: 'Item added to cart' })
-  } catch (error) {}
+    const cartItems = await Cart.find({
+      //@ts-ignore
+      userRef: req.user,
+    })
+
+    res.json({ success: true, data: cartItems })
+  } catch (error) {
+    console.error(error)
+    next(error)
+  }
 }
 
 export const clearCart = async (
@@ -105,7 +112,19 @@ export const clearCart = async (
   next: NextFunction
 ) => {
   try {
-  } catch (error) {}
+    await Cart.deleteMany({
+      //@ts-ignore
+      userRef: req.user,
+    })
+
+    return res.json({
+      success: true,
+      message: 'All items have been removed the cart!',
+    })
+  } catch (error) {
+    console.error(error)
+    return next(error)
+  }
 }
 
 export const checkout = async (

@@ -8,8 +8,8 @@ import {
   SignUpUser,
 } from '../schemas/user.schema'
 import User from '../models/auth.model'
-import { errorHandler } from '../utils/error'
-import { generateRandomPassword } from '../utils/password'
+import { errorHandler } from '../utils/errorHandler'
+import { generateRandomPassword } from '../utils/generatePassword'
 import { generateAccessToken, generateRefreshToken } from '../utils/token'
 
 export const signUp = async (
@@ -72,6 +72,9 @@ export const signIn = async (
       return next(errorHandler(401, 'Invalid email or password'))
     }
 
+    //@ts-ignore
+    const { password: pass, ...rest } = user._doc
+
     const accessToken = generateAccessToken(user._id.toString())
     const refreshToken = generateRefreshToken(user._id.toString())
 
@@ -83,7 +86,11 @@ export const signIn = async (
       maxAge: 7 * 24 * 60 * 60 * 1000,
     })
 
-    return res.json({ success: true, message: 'Login successfull!' })
+    return res.json({
+      success: true,
+      message: 'Login successful!',
+      data: rest,
+    })
   } catch (error) {
     console.error(error)
     return next(error)

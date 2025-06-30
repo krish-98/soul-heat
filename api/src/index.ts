@@ -3,9 +3,10 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
 
-import restaurantRouter from './routes/restaurant.routes'
 import authRouter from './routes/auth.routes'
-import { CustomError } from './utils/error'
+import restaurantRouter from './routes/restaurant.routes'
+import cartRouter from './routes/cart.routes'
+import { CustomError } from './utils/errorHandler'
 import { connectToDB } from './utils/db'
 
 dotenv.config()
@@ -15,7 +16,7 @@ const app = express()
 
 app.use(
   cors({
-    origin: [`${process.env.FRONTEND_URL}`, 'http://localhost:5173'],
+    origin: [`${process.env.FRONTEND_URL}`],
     credentials: true,
   })
 )
@@ -24,6 +25,7 @@ app.use(cookieParser())
 
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/restaurant', restaurantRouter)
+app.use('/api/v1/cart', cartRouter)
 
 // Global error handling middleware
 // @ts-ignore

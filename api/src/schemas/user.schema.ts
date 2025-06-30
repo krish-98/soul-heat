@@ -22,4 +22,4 @@ export const oauthSchema = z.object({
 
 export type SignUpUser = z.infer<typeof signUpSchema>
 export type SignInUser = z.infer<typeof signInSchema>
-export type oauthUser = z.infer<typeof oauthSchema>
+export type OAuthUser = z.infer<typeof oauthSchema>

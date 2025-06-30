@@ -11,4 +11,10 @@ export const addCartItemSchema = z.object({
   userRef: z.string(),
 })
 
+export const removeCartItemSchema = z.object({
+  id: z.string(),
+  quantity: z.number(),
+})
+
 export type AddItem = z.infer<typeof addCartItemSchema>
+export type RemoveItem = z.infer<typeof removeCartItemSchema>

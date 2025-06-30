@@ -11,7 +11,7 @@ import {
 const router = Router()
 
 router.post('/items', verifyToken, addItem as Handler)
-router.delete('/items/:id', verifyToken, removeItem)
+router.delete('/items/:id', verifyToken, removeItem as Handler)
 router.get('/items', verifyToken, getCartItems)
 router.delete('/', verifyToken, clearCart)
 router.post('/checkout', verifyToken, checkout)

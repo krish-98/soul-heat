@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from 'express'
-import Cart, { ICart } from '../models/cart.model'
+import Cart from '../models/cart.model'
 import {
   addCartItemSchema,
-  AddItem,
+  cartItemsArraySchema,
   removeCartItemSchema,
 } from '../schemas/cart.schema'
-import { HydratedDocument } from 'mongoose'
 import { errorHandler } from '../utils/errorHandler'
-import { error } from 'console'
+import { stripe } from '..'
+import User from '../models/auth.model'
 
 export const addItem = async (
   req: Request,
@@ -133,5 +133,50 @@ export const checkout = async (
   next: NextFunction
 ) => {
   try {
-  } catch (error) {}
+    const parsedCartItems = cartItemsArraySchema.safeParse(req.body)
+    if (!parsedCartItems.success) {
+      return next(parsedCartItems.error)
+    }
+
+    const user = await User.findOne({
+      //@ts-ignore
+      _id: req.user,
+    })
+
+    if (!user) {
+      return next(errorHandler(404, 'user not found'))
+    }
+
+    const lineItems = parsedCartItems.data.map((item) => ({
+      price_data: {
+        currency: 'inr',
+        unit_amount: Math.round(item.price),
+        product_data: {
+          name: item.name,
+          description: item.description,
+          images: [`${process.env.IMAGE_URL}/${item.imageId}`],
+        },
+      },
+      quantity: item.quantity,
+    }))
+
+    const session = await stripe.checkout.sessions.create({
+      line_items: lineItems,
+      mode: 'payment',
+      payment_method_types: ['card'],
+      submit_type: 'pay',
+      success_url: `${process.env.FRONTEND_URL}/success`,
+      cancel_url: `${process.env.FRONTEND_URL}/cancel`,
+    })
+
+    // res.redirect(303, session.url as string)
+
+    res.json({
+      sessionId: session.id,
+      url: session.url,
+    })
+  } catch (error) {
+    console.error(error)
+    return next(error)
+  }
 }

@@ -14,6 +14,6 @@ router.post('/items', verifyToken, addItem as Handler)
 router.delete('/items/:id', verifyToken, removeItem as Handler)
 router.get('/items', verifyToken, getCartItems as Handler)
 router.delete('/', verifyToken, clearCart as Handler)
-router.post('/checkout', verifyToken, checkout)
+router.post('/checkout', verifyToken, checkout as Handler)
 
 export default router

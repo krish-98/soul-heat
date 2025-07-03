@@ -8,9 +8,11 @@ import restaurantRouter from './routes/restaurant.routes'
 import cartRouter from './routes/cart.routes'
 import { CustomError } from './utils/errorHandler'
 import { connectToDB } from './utils/db'
+import Stripe from 'stripe'
 
 dotenv.config()
 
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string)
 const PORT = process.env.PORT || 3000
 const app = express()
 

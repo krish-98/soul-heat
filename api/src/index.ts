@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, Response } from 'express'
+import express, { Handler, NextFunction, Request, Response } from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
@@ -6,9 +6,11 @@ import cookieParser from 'cookie-parser'
 import authRouter from './routes/auth.routes'
 import restaurantRouter from './routes/restaurant.routes'
 import cartRouter from './routes/cart.routes'
+import orderRouter from './routes/order.routes'
 import { CustomError } from './utils/errorHandler'
 import { connectToDB } from './utils/db'
 import Stripe from 'stripe'
+import { webhookHandler } from './controllers/order.controllers'
 
 dotenv.config()
 
@@ -22,12 +24,22 @@ app.use(
     credentials: true,
   })
 )
+
+// Stripe Webhook - Raw body middleware
+app.use(
+  '/api/v1/order/webhook',
+  // express.raw({ type: 'application/json' }),
+  express.raw({ type: '*/*' }),
+  webhookHandler as Handler
+)
+
 app.use(express.json())
 app.use(cookieParser())
 
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/restaurant', restaurantRouter)
 app.use('/api/v1/cart', cartRouter)
+app.use('/api/v1/order', orderRouter)
 
 // Global error handling middleware
 // @ts-ignore

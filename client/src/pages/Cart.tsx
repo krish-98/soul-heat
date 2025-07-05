@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function Cart() {
   const handleCheckout = async () => {
     const cartItems = [
@@ -40,7 +38,7 @@ export default function Cart() {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVhYjM0N2U2NTVjNjFhZmM4MTk3MDQiLCJpYXQiOjE3NTE1MzQ1NTksImV4cCI6MTc1MTUzNTQ1OX0.nBwU_kAF1D3acRp7WsAoqQ0BgXn6ITc-8qh-JKzIqRs`,
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVhYjM0N2U2NTVjNjFhZmM4MTk3MDQiLCJpYXQiOjE3NTE3Mjk1OTYsImV4cCI6MTc1MTczMDQ5Nn0.G7vM_8bOXFC7HFPSkHtgAM30-_b1eq3on2fDscubLbE`,
           },
           body: JSON.stringify(cartItems),
           // credentials: 'include',

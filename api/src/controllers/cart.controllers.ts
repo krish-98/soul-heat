@@ -8,6 +8,7 @@ import {
 import { errorHandler } from '../utils/errorHandler'
 import { stripe } from '..'
 import User from '../models/auth.model'
+import Order from '../models/order.model'
 
 export const addItem = async (
   req: Request,
@@ -142,10 +143,16 @@ export const checkout = async (
       //@ts-ignore
       _id: req.user,
     })
-
     if (!user) {
       return next(errorHandler(404, 'user not found'))
     }
+
+    const order = await Order.create({
+      //@ts-ignore
+      user: req?.user,
+      cartItems: parsedCartItems.data,
+      status: 'placed',
+    })
 
     const lineItems = parsedCartItems.data.map((item) => ({
       price_data: {
@@ -160,16 +167,26 @@ export const checkout = async (
       quantity: item.quantity,
     }))
 
+    //@ts-ignore
     const session = await stripe.checkout.sessions.create({
       line_items: lineItems,
       mode: 'payment',
       payment_method_types: ['card'],
+      customer_email: user?.email,
+      billing_address_collection: 'required',
       submit_type: 'pay',
-      success_url: `${process.env.FRONTEND_URL}/success`,
-      cancel_url: `${process.env.FRONTEND_URL}/cancel`,
+      // success_url: `${process.env.FRONTEND_URL}/success`,
+      // cancel_url: `${process.env.FRONTEND_URL}/cancel`,
+      success_url: `${process.env.FRONTEND_URL}/order-status?success=true`,
+      cancel_url: `${process.env.FRONTEND_URL}/detail?cancelled=true`,
+      metadata: {
+        //@ts-ignore
+        userId: req?.user,
+        orderId: order._id.toString(),
+      },
     })
 
-    // res.redirect(303, session.url as string)
+    console.log(`Session id: ${session.id} & Session url: ${session.url}`)
 
     res.json({
       sessionId: session.id,
